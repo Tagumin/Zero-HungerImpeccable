@@ -1,10 +1,10 @@
 import { useState, useEffect, useRef, useCallback } from "react";
 import { Link } from "react-router-dom";
+import Footer from "../components/Footer";
 import "./DiseaseCare.css";
 
 // ─── Disease database ─────────────────────────────────────────────────────────
-
-//just fort testing and demo, nanti diganti dengan API call ke backend untuk dapat data real dari model AI
+// TODO: Replace with API call to backend for real AI model data
 const diseaseDB = [
   {
     name: "Rice Blast",
@@ -136,16 +136,12 @@ const diseaseDB = [
 
 // ─── Navbar ───────────────────────────────────────────────────────────────────
 function DiseaseNavbar() {
-  // ✅ Hooks di level atas komponen ini
   const [menuOpen, setMenuOpen] = useState(false);
-  const navRef = useRef(null);
+  const [isScrolled, setIsScrolled] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
-      if (navRef.current) {
-        navRef.current.style.background =
-          window.scrollY > 60 ? "rgba(0,0,0,0.88)" : "rgba(0,0,0,0.55)";
-      }
+      setIsScrolled(window.scrollY > 60);
     };
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
@@ -154,23 +150,18 @@ function DiseaseNavbar() {
   const closeMenu = () => setMenuOpen(false);
 
   return (
-    <nav className="navbar" ref={navRef}>
+    <nav className={`navbar ${isScrolled ? "scrolled" : ""}`} id="navbar">
       <div className="navbar-inner">
         <Link to="/" className="logo">
-          <svg width="28" height="24" viewBox="0 0 32 27" fill="none">
-            <path
-              d="M16 2L30 25H2L16 2Z"
-              stroke="white"
-              strokeWidth="2"
-              fill="none"
-            />
-            <path d="M16 9L24 23H8L16 9Z" fill="rgba(244,186,106,0.75)" />
+          <svg width="32" height="27" viewBox="0 0 32 27" fill="none">
+            <path d="M16 2L30 25H2L16 2Z" stroke="white" strokeWidth="2" fill="none" />
+            <path d="M16 9L24 23H8L16 9Z" fill="var(--amber)" />
           </svg>
-          <span className="logo-text">IDK</span>
+          <span className="logo-text">Harvest.AI</span>
         </Link>
 
         <button
-          className="nav-toggle"
+          className={`nav-toggle ${menuOpen ? "active" : ""}`}
           aria-label="Toggle menu"
           onClick={() => setMenuOpen((prev) => !prev)}
         >
@@ -179,24 +170,13 @@ function DiseaseNavbar() {
           <span />
         </button>
 
-        <ul className={`nav-links${menuOpen ? " open" : ""}`}>
+        <ul className={`nav-links ${menuOpen ? "open" : ""}`}>
+          <li><Link to="/" onClick={closeMenu}>Home</Link></li>
+          <li><Link to="/#about" onClick={closeMenu}>About</Link></li>
+          <li><Link to="/#features" onClick={closeMenu}>Features</Link></li>
           <li>
-            <Link to="/" onClick={closeMenu}>
-              Home
-            </Link>
-          </li>
-          <li>
-            <a href="#features-preview" onClick={closeMenu}>
-              About
-            </a>
-          </li>
-          <li>
-            <Link
-              to="/#contact"
-              className="btn-contact-nav"
-              onClick={closeMenu}
-            >
-              Contact us
+            <Link to="/#contact" className="btn-primary-nav" onClick={closeMenu}>
+              Get Started
             </Link>
           </li>
         </ul>
@@ -207,7 +187,7 @@ function DiseaseNavbar() {
 
 // ─── Main Page ────────────────────────────────────────────────────────────────
 export default function DiseaseCare() {
-  // ✅ SEMUA hooks di sini, sebelum return, tidak ada kondisi
+  // All hooks at component top level, before any conditionals
   const [preview, setPreview] = useState(null); // base64 image string
   const [dragOver, setDragOver] = useState(false);
   const [imageError, setImageError] = useState(false);
@@ -323,31 +303,65 @@ export default function DiseaseCare() {
       </div>
 
       <div className="page-wrap">
-        {/* Feature Cards */}
+        {/* Feature Cards - Bento Refactoring */}
         <div className="features-preview" id="features-preview">
-          {[
-            {
-              icon: "📸",
-              title: "Image Analysis",
-              text: "Upload a clear photo of your affected crop. Our model scans visual symptoms with high precision.",
-            },
-            {
-              icon: "🔬",
-              title: "Disease Detection",
-              text: "Identifies common fungal, bacterial, and viral diseases across major crop types within seconds.",
-            },
-            {
-              icon: "💊",
-              title: "Treatment Guide",
-              text: "Get actionable treatment recommendations and prevention tips tailored to the detected disease.",
-            },
-          ].map((c) => (
-            <div className="feature-card" key={c.title}>
-              <div className="icon">{c.icon}</div>
-              <h3>{c.title}</h3>
-              <p>{c.text}</p>
+          {/* Card 1: Hero Asymmetrical Bento Card */}
+          <div className="feature-card hero-card">
+            <div className="hero-left">
+              <div className="icon-container">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="oklch(60% 0.12 155)" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/>
+                  <circle cx="12" cy="13" r="4"/>
+                </svg>
+              </div>
+              <h3>01 / Image Analysis</h3>
+              <p>Upload a clear photo of your affected crop. Our model scans visual symptoms with high precision.</p>
             </div>
-          ))}
+            <div className="hero-right">
+              <div className="scanning-visual">
+                <div className="corner corner-tl" />
+                <div className="corner corner-tr" />
+                <div className="corner corner-bl" />
+                <div className="corner corner-br" />
+                <div className="scan-box" />
+                <div className="scan-line" />
+                <svg className="leaf-outline" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M12 2C6.5 2 2 6.5 2 12c0 3 1.5 5.5 3.5 7.5L12 22l6.5-2.5C20.5 17.5 22 15 22 12c0-5.5-4.5-10-10-10z" />
+                  <path d="M12 2v20" />
+                  <path d="M12 7c2.5 1 4 3 4 5" />
+                  <path d="M12 12c2.5 1 4 3 4 5" />
+                  <path d="M12 9c-2.5 1-4 3-4 5" />
+                  <path d="M12 14c-2.5 1-4 3-4 5" />
+                </svg>
+              </div>
+            </div>
+          </div>
+
+          {/* Card 2: Disease Detection */}
+          <div className="feature-card">
+            <div className="icon-container">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--deep-green)" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                <circle cx="12" cy="12" r="10"/>
+                <line x1="22" y1="12" x2="18" y2="12"/>
+                <line x1="6" y1="12" x2="2" y2="12"/>
+                <line x1="12" y1="6" x2="12" y2="2"/>
+                <line x1="12" y1="22" x2="12" y2="18"/>
+              </svg>
+            </div>
+            <h3>02 / Disease Detection</h3>
+            <p>Identifies common fungal, bacterial, and viral diseases across major crop types within seconds.</p>
+          </div>
+
+          {/* Card 3: Treatment Guide */}
+          <div className="feature-card">
+            <div className="icon-container">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--amber)" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+              </svg>
+            </div>
+            <h3>03 / Treatment Guide</h3>
+            <p>Get actionable treatment recommendations and prevention tips tailored to the detected disease.</p>
+          </div>
         </div>
 
         {/* Upload Card */}
@@ -404,22 +418,8 @@ export default function DiseaseCare() {
                     />
                     <button
                       onClick={handleRemoveImage}
-                      style={{
-                        position: "absolute",
-                        top: 8,
-                        right: 8,
-                        background: "rgba(0,0,0,0.55)",
-                        border: "none",
-                        borderRadius: "50%",
-                        width: 28,
-                        height: 28,
-                        color: "#fff",
-                        cursor: "pointer",
-                        fontSize: 14,
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "center",
-                      }}
+                      className="upload-remove-btn"
+                      aria-label="Remove image"
                     >
                       ✕
                     </button>
@@ -487,31 +487,30 @@ export default function DiseaseCare() {
         {/* Result Section */}
         {result && (
           <div className="result-section visible" ref={resultRef}>
-            <div className="intel-label" style={{ marginBottom: 16 }}>
+            <div className="intel-label">
               AI Output
             </div>
-            <div style={{ marginBottom: 20 }}>
-              <p
-                style={{
-                  fontSize: "2rem",
-                  fontWeight: 700,
-                  color: "var(--green-dark)",
-                  marginBottom: 4,
-                }}
-              >
-                Prediction Results
-              </p>
-              <p style={{ fontSize: "0.95rem", color: "var(--green-mid)" }}>
+            
+            <div className="result-header-group">
+              <h2 className="result-header-title">Prediction Results</h2>
+              <p className="result-header-subtitle">
                 Your crop likely suffers from a detected disease based on visual
                 pattern analysis.
               </p>
             </div>
 
             {/* Disease Hero */}
-            <div className="result-hero" style={{ marginBottom: 20 }}>
+            <div className="result-hero">
               <div className="result-hero-header">
                 <div>
-                  <div className="ai-badge">🔬 AI Analysis</div>
+                  <div className="ai-badge">
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" style={{ marginRight: 6, display: "inline-block", verticalAlign: "middle" }}>
+                      <circle cx="12" cy="12" r="10"/>
+                      <line x1="2" y1="12" x2="22" y2="12"/>
+                      <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
+                    </svg>
+                    AI Analysis
+                  </div>
                   <div className="result-disease-name">{result.name}</div>
                   <div className="result-disease-sub">{result.sci}</div>
                 </div>
@@ -533,33 +532,53 @@ export default function DiseaseCare() {
               </div>
             </div>
 
-            <div className="intel-label" style={{ marginBottom: 16 }}>
+            <div className="intel-label">
               Crop Intelligence
             </div>
 
-            {/* Treatment */}
-            <div className="info-card" style={{ marginBottom: 16 }}>
-              <div className="intel-label">❤️ Treatment Recommendation</div>
-              <div className="tip-list">
-                {result.treatment.map((t, i) => (
-                  <div className="tip-item" key={i}>
-                    <div className="tip-dot tip-dot-red" />
-                    <span>{t}</span>
+            <div className="results-grid">
+              {/* Treatment */}
+              <div className="info-card treatment-card">
+                <div className="card-heading-group">
+                  <div className="icon-badge">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                      <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+                    </svg>
                   </div>
-                ))}
+                  <h4>Treatment Recommendation</h4>
+                </div>
+                <div className="tip-list">
+                  {result.treatment.map((t, i) => (
+                    <div className="tip-item" key={i}>
+                      <svg className="tip-bullet tip-bullet-treatment" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                        <polyline points="9 18 15 12 9 6" />
+                      </svg>
+                      <span>{t}</span>
+                    </div>
+                  ))}
+                </div>
               </div>
-            </div>
 
-            {/* Prevention */}
-            <div className="info-card">
-              <div className="intel-label">💪 Prevention Tips</div>
-              <div className="tip-list">
-                {result.prevention.map((p, i) => (
-                  <div className="tip-item" key={i}>
-                    <div className="tip-dot tip-dot-green" />
-                    <span>{p}</span>
+              {/* Prevention */}
+              <div className="info-card prevention-card">
+                <div className="card-heading-group">
+                  <div className="icon-badge">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                      <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                    </svg>
                   </div>
-                ))}
+                  <h4>Prevention Tips</h4>
+                </div>
+                <div className="tip-list">
+                  {result.prevention.map((p, i) => (
+                    <div className="tip-item" key={i}>
+                      <svg className="tip-bullet tip-bullet-prevention" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                        <polyline points="20 6 9 17 4 12" />
+                      </svg>
+                      <span>{p}</span>
+                    </div>
+                  ))}
+                </div>
               </div>
             </div>
           </div>
@@ -567,27 +586,7 @@ export default function DiseaseCare() {
       </div>
 
       {/* Footer */}
-      <footer id="contact">
-        <div className="footer-brand">IDK</div>
-        <p className="footer-tagline">
-          Intelligent agriculture for the next generation of farmers
-        </p>
-        <ul className="footer-links">
-          <li>
-            <a href="#">Privacy</a>
-          </li>
-          <li>
-            <a href="#">Terms</a>
-          </li>
-          <li>
-            <a href="#">Documentation</a>
-          </li>
-          <li>
-            <a href="#">Contact</a>
-          </li>
-        </ul>
-        <p className="footer-copy">© 2025 IDK. All rights reserved.</p>
-      </footer>
+      <Footer />
     </>
   );
 }
