@@ -1,7 +1,6 @@
-import { useEffect } from "react";
+﻿import { useEffect } from "react";
 import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
 import "./index.css";
-import "./pages/CropRecommendation.css";
 
 import Navbar from "./components/Navbar";
 import Hero from "./components/Hero";
@@ -10,8 +9,8 @@ import Challenges from "./components/Challenges";
 import Mission from "./components/Mission";
 import Features from "./components/Features";
 import Footer from "./components/Footer";
-import CropRecommendation from "./pages/CropRecommendation";
 import DiseaseCare from "./pages/DiseaseCare";
+import DistributionMap from "./pages/DistributionMap";
 
 function HomePage() {
   useEffect(() => {
@@ -37,7 +36,6 @@ function HomePage() {
 
     observeAll();
 
-    // Re-run observation when React swaps components (HMR or navigation)
     const mutObs = new MutationObserver(observeAll);
     mutObs.observe(document.body, { childList: true, subtree: true });
 
@@ -74,7 +72,7 @@ export default function App() {
       <ScrollToTop />
       <Routes>
         <Route path="/" element={<HomePage />} />
-        <Route path="/crop-recommendation" element={<CropRecommendation />} />
+        <Route path="/distribution-map" element={<DistributionMap />} />
         <Route path="/disease-care" element={<DiseaseCare />} />
       </Routes>
     </BrowserRouter>

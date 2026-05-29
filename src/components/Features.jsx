@@ -3,21 +3,21 @@ import { Link } from "react-router-dom";
 export default function Features() {
   const features = [
     {
-      img: "images/crop_recommendation.jpg",
-      alt: "Crop Recommendation",
-      title: "Precision Planting Engine",
-      text: "Stop guessing what the soil wants. Our AI models analyze micro-climate data to tell you exactly what, when, and where to plant for maximum yield.",
-      to: "/crop-recommendation",
-      isInternal: true,
+      img: "images/optimization.jpg",
+      alt: "Smart Decision Support",
+      title: "Smart Decision Support System",
+      text: "Real-time data helps you plan planting, irrigation, and harvest timing. Make moves with confidence, not guesswork.",
+      to: "#",
+      isInternal: false,
       align: "left",
     },
     {
       img: "images/optimization.jpg",
       alt: "Smart Decision Support",
-      title: "The Farm's Nervous System",
-      text: "Command your entire operation from a single pane of glass. Anticipate irrigation needs and coordinate harvest timing with zero blind spots.",
-      to: "#",
-      isInternal: false,
+      title: "Intelligent Route Optimizer",
+      text: "Deploy state-of-the-art Ant Colony Optimization (ACO) to find the most efficient distribution paths across multiple destinations. Save fuel, minimize travel costs, and streamline food logistics.",
+      to: "/distribution-map",
+      isInternal: true,
       align: "right",
     },
     {
