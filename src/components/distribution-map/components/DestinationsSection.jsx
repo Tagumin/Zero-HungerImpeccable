@@ -100,13 +100,13 @@ const DestinationItem = ({
           {showSuggestions && (loading || suggestions.length > 0 || query.length >= 3) && (
             <div className="suggestions-list">
               {loading && (
-                <div style={{ padding: "10px 12px", fontSize: "13px", color: "var(--text-light)", display: "flex", alignItems: "center", gap: "8px" }}>
+                <div style={{ padding: "10px 12px", fontSize: "var(--text-caption)", color: "var(--text-light)", display: "flex", alignItems: "center", gap: "8px" }}>
                   <span className="spinner-mini" style={{ display: "inline-block", width: "12px", height: "12px", border: "2px solid var(--border)", borderTopColor: "var(--primary)", borderRadius: "50%", animation: "spin 0.8s linear infinite" }} />
                   <span>Searching...</span>
                 </div>
               )}
               {!loading && suggestions.length === 0 && query.length >= 3 && (
-                <div style={{ padding: "10px 12px", fontSize: "13px", color: "var(--text-light)", fontStyle: "italic" }}>
+                <div style={{ padding: "10px 12px", fontSize: "var(--text-caption)", color: "var(--text-light)", fontStyle: "italic" }}>
                   ❌ No locations found
                 </div>
               )}
@@ -123,7 +123,7 @@ const DestinationItem = ({
           )}
         </div>
         {dest.lat && dest.name && (
-          <div style={{ fontSize: 11, color: "var(--text-light)" }}>
+          <div style={{ fontSize: 'var(--text-xs)', color: "var(--text-light)" }}>
             🗺️{" "}
             {dest.name.length > 40
               ? dest.name.substring(0, 40) + "..."
@@ -131,12 +131,12 @@ const DestinationItem = ({
           </div>
         )}
         {dest.lat && !dest.name && (
-          <div style={{ fontSize: 11, color: "var(--text-light)" }}>
+          <div style={{ fontSize: 'var(--text-xs)', color: "var(--text-light)", fontVariantNumeric: 'tabular-nums' }}>
             Set at {dest.lat.toFixed(4)}, {dest.lng.toFixed(4)}
           </div>
         )}
         {query.trim().length >= 3 && (!dest.lat || !dest.lng) && (
-          <div style={{ fontSize: 11, color: "#e74c3c", marginTop: 4 }}>
+          <div style={{ fontSize: 'var(--text-xs)', color: "#e74c3c", marginTop: 4 }}>
             ⚠️ Select from suggestions or pick on the map to set location
           </div>
         )}

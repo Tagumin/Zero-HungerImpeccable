@@ -160,22 +160,27 @@ const Sidebar = ({
           activeDestinationId={activeDestinationId}
           setActiveDestinationId={setActiveDestinationId}
         />
-        <TravelCostSection
-          fuelPrice={fuelPrice}
-          setFuelPrice={setFuelPrice}
-          fuelConsumption={fuelConsumption}
-          setFuelConsumption={setFuelConsumption}
-          otherCosts={otherCosts}
-          setOtherCosts={setOtherCosts}
-          isLocked={isLocked || isRunning}
-        />
-        <ACOSettingsSection
-          acoParams={acoParams}
-          setAcoParams={setAcoParams}
-          mode={mode}
-          setMode={setMode}
-          isLocked={isLocked || isRunning}
-        />
+        <details className="advanced-settings-accordion">
+          <summary>Advanced Settings (Optional)</summary>
+          <div className="advanced-settings-content">
+            <TravelCostSection
+              fuelPrice={fuelPrice}
+              setFuelPrice={setFuelPrice}
+              fuelConsumption={fuelConsumption}
+              setFuelConsumption={setFuelConsumption}
+              otherCosts={otherCosts}
+              setOtherCosts={setOtherCosts}
+              isLocked={isLocked || isRunning}
+            />
+            <ACOSettingsSection
+              acoParams={acoParams}
+              setAcoParams={setAcoParams}
+              mode={mode}
+              setMode={setMode}
+              isLocked={isLocked || isRunning}
+            />
+          </div>
+        </details>
         <ActionArea
           isRunning={isRunning}
           progress={progress}

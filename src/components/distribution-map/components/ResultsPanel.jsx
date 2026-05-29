@@ -205,8 +205,8 @@ const ResultsPanel = ({
         <div style={{ marginBottom: 16 }}>
           <div
             style={{
-              fontSize: 13,
-              fontWeight: 600,
+              fontSize: 'var(--text-caption)',
+              fontWeight: 500,
               marginBottom: 12,
               color: "var(--text)",
               textTransform: "uppercase",
@@ -262,8 +262,8 @@ const ResultsPanel = ({
           >
             <div
               style={{
-                fontSize: 13,
-                fontWeight: 600,
+                fontSize: 'var(--text-caption)',
+                fontWeight: 500,
                 color: "var(--text)",
                 textTransform: "uppercase",
                 letterSpacing: "0.3px",
@@ -294,10 +294,11 @@ const ResultsPanel = ({
                 <div>
                   <h2>Segment Details</h2>
                   <div style={{
-                    fontSize: 12,
+                    fontSize: 'var(--text-xs)',
                     color: 'var(--text-light)',
                     marginTop: 2,
                     fontWeight: 400,
+                    fontVariantNumeric: 'tabular-nums',
                   }}>
                     {segments.length} segment{segments.length !== 1 ? 's' : ''} · {formatNumber(totalDistance)} km total
                   </div>
@@ -317,11 +318,12 @@ const ResultsPanel = ({
                   padding: '12px 16px',
                   borderRadius: 8,
                   background: 'oklch(0.97 0.008 155)',
-                  fontSize: 12,
+                  fontSize: 'var(--text-xs)',
                   color: 'var(--text-light)',
                   display: 'flex',
                   gap: 20,
                   flexWrap: 'wrap',
+                  fontVariantNumeric: 'tabular-nums',
                 }}>
                   <span>⛽ Fuel rate: {fuelConsumption} km/L</span>
                   <span>💰 Fuel price: {formatCurrency(fuelPrice)}/L</span>

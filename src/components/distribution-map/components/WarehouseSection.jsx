@@ -107,13 +107,13 @@ const WarehouseSection = ({
         {showSuggestions && (loading || suggestions.length > 0 || query.length >= 3) && (
           <div className="suggestions-list">
             {loading && (
-              <div style={{ padding: "10px 12px", fontSize: "13px", color: "var(--text-light)", display: "flex", alignItems: "center", gap: "8px" }}>
+              <div style={{ padding: "10px 12px", fontSize: "var(--text-caption)", color: "var(--text-light)", display: "flex", alignItems: "center", gap: "8px" }}>
                 <span className="spinner-mini" style={{ display: "inline-block", width: "12px", height: "12px", border: "2px solid var(--border)", borderTopColor: "var(--primary)", borderRadius: "50%", animation: "spin 0.8s linear infinite" }} />
                 <span>Searching...</span>
               </div>
             )}
             {!loading && suggestions.length === 0 && query.length >= 3 && (
-              <div style={{ padding: "10px 12px", fontSize: "13px", color: "var(--text-light)", fontStyle: "italic" }}>
+              <div style={{ padding: "10px 12px", fontSize: "var(--text-caption)", color: "var(--text-light)", fontStyle: "italic" }}>
                 ❌ No locations found
               </div>
             )}
@@ -131,7 +131,7 @@ const WarehouseSection = ({
       </div>
       <div className="section-hint">Click the map or search for a place</div>
       {origin && (
-        <div style={{ marginTop: 8, fontSize: 12, color: "var(--primary)" }}>
+        <div style={{ marginTop: 8, fontSize: 'var(--text-xs)', color: "var(--primary)", fontVariantNumeric: 'tabular-nums' }}>
           📍{" "}
           {origin.name ||
             `Set at ${origin.lat.toFixed(4)}, ${origin.lng.toFixed(4)}`}

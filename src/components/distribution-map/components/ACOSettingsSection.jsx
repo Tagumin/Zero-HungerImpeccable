@@ -84,7 +84,7 @@ const ACOSettingsSection = ({
       </div>
 
       {mode === "auto" ? (
-        <div style={{ fontSize: 13, lineHeight: 1.6, color: "var(--text)" }}>
+        <div style={{ fontSize: 'var(--text-caption)', lineHeight: 1.6, color: "var(--text)" }}>
           <p>
             <strong>Recommended parameters for food distribution:</strong>
           </p>
@@ -97,7 +97,7 @@ const ACOSettingsSection = ({
             </li>
             <li>α = 1.0 · β = 3.0 · ρ = 0.3 · Q = 100</li>
           </ul>
-          <p style={{ fontSize: 12, color: "var(--text-light)", marginTop: 8 }}>
+          <p style={{ fontSize: 'var(--text-xs)', color: "var(--text-light)", marginTop: 8 }}>
             Auto mode balances exploration and exploitation for typical delivery
             networks.
           </p>
