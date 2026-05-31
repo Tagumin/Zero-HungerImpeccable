@@ -4,452 +4,134 @@ import Footer from "../components/Footer";
 import "./DiseaseCare.css";
 
 // ─── Disease database ─────────────────────────────────────────────────────────
+// TODO: Replace with API call to backend for real AI model data
 const diseaseDB = [
   {
-    label: "Corn_Blight",
-    name: "Corn Blight",
-    sci: "Helminthosporium turcicum",
+    name: "Rice Blast",
+    sci: "Magnaporthe grisea",
     treatment: [
-      "Apply mancozeb or chlorothalonil fungicide",
-      "Remove and destroy infected plant debris",
-      "Improve field drainage and airflow",
+      "Apply tricyclazole or azoxystrobin fungicides",
+      "Remove infected leaves immediately",
+      "Drain fields for 5–7 days",
     ],
     prevention: [
-      "Use resistant hybrid varieties",
-      "Practice crop rotation with non-host crops",
+      "Use resistant varieties (IR64, Mahsuri)",
+      "Avoid excess nitrogen",
+      "Split fertilizer application",
+    ],
+  },
+  {
+    name: "Bacterial Leaf Blight",
+    sci: "Xanthomonas oryzae",
+    treatment: [
+      "Apply copper-based bactericides",
+      "Remove infected plants",
+      "Avoid flood-spread",
+    ],
+    prevention: [
+      "Use resistant varieties",
+      "Proper plant spacing",
+      "Avoid excess nitrogen",
+    ],
+  },
+  {
+    name: "Yellow Rust",
+    sci: "Puccinia striiformis",
+    treatment: [
+      "Apply propiconazole fungicide",
+      "Remove infected debris",
+      "Improve airflow between rows",
+    ],
+    prevention: [
+      "Use resistant varieties",
+      "Monitor at early stage",
+      "Plant at correct season",
+    ],
+  },
+  {
+    name: "Northern Leaf Blight",
+    sci: "Exserohilum turcicum",
+    treatment: [
+      "Apply mancozeb or chlorothalonil",
+      "Remove crop residues",
+      "Improve field drainage",
+    ],
+    prevention: [
+      "Practice crop rotation",
+      "Use resistant seeds",
       "Avoid overhead irrigation",
     ],
   },
   {
-    label: "Corn_CommonRust",
-    name: "Corn Common Rust",
-    sci: "Puccinia sorghi",
-    treatment: [
-      "Apply triazole-based fungicide (propiconazole)",
-      "Spray at first sign of pustules",
-      "Repeat application every 14 days if needed",
-    ],
-    prevention: [
-      "Plant rust-resistant corn hybrids",
-      "Monitor crops regularly from early growth stages",
-      "Plant early to avoid peak rust season",
-    ],
-  },
-  {
-    label: "Corn_GrayLeafSpot",
-    name: "Corn Gray Leaf Spot",
-    sci: "Cercospora zeae-maydis",
-    treatment: [
-      "Apply strobilurin or triazole fungicide",
-      "Remove severely infected leaves",
-      "Reduce humidity around plants",
-    ],
-    prevention: [
-      "Use resistant varieties",
-      "Rotate crops to break disease cycle",
-      "Till or remove corn residues after harvest",
-    ],
-  },
-  {
-    label: "Potato_EarlyBlight",
-    name: "Potato Early Blight",
-    sci: "Alternaria solani",
-    treatment: [
-      "Apply chlorothalonil or mancozeb fungicide",
-      "Remove infected lower leaves promptly",
-      "Avoid wetting foliage during irrigation",
-    ],
-    prevention: [
-      "Use certified disease-free seed potatoes",
-      "Maintain proper plant nutrition (avoid low nitrogen)",
-      "Practice 2–3 year crop rotation",
-    ],
-  },
-  {
-    label: "Potato_Lateblight",
-    name: "Potato Late Blight",
+    name: "Late Blight",
     sci: "Phytophthora infestans",
     treatment: [
-      "Apply metalaxyl + mancozeb immediately",
-      "Destroy all infected plants and tubers",
-      "Avoid overhead irrigation to reduce leaf wetness",
+      "Apply metalaxyl + mancozeb",
+      "Destroy all infected plants",
+      "Avoid wetting leaves",
     ],
     prevention: [
       "Use certified disease-free seeds",
-      "Ensure good field drainage",
-      "Monitor closely during cool, wet weather",
+      "Ensure good drainage",
+      "Monitor during cool wet weather",
     ],
   },
   {
-    label: "Rice_BacterialLeafBlight",
-    name: "Rice Bacterial Leaf Blight",
-    sci: "Xanthomonas oryzae pv. oryzae",
+    name: "Tomato Mosaic Virus",
+    sci: "Tomato mosaic virus (ToMV)",
     treatment: [
-      "Apply copper-based bactericides",
       "Remove and destroy infected plants",
-      "Avoid flood-spread by managing water carefully",
+      "Disinfect tools with 10% bleach",
+      "Control aphid vectors",
     ],
     prevention: [
-      "Use resistant varieties (IR64, BRRI dhan28)",
-      "Maintain proper plant spacing",
-      "Avoid excess nitrogen fertilization",
+      "Use virus-resistant varieties",
+      "Avoid tobacco contamination",
+      "Control insect populations",
     ],
   },
   {
-    label: "Rice_BrownSpot",
-    name: "Rice Brown Spot",
-    sci: "Cochliobolus miyabeanus",
+    name: "Fusarium Wilt",
+    sci: "Fusarium oxysporum",
     treatment: [
-      "Apply iprodione or propiconazole fungicide",
-      "Remove infected plant debris from field",
-      "Correct soil nutrient deficiencies (especially potassium)",
+      "Apply carbendazim drench",
+      "Remove and burn wilted plants",
+      "Improve soil drainage",
     ],
     prevention: [
-      "Use healthy certified seeds",
-      "Maintain balanced soil fertility",
-      "Treat seeds with fungicide before planting",
+      "Practice 3–4 year crop rotation",
+      "Use resistant seeds",
+      "Treat seeds before planting",
     ],
   },
   {
-    label: "Rice_LeafBlast",
-    name: "Rice Leaf Blast",
-    sci: "Magnaporthe grisea",
-    treatment: [
-      "Apply tricyclazole or azoxystrobin fungicide",
-      "Remove infected leaves immediately",
-      "Drain fields for 5–7 days to reduce humidity",
-    ],
-    prevention: [
-      "Use resistant varieties (IR64, Mahsuri)",
-      "Avoid excess nitrogen fertilization",
-      "Split fertilizer application across growth stages",
-    ],
-  },
-  {
-    label: "Rice_LeafScald",
-    name: "Rice Leaf Scald",
-    sci: "Microdochium oryzae",
-    treatment: [
-      "Apply propiconazole or tebuconazole fungicide",
-      "Remove and burn heavily infected leaves",
-      "Improve field aeration and drainage",
-    ],
-    prevention: [
-      "Use tolerant varieties where available",
-      "Avoid excessive nitrogen application",
-      "Maintain proper water management in fields",
-    ],
-  },
-  {
-    label: "Rice_SheathBlight",
-    name: "Rice Sheath Blight",
-    sci: "Rhizoctonia solani",
-    treatment: [
-      "Apply hexaconazole or validamycin fungicide",
-      "Drain field intermittently to reduce humidity",
-      "Remove infected lower sheaths promptly",
-    ],
-    prevention: [
-      "Reduce planting density for better airflow",
-      "Avoid excessive nitrogen fertilizer",
-      "Practice proper water management",
-    ],
-  },
-  {
-    label: "Soybean_BacterialBlight",
-    name: "Soybean Bacterial Blight",
-    sci: "Pseudomonas savastanoi pv. glycinea",
-    treatment: [
-      "Apply copper-based bactericide spray",
-      "Remove and destroy infected plant debris",
-      "Avoid working in fields when plants are wet",
-    ],
-    prevention: [
-      "Use certified disease-free seeds",
-      "Practice crop rotation with non-legumes",
-      "Plant resistant or tolerant varieties",
-    ],
-  },
-  {
-    label: "Soybean_DownyMildew",
-    name: "Soybean Downy Mildew",
-    sci: "Peronospora manshurica",
-    treatment: [
-      "Apply metalaxyl or cymoxanil fungicide",
-      "Remove infected leaves and plant parts",
-      "Reduce canopy humidity through proper spacing",
-    ],
-    prevention: [
-      "Use resistant soybean varieties",
-      "Ensure good field drainage",
-      "Avoid dense planting",
-    ],
-  },
-  {
-    label: "Soybean_MosaicVirus",
-    name: "Soybean Mosaic Virus",
-    sci: "Soybean mosaic virus (SMV)",
-    treatment: [
-      "Remove and destroy infected plants immediately",
-      "Control aphid vectors with insecticide",
-      "Disinfect tools between rows",
-    ],
-    prevention: [
-      "Use virus-resistant soybean varieties",
-      "Control aphid populations early in season",
-      "Use certified virus-free seeds",
-    ],
-  },
-  {
-    label: "Soybean_Rust",
     name: "Soybean Rust",
     sci: "Phakopsora pachyrhizi",
     treatment: [
       "Apply triazole or strobilurin fungicide",
-      "Spray at first sign of pustules on lower leaves",
-      "Repeat application every 14–21 days",
+      "Spray at first sign of pustules",
+      "Repeat every 14–21 days",
     ],
     prevention: [
-      "Plant early to avoid peak infection period",
-      "Monitor lower leaf surfaces regularly",
-      "Maintain proper plant spacing for airflow",
+      "Plant early to avoid peak infection",
+      "Monitor lower leaf surfaces",
+      "Maintain proper plant spacing",
     ],
   },
   {
-    label: "Soybean__DiabroticaSpeciosa",
-    name: "Soybean Diabrotica Speciosa",
-    sci: "Diabrotica speciosa",
+    name: "Black Sigatoka",
+    sci: "Pseudocercospora fijiensis",
     treatment: [
-      "Apply carbamate or pyrethroid insecticide",
-      "Use soil insecticide drench at root zone",
-      "Remove heavily infested plant debris",
+      "Apply systemic fungicide (propiconazole)",
+      "Remove heavily infected leaves",
+      "De-leaf plants regularly",
     ],
     prevention: [
-      "Practice crop rotation to break beetle cycle",
-      "Use seed treatment insecticides at planting",
-      "Monitor adult populations with yellow sticky traps",
+      "Use tolerant cultivars where available",
+      "Ensure adequate plant spacing",
+      "Use drip irrigation instead of overhead",
     ],
   },
-  {
-    label: "Soybean__PowderyMildew",
-    name: "Soybean Powdery Mildew",
-    sci: "Microsphaera diffusa",
-    treatment: [
-      "Apply sulfur-based or triazole fungicide",
-      "Remove heavily infected plant parts",
-      "Improve air circulation between plants",
-    ],
-    prevention: [
-      "Use resistant soybean varieties",
-      "Avoid dense planting to improve airflow",
-      "Monitor during dry weather with moderate humidity",
-    ],
-  },
-  {
-    label: "Soybean__SouthernBlight",
-    name: "Soybean Southern Blight",
-    sci: "Sclerotium rolfsii",
-    treatment: [
-      "Apply flutolanil or PCNB fungicide to soil",
-      "Remove and destroy infected plants including surrounding soil",
-      "Solarize soil before replanting",
-    ],
-    prevention: [
-      "Practice deep tillage to bury sclerotia",
-      "Rotate with non-host crops for 2+ years",
-      "Avoid excess soil moisture around stem base",
-    ],
-  },
-  {
-    label: "Wheat_BlackRust",
-    name: "Wheat Black Rust",
-    sci: "Puccinia graminis f. sp. tritici",
-    treatment: [
-      "Apply tebuconazole or propiconazole fungicide",
-      "Remove infected plant debris from field",
-      "Spray at flag leaf stage for best protection",
-    ],
-    prevention: [
-      "Plant resistant wheat varieties",
-      "Plant at recommended time to avoid peak rust",
-      "Monitor fields weekly during humid periods",
-    ],
-  },
-  {
-    label: "Wheat_BrownRust",
-    name: "Wheat Brown Rust",
-    sci: "Puccinia triticina",
-    treatment: [
-      "Apply triazole fungicide (propiconazole, tebuconazole)",
-      "Spray at early pustule appearance",
-      "Repeat if infection pressure remains high",
-    ],
-    prevention: [
-      "Use brown rust-resistant wheat varieties",
-      "Plant at optimal sowing time",
-      "Avoid excessive nitrogen that increases susceptibility",
-    ],
-  },
-  {
-    label: "Wheat_FusariumHeadBlight",
-    name: "Wheat Fusarium Head Blight",
-    sci: "Fusarium graminearum",
-    treatment: [
-      "Apply tebuconazole at early flowering stage",
-      "Remove and destroy infected heads",
-      "Avoid harvesting mycotoxin-contaminated grain",
-    ],
-    prevention: [
-      "Rotate with non-cereal crops",
-      "Use resistant or tolerant wheat varieties",
-      "Avoid excess nitrogen at heading stage",
-    ],
-  },
-  {
-    label: "Wheat_LeafBlight",
-    name: "Wheat Leaf Blight",
-    sci: "Alternaria triticina",
-    treatment: [
-      "Apply mancozeb or zineb fungicide",
-      "Remove infected lower leaves early",
-      "Ensure adequate potassium nutrition",
-    ],
-    prevention: [
-      "Use certified disease-free seeds",
-      "Practice crop rotation with non-cereals",
-      "Treat seeds with fungicide before sowing",
-    ],
-  },
-  {
-    label: "Wheat_Mildew",
-    name: "Wheat Mildew",
-    sci: "Blumeria graminis f. sp. tritici",
-    treatment: [
-      "Apply triadimefon or fenpropimorph fungicide",
-      "Remove infected plant material from field",
-      "Improve air circulation through plant spacing",
-    ],
-    prevention: [
-      "Plant mildew-resistant wheat varieties",
-      "Avoid high nitrogen fertilization",
-      "Sow at recommended density to avoid dense canopy",
-    ],
-  },
-  {
-    label: "Wheat_Septoria",
-    name: "Wheat Septoria",
-    sci: "Zymoseptoria tritici",
-    treatment: [
-      "Apply triazole fungicide (epoxiconazole, tebuconazole)",
-      "Spray from flag leaf emergence onwards",
-      "Repeat application if wet conditions persist",
-    ],
-    prevention: [
-      "Use Septoria-resistant wheat varieties",
-      "Practice crop rotation to reduce inoculum",
-      "Avoid burying infected debris shallowly",
-    ],
-  },
-  {
-    label: "Wheat_Smut",
-    name: "Wheat Smut",
-    sci: "Tilletia caries / Ustilago tritici",
-    treatment: [
-      "Treat seeds with carboxin or thiram before sowing",
-      "Remove and burn smutted heads before harvest",
-      "Clean harvesting equipment between fields",
-    ],
-    prevention: [
-      "Use certified smut-free seeds",
-      "Apply systemic fungicide seed treatment",
-      "Use smut-resistant varieties where available",
-    ],
-  },
-  {
-    label: "Wheat_TanSpot",
-    name: "Wheat Tan Spot",
-    sci: "Pyrenophora tritici-repentis",
-    treatment: [
-      "Apply propiconazole or tebuconazole fungicide",
-      "Remove infected crop residues promptly",
-      "Spray at early leaf lesion appearance",
-    ],
-    prevention: [
-      "Rotate crops to break residue-borne cycle",
-      "Till soil to bury infected wheat straw",
-      "Use resistant wheat varieties where available",
-    ],
-  },
-  {
-    label: "Wheat_YellowRust",
-    name: "Wheat Yellow Rust",
-    sci: "Puccinia striiformis f. sp. tritici",
-    treatment: [
-      "Apply propiconazole or tebuconazole fungicide",
-      "Remove infected debris from field",
-      "Improve airflow between crop rows",
-    ],
-    prevention: [
-      "Use yellow rust-resistant wheat varieties",
-      "Monitor crops at early growth stages",
-      "Plant at correct sowing time for your region",
-    ],
-  },
-  {
-    label: "Corn_Healthy",
-    name: "Corn Healthy",
-    sci: "Zea mays (Healthy)",
-    treatment: [
-      "No treatment required. The plant is in good condition.",
-    ],
-    prevention: [
-      "Continue with regular watering, fertilizing, and monitoring practices.",
-    ],
-  },
-  {
-    label: "Potato_Healthy",
-    name: "Potato Healthy",
-    sci: "Solanum tuberosum (Healthy)",
-    treatment: [
-      "No treatment required. The plant is in good condition.",
-    ],
-    prevention: [
-      "Continue with regular watering, fertilizing, and monitoring practices.",
-    ],
-  },
-  {
-    label: "Rice_Healthy",
-    name: "Rice Healthy",
-    sci: "Oryza sativa (Healthy)",
-    treatment: [
-      "No treatment required. The plant is in good condition.",
-    ],
-    prevention: [
-      "Continue with regular watering, fertilizing, and monitoring practices.",
-    ],
-  },
-  {
-    label: "Soybean_Healthy",
-    name: "Soybean Healthy",
-    sci: "Glycine max (Healthy)",
-    treatment: [
-      "No treatment required. The plant is in good condition.",
-    ],
-    prevention: [
-      "Continue with regular watering, fertilizing, and monitoring practices.",
-    ],
-  },
-  {
-    label: "Wheat_Healthy",
-    name: "Wheat Healthy",
-    sci: "Triticum aestivum (Healthy)",
-    treatment: [
-      "No treatment required. The plant is in good condition.",
-    ],
-    prevention: [
-      "Continue with regular watering, fertilizing, and monitoring practices.",
-    ],
-  }
 ];
 
 // ─── Navbar ───────────────────────────────────────────────────────────────────
@@ -526,20 +208,22 @@ function DiseaseNavbar() {
 
 // ─── Main Page ────────────────────────────────────────────────────────────────
 export default function DiseaseCare() {
+  // All hooks at component top level, before any conditionals
   const [selectedFile, setSelectedFile] = useState(null);
-  const [preview, setPreview] = useState(null);
+  const [preview, setPreview] = useState(null); // base64 image string
   const [dragOver, setDragOver] = useState(false);
   const [imageError, setImageError] = useState(false);
   const [loading, setLoading] = useState(false);
   const [result, setResult] = useState(null);
   const [barWidth, setBarWidth] = useState(0);
-  const [networkError, setNetworkError] = useState(false);
 
   const fileInputRef = useRef(null);
   const resultRef = useRef(null);
 
+  // Animate confidence bar setelah result muncul
   useEffect(() => {
     if (!result) return;
+    // Reset dulu ke 0, lalu animasikan ke nilai confidence
     setBarWidth(0);
     const timer = setTimeout(() => {
       setBarWidth(parseFloat(result.conf));
@@ -547,6 +231,7 @@ export default function DiseaseCare() {
     return () => clearTimeout(timer);
   }, [result]);
 
+  // Scroll ke result setelah muncul
   useEffect(() => {
     if (!result) return;
     const timer = setTimeout(() => {
@@ -555,6 +240,7 @@ export default function DiseaseCare() {
     return () => clearTimeout(timer);
   }, [result]);
 
+  // ─── Handlers ───
   const handleFile = useCallback((file) => {
     if (!file || !file.type.startsWith("image/")) return;
     setSelectedFile(file);
@@ -566,17 +252,23 @@ export default function DiseaseCare() {
     reader.readAsDataURL(file);
   }, []);
 
-  const handleInputChange = (e) => handleFile(e.target.files[0]);
+  const handleInputChange = (e) => {
+    handleFile(e.target.files[0]);
+  };
+
   const handleDragOver = (e) => {
     e.preventDefault();
     setDragOver(true);
   };
+
   const handleDragLeave = () => setDragOver(false);
+
   const handleDrop = (e) => {
     e.preventDefault();
     setDragOver(false);
     handleFile(e.dataTransfer.files[0]);
   };
+
   const handleRemoveImage = (e) => {
     e.stopPropagation();
     setPreview(null);
@@ -592,36 +284,29 @@ export default function DiseaseCare() {
     }
 
     setImageError(false);
-    setNetworkError(false);
     setLoading(true);
 
+    // Prepare the image to be sent as multipart/form-data
     const formData = new FormData();
     formData.append("file", selectedFile);
 
     try {
+      // Call the Flask API
       const response = await fetch("http://localhost:5000/predict", {
         method: "POST",
         body: formData,
       });
 
-      if (!response.ok) throw new Error("Network response was not ok");
+      if (!response.ok) {
+        throw new Error("Network response was not ok");
+      }
 
       const data = await response.json();
 
-      // FIX: Guard against missing/undefined disease field
-      const diseaseLabel = data?.class || data?.disease || "Unknown_Disease";
-      let confidence = 0;
-      if (typeof data?.confidence === "number") {
-        confidence = data.confidence;
-      } else if (typeof data?.confidence === "string") {
-        confidence = parseFloat(data.confidence.replace("%", ""));
-      }
-
-      const matchedDisease = diseaseDB.find(
-        (d) => d.label === diseaseLabel,
-      ) || {
-        label: diseaseLabel,
-        name: diseaseLabel.replace(/_/g, " "),
+      // Match the API result with your local database for treatments
+      // Note: Ensure your diseaseDB names match the formatted names coming from the API (e.g., "Corn Blight")
+      const matchedDisease = diseaseDB.find((d) => d.name === data.disease) || {
+        name: data.disease,
         sci: "Scientific classification pending",
         treatment: [
           "Please consult your local agricultural extension for specific treatments.",
@@ -633,16 +318,19 @@ export default function DiseaseCare() {
 
       setResult({
         ...matchedDisease,
-        conf: confidence,
+        conf: data.confidence,
       });
     } catch (error) {
       console.error("Error analyzing image:", error);
-      setNetworkError(true);
+      alert(
+        "Failed to connect to the AI server. Please ensure the backend is running.",
+      );
     } finally {
       setLoading(false);
     }
   };
 
+  // ─── Derived values ───
   const uploadZoneClass = [
     "upload-zone",
     dragOver ? "dragover" : "",
@@ -676,7 +364,7 @@ export default function DiseaseCare() {
       </div>
 
       <div className="page-wrap">
-        {/* Feature Cards */}
+        {/* Feature Cards - Bento Refactoring */}
         <div className="features-preview" id="features-preview">
           {/* Card 1: Hero Asymmetrical Bento Card */}
           <div className="feature-card hero-card">
@@ -784,23 +472,22 @@ export default function DiseaseCare() {
         {/* Upload Card */}
         <div className="card">
           <div className="card-header">
-            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><polyline points="16 16 12 12 8 16"/><line x1="12" y1="12" x2="12" y2="21"/><path d="M20.39 18.39A5 5 0 0 0 18 9h-1.26A8 8 0 1 0 3 16.3"/></svg>
-            <span className="card-header-label">Upload &amp; Analyse</span>
+            <span className="card-header-label">📤 Upload &amp; Analyse</span>
           </div>
 
-          <p className="card-desc">
+          <p
+            style={{
+              fontSize: 13,
+              color: "var(--text-muted)",
+              marginBottom: 24,
+              lineHeight: 1.6,
+            }}
+          >
             Upload a photo of your crop — AI will scan it, identify diseases and
             recommend treatments instantly.
           </p>
 
           <div className="upload-layout">
-            {networkError && (
-              <div className="network-error">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
-                <span>Failed to connect to the AI server. Please ensure the backend is running on port 5000.</span>
-              </div>
-            )}
-            
             <label>Crop Image</label>
 
             <div className="field">
@@ -811,6 +498,7 @@ export default function DiseaseCare() {
                 onDrop={handleDrop}
                 onClick={() => !preview && fileInputRef.current?.click()}
               >
+                {/* Hidden file input */}
                 <input
                   ref={fileInputRef}
                   type="file"
@@ -819,6 +507,7 @@ export default function DiseaseCare() {
                   onChange={handleInputChange}
                 />
 
+                {/* Preview */}
                 {preview ? (
                   <div
                     style={{
@@ -843,63 +532,60 @@ export default function DiseaseCare() {
                 ) : (
                   <div className="upload-placeholder">
                     <div className="upload-icon">
-                      {/* Leaf + reticle composite icon */}
                       <svg
-                        width="44"
-                        height="44"
-                        viewBox="0 0 44 44"
+                        width="22"
+                        height="22"
+                        viewBox="0 0 24 24"
                         fill="none"
-                        xmlns="http://www.w3.org/2000/svg"
-                        aria-hidden="true"
+                        stroke="#555"
+                        strokeWidth="1.5"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
                       >
-                        {/* Corner reticles */}
-                        <path d="M4 12V4h8" stroke="var(--amber)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                        <path d="M40 12V4h-8" stroke="var(--amber)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                        <path d="M4 32v8h8" stroke="var(--amber)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                        <path d="M40 32v8h-8" stroke="var(--amber)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                        {/* Leaf */}
-                        <path
-                          d="M22 32c-5 0-10-4-10-10 0-7 10-14 10-14s10 7 10 14c0 6-5 10-10 10z"
-                          stroke="var(--deep-green)"
-                          strokeWidth="1.75"
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          fill="oklch(90% 0.04 155 / 0.4)"
-                        />
-                        {/* Leaf vein */}
-                        <path d="M22 32V18" stroke="var(--deep-green)" strokeWidth="1.25" strokeLinecap="round" opacity="0.5"/>
+                        <rect x="3" y="3" width="18" height="18" rx="3" />
+                        <circle cx="8.5" cy="8.5" r="1.5" />
+                        <path d="M21 15l-5-5L5 21" />
                       </svg>
                     </div>
-                    <p>Drop your crop photo to scan</p>
-                    <span>or click to browse · JPG, PNG, WEBP · Max 10 MB</span>
+                    <p>
+                      Click or drag &amp; drop
+                      <br />
+                      your crop photo here
+                    </p>
+                    <span>JPG, PNG, WEBP · Max 10 MB</span>
                   </div>
                 )}
               </div>
 
               {imageError && (
-                <span className="error-msg">
-                  Please upload a crop image before analysing.
+                <span className="error-msg" style={{ display: "block" }}>
+                  Please upload a crop image
                 </span>
               )}
             </div>
 
-            <div className="upload-tip">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
-              <span>For best results, take a close-up photo of the affected leaf or stem in natural daylight.</span>
+            <div
+              style={{
+                fontSize: 12,
+                color: "var(--text-muted)",
+                lineHeight: 1.6,
+                background: "#f7f5ee",
+                borderRadius: 10,
+                padding: "12px 14px",
+              }}
+            >
+              💡 <strong>Tips:</strong> For best results, take a close-up photo
+              of the affected leaf or stem in natural daylight.
             </div>
           </div>
 
           <button
             className={`btn-analyze${loading ? " loading" : ""}`}
             onClick={runAnalysis}
-            disabled={loading || !selectedFile}
-            aria-label="Analyse uploaded crop image"
+            disabled={loading}
           >
             <div className="spinner" />
-            <span className="btn-label">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-              Analyse Disease
-            </span>
+            <span className="btn-label">🔍 Analyze Disease</span>
           </button>
         </div>
 
@@ -1052,6 +738,7 @@ export default function DiseaseCare() {
         )}
       </div>
 
+      {/* Footer */}
       <Footer />
     </>
   );
