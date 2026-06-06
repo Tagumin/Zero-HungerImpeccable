@@ -1,3 +1,5 @@
+import challengesImg from "../../docs/images/challenges.png";
+
 export default function Challenges() {
   const items = [
     {
@@ -26,7 +28,7 @@ export default function Challenges() {
         
         {/* Left Side: Just the Image */}
         <div className="challenges-media reveal">
-          <img src="challenges.png" alt="Farming Challenges" />
+          <img src={challengesImg} alt="Farming Challenges" />
         </div>
 
         {/* Right Side: Header + Overlapping Content Box */}

@@ -1,13 +1,17 @@
 import tensorflow as tf
 import os
+from pathlib import Path
 
 # ==========================================
 # 1. Configuration
 # ==========================================
-DATA_DIR = 'dataset/' # Adjust if needed
+BACKEND_DIR = Path(__file__).resolve().parent.parent
+PROJECT_ROOT = BACKEND_DIR.parent
+DATA_DIR = str(PROJECT_ROOT / 'dataset')
 BATCH_SIZE = 16 # Lowering batch size reduces memory spikes during evaluation
 IMG_SIZE = (224, 224)
-MODEL_FILENAME = 'best_mobilenet_large.keras'
+MODEL_FILENAME = str(BACKEND_DIR / 'models' / 'best_mobilenet_large.keras')
+TFLITE_FILENAME = str(BACKEND_DIR / 'models' / 'offline_crop_disease_model_large.tflite')
 
 # ==========================================
 # 2. Memory-Safe Data Loading
@@ -42,8 +46,7 @@ converter = tf.lite.TFLiteConverter.from_keras_model(best_model)
 converter.optimizations = [tf.lite.Optimize.DEFAULT] 
 tflite_model = converter.convert()
 
-tflite_filename = 'offline_crop_disease_model_large.tflite'
-with open(tflite_filename, 'wb') as f:
+with open(TFLITE_FILENAME, 'wb') as f:
     f.write(tflite_model)
 
-print(f"\nPipeline Complete! Your mobile-ready model is: {tflite_filename}")
+print(f"\nPipeline Complete! Your mobile-ready model is: {TFLITE_FILENAME}")

@@ -3,7 +3,11 @@ import tensorflow as tf
 import numpy as np
 from flask_cors import CORS 
 import io
+from pathlib import Path
 from PIL import Image
+
+BACKEND_DIR = Path(__file__).resolve().parent.parent
+MODEL_PATH = BACKEND_DIR / 'models' / 'best_mobilenet_large.keras'
 
 app = Flask(__name__)
 CORS(app)
@@ -22,7 +26,7 @@ def new_layer_init(self, *args, **kwargs):
 tf.keras.layers.Layer.__init__ = new_layer_init
 
 # Load Keras model
-model = tf.keras.models.load_model('best_mobilenet_large.keras', compile=False)
+model = tf.keras.models.load_model(str(MODEL_PATH), compile=False)
 
 CLASS_NAMES = ['Corn_Blight', 'Corn_CommonRust', 'Corn_GrayLeafSpot', 'Corn_Healthy',
     'Potato_EarlyBlight', 'Potato_Healthy', 'Potato_Lateblight',

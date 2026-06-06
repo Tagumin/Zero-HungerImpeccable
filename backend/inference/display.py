@@ -1,12 +1,15 @@
 import os
 import pandas as pd
 import matplotlib.pyplot as plt
+from pathlib import Path
 
 # ==========================================
 # Configuration
 # ==========================================
-# Change this if your dataset is located elsewhere
-DATA_DIR = 'dataset/' 
+BACKEND_DIR = Path(__file__).resolve().parent.parent
+PROJECT_ROOT = BACKEND_DIR.parent
+DATA_DIR = str(PROJECT_ROOT / 'dataset')
+DOCS_IMAGES_DIR = PROJECT_ROOT / 'docs' / 'images'
 SPLITS = ['train', 'valid', 'test']
 
 print("Scanning directories...")
@@ -59,6 +62,7 @@ plt.legend(title='Dataset Split')
 plt.grid(axis='x', linestyle='--', alpha=0.7)
 plt.tight_layout()
 
-chart_name = 'dataset_distribution_3splits.png'
-plt.savefig(chart_name, dpi=300)
-print(f"\nChart successfully saved as '{chart_name}'")
+DOCS_IMAGES_DIR.mkdir(parents=True, exist_ok=True)
+chart_path = DOCS_IMAGES_DIR / 'dataset_distribution_3splits.png'
+plt.savefig(chart_path, dpi=300)
+print(f"\nChart successfully saved as '{chart_path}'")
