@@ -8,7 +8,7 @@ import SummaryBar from "./components/SummaryBar";
 import Notification from "./components/Notification";
 import { reverseGeocode } from "./utils/geocoding";
 import { formatTime, formatCurrency } from "./utils/helpers";
-import { DEFAULT_ACO_PARAMS } from "./constants";
+import { DEFAULT_ACO_PARAMS } from "@/lib/utils/constants";
 
 function DistributionMap() {
   const [origin, setOrigin] = useState(null);
