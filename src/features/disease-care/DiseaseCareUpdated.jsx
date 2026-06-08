@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef, useCallback } from "react";
 import { Link } from "react-router-dom";
-import Footer from "../components/Footer";
-import "../pages/DiseaseCare.css";
+import Footer from "@/components/layout/Footer";
+import "./DiseaseCare.css";
 
 // ─── Disease database ─────────────────────────────────────────────────────────
 // TODO: Replace with API call to backend for real AI model data

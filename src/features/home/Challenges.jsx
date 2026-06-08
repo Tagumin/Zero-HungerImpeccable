@@ -1,4 +1,4 @@
-import challengesImg from "../../docs/images/challenges.png";
+import challengesImg from "../../../docs/images/challenges.png";
 
 export default function Challenges() {
   const items = [

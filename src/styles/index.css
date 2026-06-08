@@ -1,4 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Besley:ital,wght@0,400..900;1,400..900&family=Schibsted+Grotesk:ital,wght@0,400..900;1,400..900&display=swap');
+@import "./variables.css";
 
 *,
 *::before,
@@ -6,49 +7,6 @@
   box-sizing: border-box;
   margin: 0;
   padding: 0;
-}
-
-:root {
-  /* OKLCH Earthy Premium Palette (Committed Strategy) */
-  --bg: oklch(98% 0.015 155);
-  --section-bg: oklch(95% 0.02 155);
-  --footer-bg: oklch(93% 0.025 155);
-
-  --deep-green: oklch(35% 0.08 155);
-  --deep-green-rgb: 26, 75, 59;
-  --dark-green: oklch(25% 0.05 155);
-  --mid-green: oklch(50% 0.04 155);
-
-  --amber: oklch(75% 0.15 75);
-  --amber-light: oklch(90% 0.06 75);
-
-  --text-dark: oklch(20% 0.02 155);
-  --text-muted: oklch(45% 0.03 155);
-  --border-light: oklch(85% 0.03 155);
-
-  --surface-white: oklch(100% 0.005 155 / 0.95);
-  --surface-glass: oklch(100% 0.005 155 / 0.85);
-
-  --teal: oklch(58% 0.14 175);
-
-  /* Legacy mappings */
-  --brown-dark: var(--text-dark);
-  --brown-mid: var(--mid-green);
-  --card-bg: var(--surface-glass);
-
-  /* Global type tokens */
-  --font-sans: 'Schibsted Grotesk', sans-serif;
-  --font-serif: 'Besley', serif;
-
-  /* Modular type scale (1.25 ratio) */
-  --text-xs: 0.8rem;
-  --text-sm: 0.95rem;
-  --text-base: 1.15rem;
-  --text-lg: 1.43rem;
-  --text-xl: 1.8rem;
-  --text-2xl: 2.25rem;
-  --text-3xl: clamp(2.5rem, 5vw, 3.5rem);
-  --text-hero: clamp(3rem, 6vw, 4.5rem);
 }
 
 html {

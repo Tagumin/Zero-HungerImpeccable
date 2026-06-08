@@ -1,13 +1,14 @@
 import React, { useState, useCallback, useRef, useEffect } from "react";
 import "leaflet/dist/leaflet.css";
 import "./DistributionMap.css";
-import Header from "../components/distribution-map/components/Header";
-import Sidebar from "../components/distribution-map/components/Sidebar";
-import MapArea from "../components/distribution-map/components/MapArea";
-import SummaryBar from "../components/distribution-map/components/SummaryBar";
-import Notification from "../components/distribution-map/components/Notification";
-import { reverseGeocode } from "../components/distribution-map/utils/geocoding";
-import { formatTime, formatCurrency } from "../components/distribution-map/utils/helpers";
+import Header from "./components/Header";
+import Sidebar from "./components/Sidebar";
+import MapArea from "./components/MapArea";
+import SummaryBar from "./components/SummaryBar";
+import Notification from "./components/Notification";
+import { reverseGeocode } from "./utils/geocoding";
+import { formatTime, formatCurrency } from "./utils/helpers";
+import { DEFAULT_ACO_PARAMS } from "./constants";
 
 function DistributionMap() {
   const [origin, setOrigin] = useState(null);
@@ -19,14 +20,7 @@ function DistributionMap() {
   const [fuelPrice, setFuelPrice] = useState(2.05);
   const [fuelConsumption, setFuelConsumption] = useState(8);
   const [otherCosts, setOtherCosts] = useState(0);
-  const [acoParams, setAcoParams] = useState({
-    nAnts: 30,
-    nIter: 80,
-    alpha: 1.0,
-    beta: 3.0,
-    rho: 0.3,
-    Q: 100,
-  });
+  const [acoParams, setAcoParams] = useState(DEFAULT_ACO_PARAMS);
   const [mode, setMode] = useState("auto");
   const [results, setResults] = useState(null);
   const [isRunning, setIsRunning] = useState(false);
