@@ -7,7 +7,7 @@ from pathlib import Path
 from PIL import Image
 
 BACKEND_DIR = Path(__file__).resolve().parent.parent
-MODEL_PATH = BACKEND_DIR / 'models' / 'best_mobilenet_large.keras'
+MODEL_PATH = BACKEND_DIR / 'models' / 'best_model.keras'
 
 app = Flask(__name__)
 CORS(app)
