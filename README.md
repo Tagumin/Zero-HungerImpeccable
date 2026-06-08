@@ -1,4 +1,4 @@
-# Zero Hunger Impeccable
+# Zero Hunger
 
 An AI-powered agricultural disease detection system aimed at helping farmers identify crop diseases early and take appropriate action. This project combines machine learning models with a modern web interface to provide real-time crop disease diagnosis.
 
