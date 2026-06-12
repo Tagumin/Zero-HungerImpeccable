@@ -1,0 +1,1046 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Smart Agriculture — Optimizer</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation@3.0.1/dist/chartjs-plugin-annotation.min.js"></script>
+  <style>
+    :root {
+      --green-dark:  #1D4E2A;
+      --green-mid:   #2E7D32;
+      --green-light: #C8E6C9;
+      --green-pale:  #F1F8E9;
+      --amber:       #F57F17;
+      --amber-light: #FFF8E1;
+      --blue:        #1976D2;
+      --blue-light:  #E3F2FD;
+      --purple:      #6A1B9A;
+      --purple-light:#F3E5F5;
+      --gray-bg:     #F5F5F5;
+      --text:        #212121;
+      --text-muted:  #757575;
+      --white:       #FFFFFF;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Segoe UI', Arial, sans-serif; background: var(--gray-bg); color: var(--text); min-height: 100vh; }
+
+    /* ── Header ── */
+    header { background: linear-gradient(135deg, var(--green-dark) 0%, #155724 100%); color: white; padding: 1.5rem 2rem; display: flex; align-items: center; gap: 1rem; box-shadow: 0 2px 12px rgba(0,0,0,0.1); }
+    header h1 { font-size: 1.5rem; font-weight: 700; }
+    header p  { font-size: 0.9rem; opacity: 0.85; margin-top: 4px; }
+    .sdg-badge { background: var(--amber); color: white; font-size: 0.75rem; font-weight: 700; padding: 6px 14px; border-radius: 99px; margin-left: auto; box-shadow: 0 2px 6px rgba(245,127,23,0.3); }
+
+    /* ── Layout ── */
+    .container { max-width: 1200px; margin: 0 auto; padding: 2rem 1.5rem; }
+    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; }
+    @media (max-width: 900px) { .grid-2 { grid-template-columns: 1fr; } }
+
+    /* ── Cards ── */
+    .card { background: var(--white); border-radius: 12px; padding: 2rem; box-shadow: 0 2px 12px rgba(0,0,0,0.08); border: 1px solid rgba(0,0,0,0.04); }
+    .card-title { font-size: 0.72rem; font-weight: 800; letter-spacing: 0.1em; color: var(--text-muted); text-transform: uppercase; margin-bottom: 1.5rem; padding-bottom: 0.75rem; border-bottom: 3px solid var(--green-light); }
+    .card-title.purple { border-bottom-color: #CE93D8; }
+    .card-title.blue   { border-bottom-color: #90CAF9; }
+
+    /* ── Formula ── */
+    .formula { background: linear-gradient(135deg, var(--green-dark) 0%, #155724 100%); color: white; padding: 1rem 1.5rem; border-radius: 10px; font-family: 'Courier New', monospace; font-size: 0.95rem; margin-bottom: 2rem; text-align: center; box-shadow: 0 4px 12px rgba(29,78,42,0.2); }
+
+    /* ── Controls ── */
+    .control-row { display: flex; align-items: center; gap: 1rem; margin-bottom: 1rem; }
+    .control-row label { font-size: 0.85rem; min-width: 100px; color: var(--text); font-weight: 500; }
+    .control-row select, .control-row input[type="range"] { flex: 1; }
+    select { width: 100%; padding: 0.65rem 0.85rem; border: 1.5px solid #e0e0e0; border-radius: 8px; font-size: 0.9rem; background: white; text-transform: capitalize; transition: border-color 0.2s; }
+    select:focus { outline: none; border-color: var(--green-mid); box-shadow: 0 0 0 3px rgba(46,125,50,0.1); }
+    .val-badge { font-size: 0.85rem; font-weight: 700; min-width: 45px; text-align: right; color: var(--green-mid); }
+
+    /* ── Algo buttons ── */
+    .algo-group { display: flex; gap: 0.75rem; margin-bottom: 1.5rem; margin-top: 0.5rem; }
+    .algo-btn { flex: 1; padding: 0.7rem; border: 2px solid #e0e0e0; border-radius: 8px; background: white; font-size: 0.85rem; font-weight: 600; cursor: pointer; transition: all 0.2s; color: var(--text-muted); }
+    .algo-btn:hover { border-color: var(--green-light); background: var(--green-pale); }
+    .algo-btn.active { border-color: var(--green-mid); background: var(--green-pale); color: var(--green-dark); }
+
+    /* ── Run buttons ── */
+    .run-btn { width: 100%; padding: 1rem; background: var(--green-mid); color: white; border: none; border-radius: 8px; font-size: 0.95rem; font-weight: 700; cursor: pointer; transition: all 0.2s; margin-top: 1rem; box-shadow: 0 4px 12px rgba(46,125,50,0.2); }
+    .run-btn:hover { background: var(--green-dark); box-shadow: 0 6px 16px rgba(46,125,50,0.3); transform: translateY(-1px); }
+    .run-btn:disabled { background: #bdbdbd; cursor: not-allowed; box-shadow: none; transform: none; }
+    .run-btn.compare { background: var(--amber); box-shadow: 0 4px 12px rgba(245,127,23,0.2); margin-top: 0.6rem; }
+    .run-btn.compare:hover { background: #E67E00; }
+    .run-btn.hybrid { background: var(--purple); box-shadow: 0 4px 12px rgba(106,27,154,0.2); margin-top: 0.6rem; }
+    .run-btn.hybrid:hover { background: #4A148C; }
+
+    /* ── Metrics ── */
+    .metrics-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; margin-bottom: 2rem; }
+    @media (max-width: 500px) { .metrics-grid { grid-template-columns: repeat(2,1fr); } }
+    .metric { background: var(--gray-bg); border-radius: 10px; padding: 1rem; border-left: 4px solid var(--green-mid); }
+    .metric.amber-left { border-left-color: var(--amber); }
+    .metric.blue-left  { border-left-color: var(--blue); }
+    .metric.purple-left{ border-left-color: var(--purple); }
+    .metric-label { font-size: 0.75rem; color: var(--text-muted); margin-bottom: 6px; font-weight: 600; }
+    .metric-value { font-size: 1.6rem; font-weight: 800; color: var(--text); }
+    .metric-value.green  { color: var(--green-mid); }
+    .metric-value.amber  { color: var(--amber); }
+    .metric-value.blue   { color: var(--blue); }
+    .metric-value.purple { color: var(--purple); }
+
+    /* ── Allocation bars ── */
+    .alloc-row { margin-bottom: 1.2rem; }
+    .alloc-header { display: flex; justify-content: space-between; font-size: 0.85rem; margin-bottom: 6px; font-weight: 600; }
+    .alloc-header span:first-child { color: var(--text); }
+    .alloc-header span:last-child  { color: var(--green-mid); }
+    .bar-bg { background: #e8e8e8; border-radius: 6px; height: 12px; overflow: hidden; }
+    .bar-fill { height: 100%; border-radius: 6px; transition: width 0.6s cubic-bezier(.4,0,.2,1); width: 0%; }
+
+    /* ── Cost rows ── */
+    .cost-row { display: flex; justify-content: space-between; font-size: 0.9rem; padding: 0.6rem 0; border-bottom: 1px solid #f0f0f0; }
+    .cost-row:last-child { border: none; }
+    .cost-row span:last-child { font-weight: 700; color: var(--text); }
+
+    /* ── Status ── */
+    .status { font-size: 0.85rem; text-align: center; padding: 0.8rem; border-radius: 8px; margin-top: 1rem; display: none; font-weight: 600; }
+    .status.running { background: var(--amber-light); color: #B87500; display: block; }
+    .status.done    { background: var(--green-light); color: var(--green-dark); display: block; }
+    .status.error   { background: #FFEBEE; color: #C62828; display: block; }
+
+    /* ── Comparison results ── */
+    .comparison-section { margin-top: 2rem; padding-top: 2rem; border-top: 2px solid #f0f0f0; }
+    .winner-badge { display: inline-block; background: linear-gradient(135deg, #FFD700 0%, #FFC700 100%); color: #333; padding: 0.5rem 1rem; border-radius: 8px; font-size: 0.8rem; font-weight: 800; margin-bottom: 1rem; box-shadow: 0 2px 8px rgba(255,215,0,0.3); }
+    .comparison-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
+    @media (max-width: 600px) { .comparison-grid { grid-template-columns: 1fr; } }
+    .algo-result { background: var(--gray-bg); border-radius: 10px; padding: 1.5rem; border-left: 4px solid #2E7D32; }
+    .algo-result.ga { border-left-color: var(--amber); }
+    .algo-result-title { font-size: 1.1rem; font-weight: 700; margin-bottom: 1rem; }
+    .result-item { display: flex; justify-content: space-between; margin-bottom: 0.7rem; font-size: 0.9rem; }
+    .result-item span:first-child { color: var(--text-muted); font-weight: 500; }
+    .result-item span:last-child  { font-weight: 700; color: var(--green-mid); }
+    .algo-result.ga .result-item span:last-child { color: var(--amber); }
+
+    /* ── Chart container ── */
+    .chart-container { position: relative; height: 300px; margin-top: 1rem; }
+    .hidden { display: none !important; }
+
+    /* ════════════════════════════════════════════════
+       NEW — Hybrid PSO→GA section styles
+    ════════════════════════════════════════════════ */
+    .pipeline {
+      display: flex;
+      align-items: center;
+      gap: 0;
+      margin: 1.5rem 0 2rem;
+      overflow-x: auto;
+      padding-bottom: 4px;
+    }
+    .pipeline-box {
+      flex: 1;
+      min-width: 110px;
+      background: var(--gray-bg);
+      border-radius: 10px;
+      padding: 1rem 0.75rem;
+      text-align: center;
+      border: 2px solid transparent;
+      transition: all 0.3s;
+    }
+    .pipeline-box.pso   { border-color: var(--green-mid);  background: var(--green-pale); }
+    .pipeline-box.seed  { border-color: var(--blue);       background: var(--blue-light); }
+    .pipeline-box.ga    { border-color: var(--purple);     background: var(--purple-light); }
+    .pipeline-box.final { border-color: var(--amber);      background: var(--amber-light); }
+    .pipeline-icon  { font-size: 1.6rem; margin-bottom: 4px; }
+    .pipeline-label { font-size: 0.72rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.06em; }
+    .pipeline-label.pso    { color: var(--green-dark); }
+    .pipeline-label.seed   { color: var(--blue); }
+    .pipeline-label.ga     { color: var(--purple); }
+    .pipeline-label.final  { color: #B75000; }
+    .pipeline-sub   { font-size: 0.7rem; color: var(--text-muted); margin-top: 2px; }
+    .pipeline-value { font-size: 1rem; font-weight: 800; margin-top: 6px; }
+    .pipeline-value.green  { color: var(--green-mid); }
+    .pipeline-value.purple { color: var(--purple); }
+    .pipeline-value.amber  { color: var(--amber); }
+    .pipeline-arrow {
+      font-size: 1.4rem;
+      color: #bdbdbd;
+      padding: 0 6px;
+      flex-shrink: 0;
+    }
+    .improvement-strip {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 1rem;
+      background: linear-gradient(135deg, var(--green-pale), var(--purple-light));
+      border-radius: 10px;
+      padding: 1rem 1.5rem;
+      margin-bottom: 1.5rem;
+      flex-wrap: wrap;
+    }
+    .improv-item { text-align: center; }
+    .improv-label { font-size: 0.7rem; color: var(--text-muted); font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; }
+    .improv-val   { font-size: 1.5rem; font-weight: 800; }
+    .improv-val.green  { color: var(--green-mid); }
+    .improv-val.purple { color: var(--purple); }
+    .improv-val.amber  { color: var(--amber); }
+    .improv-divider { font-size: 1.8rem; color: #e0e0e0; }
+    .hybrid-chart-container { position: relative; height: 280px; margin-top: 1rem; }
+    .phase-legend { display: flex; gap: 1.5rem; justify-content: center; margin-bottom: 0.75rem; flex-wrap: wrap; }
+    .phase-dot { display: flex; align-items: center; gap: 6px; font-size: 0.8rem; font-weight: 600; color: var(--text-muted); }
+    .dot { width: 12px; height: 12px; border-radius: 50%; }
+
+    /* ════════════════════════════════════════════════
+       NEW — Sensitivity Analysis section styles
+    ════════════════════════════════════════════════ */
+    .sens-sliders-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 1.5rem;
+      margin-bottom: 1.5rem;
+    }
+    @media (max-width: 700px) { .sens-sliders-grid { grid-template-columns: 1fr; } }
+    .sens-slider-card {
+      border-radius: 10px;
+      padding: 1.25rem;
+      border: 2px solid transparent;
+    }
+    .sens-slider-card.water { background: #E3F2FD; border-color: #90CAF9; }
+    .sens-slider-card.fert  { background: var(--green-pale); border-color: var(--green-light); }
+    .sens-slider-card.labor { background: var(--amber-light); border-color: #FFCC80; }
+    .sens-slider-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 0.75rem;
+    }
+    .sens-slider-title { font-size: 0.85rem; font-weight: 700; }
+    .sens-slider-title.water { color: var(--blue); }
+    .sens-slider-title.fert  { color: var(--green-dark); }
+    .sens-slider-title.labor { color: var(--amber); }
+    .sens-ratio-badge {
+      font-size: 1.2rem;
+      font-weight: 800;
+      padding: 2px 10px;
+      border-radius: 6px;
+    }
+    .sens-ratio-badge.water { background: var(--blue);       color: white; }
+    .sens-ratio-badge.fert  { background: var(--green-mid);  color: white; }
+    .sens-ratio-badge.labor { background: var(--amber);      color: white; }
+    input[type=range].water-slider { accent-color: var(--blue); }
+    input[type=range].fert-slider  { accent-color: var(--green-mid); }
+    input[type=range].labor-slider { accent-color: var(--amber); }
+    input[type=range] { width: 100%; height: 6px; cursor: pointer; }
+    .sens-sub { font-size: 0.72rem; color: var(--text-muted); margin-top: 4px; }
+
+    .live-profit-box {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: linear-gradient(135deg, var(--green-dark), #155724);
+      color: white;
+      border-radius: 12px;
+      padding: 1.25rem 1.75rem;
+      margin-bottom: 1.5rem;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+    .live-profit-label { font-size: 0.8rem; opacity: 0.8; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; }
+    .live-profit-value { font-size: 2.2rem; font-weight: 800; }
+    .live-cost-grid { display: flex; gap: 1.5rem; flex-wrap: wrap; }
+    .live-cost-item { text-align: center; }
+    .live-cost-label { font-size: 0.7rem; opacity: 0.7; }
+    .live-cost-val   { font-size: 1rem; font-weight: 700; }
+
+    .sensitivity-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.8rem;
+      font-weight: 700;
+      padding: 6px 14px;
+      border-radius: 99px;
+      margin-bottom: 1rem;
+    }
+    .sensitivity-badge.water { background: var(--blue-light);    color: var(--blue); }
+    .sensitivity-badge.fert  { background: var(--green-pale);    color: var(--green-dark); }
+    .sensitivity-badge.labor { background: var(--amber-light);   color: #B75000; }
+    .sens-chart-container { position: relative; height: 300px; margin-top: 0.5rem; }
+
+    .section-divider {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin: 2.5rem 0;
+      color: var(--text-muted);
+      font-size: 0.8rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+    .section-divider::before,
+    .section-divider::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: #e0e0e0;
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <div>
+    <h1>🌾 Smart Agriculture System</h1>
+    <p>Optimization Module — Resource Allocation</p>
+  </div>
+  <span class="sdg-badge">SDG 2 — Zero Hunger</span>
+</header>
+
+<div class="container">
+
+  <div class="formula">
+    Maximize Profit = Revenue − (Water Cost + Fertilizer Cost + Labor Cost)
+  </div>
+
+  <!-- ══════════════════════════════════════════════════════════
+       EXISTING — Parameters + Results
+  ══════════════════════════════════════════════════════════ -->
+  <div class="grid-2">
+    <div class="card">
+      <div class="card-title">⚙️ Parameters</div>
+      <div class="control-row" style="flex-direction: column; align-items: flex-start; gap: 0.5rem;">
+        <label>Crop (from recommendation module)</label>
+        <select id="crop-select" onchange="onCropChange()">
+          {% for crop in crops %}
+            <option value="{{ crop }}">{{ crop | capitalize }}</option>
+          {% endfor %}
+        </select>
+      </div>
+      <p style="font-size:0.85rem;color:var(--text-muted);margin:1.5rem 0 0.5rem;font-weight:600;">Algorithm</p>
+      <div class="algo-group">
+        <button class="algo-btn active" id="btn-pso" onclick="setAlgo('PSO')">PSO</button>
+        <button class="algo-btn" id="btn-ga" onclick="setAlgo('GA')">Genetic Algorithm</button>
+      </div>
+      <div class="control-row">
+        <label>Iterations</label>
+        <input type="range" id="sl-iter" min="20" max="150" step="10" value="50"
+               oninput="document.getElementById('v-iter').textContent=this.value">
+        <span class="val-badge" id="v-iter">50</span>
+      </div>
+      <button class="run-btn" id="run-btn" onclick="runOptimization()">▶ Run Optimization</button>
+      <button class="run-btn compare" id="compare-btn" onclick="runComparison()">⚡ Compare Algorithms</button>
+      <button class="run-btn hybrid" id="hybrid-btn" onclick="runHybrid()">🔗 Run Hybrid PSO→GA</button>
+      <div class="status" id="status-box"></div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">📊 Results</div>
+      <div class="metrics-grid">
+        <div class="metric">
+          <div class="metric-label">Best Profit ($/ha)</div>
+          <div class="metric-value green" id="m-profit">—</div>
+        </div>
+        <div class="metric amber-left">
+          <div class="metric-label">Revenue ($/ha)</div>
+          <div class="metric-value" id="m-rev">—</div>
+        </div>
+        <div class="metric blue-left">
+          <div class="metric-label">Total Cost ($/ha)</div>
+          <div class="metric-value amber" id="m-cost">—</div>
+        </div>
+      </div>
+      <div style="margin-bottom:1.5rem;">
+        <div class="metric blue-left">
+          <div class="metric-label">Iterations Completed</div>
+          <div class="metric-value blue" id="m-iter">—</div>
+        </div>
+      </div>
+      <p style="font-size:0.72rem;color:var(--text-muted);text-transform:uppercase;letter-spacing:.1em;margin-bottom:1rem;font-weight:700;">Optimal Resource Allocation</p>
+      <div class="alloc-row">
+        <div class="alloc-header"><span>💧 Water</span><span id="a-water">—</span></div>
+        <div class="bar-bg"><div class="bar-fill" id="bar-water" style="background:#1976D2;"></div></div>
+      </div>
+      <div class="alloc-row">
+        <div class="alloc-header"><span>🌱 Fertilizer</span><span id="a-fert">—</span></div>
+        <div class="bar-bg"><div class="bar-fill" id="bar-fert" style="background:#2E7D32;"></div></div>
+      </div>
+      <div class="alloc-row">
+        <div class="alloc-header"><span>👨‍🌾 Labor</span><span id="a-labor">—</span></div>
+        <div class="bar-bg"><div class="bar-fill" id="bar-labor" style="background:#F57F17;"></div></div>
+      </div>
+      <div style="margin-top:1.5rem;">
+        <p style="font-size:0.72rem;color:var(--text-muted);text-transform:uppercase;letter-spacing:.1em;margin-bottom:0.75rem;font-weight:700;">Cost Breakdown</p>
+        <div class="cost-row"><span>Water cost</span><span id="c-water">—</span></div>
+        <div class="cost-row"><span>Fertilizer cost</span><span id="c-fert">—</span></div>
+        <div class="cost-row"><span>Labor cost</span><span id="c-labor">—</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Convergence chart -->
+  <div class="card" style="margin-top:2rem;">
+    <div class="card-title">📈 Convergence Curve</div>
+    <p style="font-size:0.85rem;color:var(--text-muted);margin-bottom:1rem;">Best profit improving over iterations</p>
+    <div class="chart-container">
+      <canvas id="conv-chart" role="img" aria-label="Convergence curve"></canvas>
+    </div>
+  </div>
+
+  <!-- Comparison Results -->
+  <div class="card hidden" id="comparison-card" style="margin-top:2rem;">
+    <div class="card-title">🏆 Algorithm Comparison</div>
+    <div id="winner-section" style="display:none;">
+      <div class="winner-badge" id="winner-badge">🏆 PSO Wins!</div>
+      <p style="font-size:0.9rem;color:var(--text-muted);margin-bottom:1.5rem;">
+        Comparison results for <strong id="comparison-crop">rice</strong>
+      </p>
+    </div>
+    <div class="comparison-grid">
+      <div class="algo-result">
+        <div class="algo-result-title">🟢 PSO</div>
+        <div class="result-item"><span>Best Profit</span><span id="comp-pso-profit">—</span></div>
+        <div class="result-item"><span>Revenue</span><span id="comp-pso-revenue">—</span></div>
+        <div class="result-item"><span>Total Cost</span><span id="comp-pso-cost">—</span></div>
+        <div class="result-item"><span>Iterations</span><span id="comp-pso-iter">—</span></div>
+        <hr style="margin:0.8rem 0;border:none;border-top:1px solid #ddd;">
+        <div class="result-item" style="margin-bottom:0;"><span>Water %</span><span id="comp-pso-water">—</span></div>
+        <div class="result-item" style="margin-bottom:0;"><span>Fert %</span><span id="comp-pso-fert">—</span></div>
+        <div class="result-item" style="margin-bottom:0;"><span>Labor %</span><span id="comp-pso-labor">—</span></div>
+      </div>
+      <div class="algo-result ga">
+        <div class="algo-result-title">🟠 Genetic Algorithm</div>
+        <div class="result-item"><span>Best Profit</span><span id="comp-ga-profit">—</span></div>
+        <div class="result-item"><span>Revenue</span><span id="comp-ga-revenue">—</span></div>
+        <div class="result-item"><span>Total Cost</span><span id="comp-ga-cost">—</span></div>
+        <div class="result-item"><span>Iterations</span><span id="comp-ga-iter">—</span></div>
+        <hr style="margin:0.8rem 0;border:none;border-top:1px solid #ddd;">
+        <div class="result-item" style="margin-bottom:0;"><span>Water %</span><span id="comp-ga-water">—</span></div>
+        <div class="result-item" style="margin-bottom:0;"><span>Fert %</span><span id="comp-ga-fert">—</span></div>
+        <div class="result-item" style="margin-bottom:0;"><span>Labor %</span><span id="comp-ga-labor">—</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════════════
+       NEW — Hybrid PSO→GA
+  ══════════════════════════════════════════════════════════ -->
+  <div class="section-divider">New Enhancements</div>
+
+  <div class="card hidden" id="hybrid-card">
+    <div class="card-title purple">🔗 Hybrid PSO → GA — Two-Phase Optimization</div>
+
+    <!-- Pipeline visualization -->
+    <div class="pipeline">
+      <div class="pipeline-box pso">
+        <div class="pipeline-icon">🔍</div>
+        <div class="pipeline-label pso">Phase 1 — PSO</div>
+        <div class="pipeline-sub">Exploration</div>
+        <div class="pipeline-value green" id="pipe-pso-profit">—</div>
+      </div>
+      <div class="pipeline-arrow">→</div>
+      <div class="pipeline-box seed">
+        <div class="pipeline-icon">🌱</div>
+        <div class="pipeline-label seed">Seeds GA</div>
+        <div class="pipeline-sub">PSO best → initial pop</div>
+        <div class="pipeline-value" style="color:var(--blue);font-size:0.75rem;margin-top:6px;" id="pipe-seed-info">—</div>
+      </div>
+      <div class="pipeline-arrow">→</div>
+      <div class="pipeline-box ga">
+        <div class="pipeline-icon">🧬</div>
+        <div class="pipeline-label ga">Phase 2 — GA</div>
+        <div class="pipeline-sub">Refinement</div>
+        <div class="pipeline-value purple" id="pipe-ga-gens">—</div>
+      </div>
+      <div class="pipeline-arrow">→</div>
+      <div class="pipeline-box final">
+        <div class="pipeline-icon">🏆</div>
+        <div class="pipeline-label final">Final Result</div>
+        <div class="pipeline-sub">Best profit</div>
+        <div class="pipeline-value amber" id="pipe-final-profit">—</div>
+      </div>
+    </div>
+
+    <!-- Improvement strip -->
+    <div class="improvement-strip" id="improvement-strip">
+      <div class="improv-item">
+        <div class="improv-label">PSO alone</div>
+        <div class="improv-val green" id="hy-pso-profit">—</div>
+      </div>
+      <div class="improv-divider">→</div>
+      <div class="improv-item">
+        <div class="improv-label">Improvement</div>
+        <div class="improv-val purple" id="hy-improvement">—</div>
+      </div>
+      <div class="improv-divider">→</div>
+      <div class="improv-item">
+        <div class="improv-label">Hybrid Final</div>
+        <div class="improv-val amber" id="hy-final-profit">—</div>
+      </div>
+    </div>
+
+    <div class="grid-2">
+      <!-- Left: Allocation + costs -->
+      <div>
+        <p style="font-size:0.72rem;color:var(--text-muted);text-transform:uppercase;letter-spacing:.1em;margin-bottom:1rem;font-weight:700;">Optimal Allocation (Hybrid)</p>
+        <div class="alloc-row">
+          <div class="alloc-header"><span>💧 Water</span><span id="hy-water">—</span></div>
+          <div class="bar-bg"><div class="bar-fill" id="hy-bar-water" style="background:#1976D2;"></div></div>
+        </div>
+        <div class="alloc-row">
+          <div class="alloc-header"><span>🌱 Fertilizer</span><span id="hy-fert">—</span></div>
+          <div class="bar-bg"><div class="bar-fill" id="hy-bar-fert" style="background:#2E7D32;"></div></div>
+        </div>
+        <div class="alloc-row">
+          <div class="alloc-header"><span>👨‍🌾 Labor</span><span id="hy-labor">—</span></div>
+          <div class="bar-bg"><div class="bar-fill" id="hy-bar-labor" style="background:#6A1B9A;"></div></div>
+        </div>
+        <div style="margin-top:1.5rem;">
+          <p style="font-size:0.72rem;color:var(--text-muted);text-transform:uppercase;letter-spacing:.1em;margin-bottom:0.75rem;font-weight:700;">Cost Breakdown</p>
+          <div class="cost-row"><span>Water cost</span><span id="hy-c-water">—</span></div>
+          <div class="cost-row"><span>Fertilizer cost</span><span id="hy-c-fert">—</span></div>
+          <div class="cost-row"><span>Labor cost</span><span id="hy-c-labor">—</span></div>
+          <div class="cost-row"><span>Total cost</span><span id="hy-c-total">—</span></div>
+        </div>
+      </div>
+      <!-- Right: Two-phase convergence chart -->
+      <div>
+        <p style="font-size:0.72rem;color:var(--text-muted);text-transform:uppercase;letter-spacing:.1em;margin-bottom:0.75rem;font-weight:700;">Two-Phase Convergence</p>
+        <div class="phase-legend">
+          <span class="phase-dot"><span class="dot" style="background:#2E7D32;"></span>PSO Exploration</span>
+          <span class="phase-dot"><span class="dot" style="background:#6A1B9A;"></span>GA Refinement</span>
+        </div>
+        <div class="hybrid-chart-container">
+          <canvas id="hybrid-chart" role="img" aria-label="Two-phase hybrid convergence chart"></canvas>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════════════
+       NEW — Sensitivity Analysis
+  ══════════════════════════════════════════════════════════ -->
+  <div class="card" style="margin-top:2rem;" id="sensitivity-card">
+    <div class="card-title blue">📉 Sensitivity Analysis — How Ratios Affect Profit</div>
+    <p style="font-size:0.85rem;color:var(--text-muted);margin-bottom:1.5rem;">
+      Move the sliders to manually set resource allocation ratios and instantly see how profit changes.
+      Each curve shows profit as that resource varies while the others stay fixed at your slider values.
+    </p>
+
+    <!-- 3 sliders -->
+    <div class="sens-sliders-grid">
+      <div class="sens-slider-card water">
+        <div class="sens-slider-header">
+          <span class="sens-slider-title water">💧 Water Ratio</span>
+          <span class="sens-ratio-badge water" id="sv-water">0.70</span>
+        </div>
+        <input type="range" class="water-slider" id="sens-water" min="0.01" max="1.0" step="0.01" value="0.70"
+               oninput="onSensSlider('water',this.value)">
+        <div class="sens-sub">Current usage: <span id="sv-water-sub">70%</span> of crop's water need</div>
+      </div>
+      <div class="sens-slider-card fert">
+        <div class="sens-slider-header">
+          <span class="sens-slider-title fert">🌱 Fertilizer Ratio</span>
+          <span class="sens-ratio-badge fert" id="sv-fert">0.70</span>
+        </div>
+        <input type="range" class="fert-slider" id="sens-fert" min="0.01" max="1.0" step="0.01" value="0.70"
+               oninput="onSensSlider('fert',this.value)">
+        <div class="sens-sub">Current usage: <span id="sv-fert-sub">70%</span> of crop's fert need</div>
+      </div>
+      <div class="sens-slider-card labor">
+        <div class="sens-slider-header">
+          <span class="sens-slider-title labor">👨‍🌾 Labor Ratio</span>
+          <span class="sens-ratio-badge labor" id="sv-labor">0.70</span>
+        </div>
+        <input type="range" class="labor-slider" id="sens-labor" min="0.01" max="1.0" step="0.01" value="0.70"
+               oninput="onSensSlider('labor',this.value)">
+        <div class="sens-sub">Current usage: <span id="sv-labor-sub">70%</span> of crop's labor need</div>
+      </div>
+    </div>
+
+    <!-- Live profit display -->
+    <div class="live-profit-box">
+      <div>
+        <div class="live-profit-label">Current Profit at these ratios</div>
+        <div class="live-profit-value" id="live-profit">$—</div>
+      </div>
+      <div class="live-cost-grid">
+        <div class="live-cost-item">
+          <div class="live-cost-label">💧 Water Cost</div>
+          <div class="live-cost-val" id="live-water-cost">—</div>
+        </div>
+        <div class="live-cost-item">
+          <div class="live-cost-label">🌱 Fert Cost</div>
+          <div class="live-cost-val" id="live-fert-cost">—</div>
+        </div>
+        <div class="live-cost-item">
+          <div class="live-cost-label">👨‍🌾 Labor Cost</div>
+          <div class="live-cost-val" id="live-labor-cost">—</div>
+        </div>
+        <div class="live-cost-item">
+          <div class="live-cost-label">📦 Total Cost</div>
+          <div class="live-cost-val" id="live-total-cost">—</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Most sensitive resource badge -->
+    <div id="sens-insight" class="hidden">
+      Most sensitive resource:
+      <span class="sensitivity-badge" id="sens-badge">—</span>
+      <span id="sens-explanation" style="font-size:0.82rem;color:var(--text-muted);"></span>
+    </div>
+
+    <!-- Sensitivity chart -->
+    <div class="sens-chart-container">
+      <canvas id="sens-chart" role="img" aria-label="Sensitivity analysis curves showing how profit changes with each resource ratio"></canvas>
+    </div>
+    <p style="font-size:0.75rem;color:var(--text-muted);text-align:center;margin-top:0.5rem;">
+      Steeper curve = more sensitive to that resource. Dashed line = your current ratio.
+    </p>
+  </div>
+
+</div><!-- /container -->
+
+<script>
+  let algo       = 'PSO';
+  let convChart  = null;
+  let hybChart   = null;
+  let sensChart  = null;
+  let sensTimer  = null;
+
+  // ── Existing functions (unchanged) ─────────────────────────────────────────
+  function setAlgo(a) {
+    algo = a;
+    document.getElementById('btn-pso').classList.toggle('active', a === 'PSO');
+    document.getElementById('btn-ga').classList.toggle('active',  a === 'GA');
+  }
+
+  function setStatus(msg, type) {
+    const box = document.getElementById('status-box');
+    box.textContent = msg;
+    box.className   = 'status ' + type;
+  }
+
+  function onCropChange() {
+    // Refresh sensitivity when crop changes
+    clearTimeout(sensTimer);
+    sensTimer = setTimeout(fetchSensitivity, 300);
+  }
+
+  async function runOptimization() {
+    const cropName   = document.getElementById('crop-select').value;
+    const iterations = parseInt(document.getElementById('sl-iter').value);
+    const btn        = document.getElementById('run-btn');
+    btn.disabled     = true;
+    btn.textContent  = '⏳ Running…';
+    setStatus(`Running ${algo} on "${cropName}" for ${iterations} iterations…`, 'running');
+    document.getElementById('comparison-card').classList.add('hidden');
+    try {
+      const res  = await fetch('/optimize', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ crop: cropName, algorithm: algo, iterations }) });
+      if (!res.ok) throw new Error('Server error: ' + res.status);
+      const data = await res.json();
+      document.getElementById('m-profit').textContent = '$' + data.best_profit.toLocaleString();
+      document.getElementById('m-rev').textContent    = '$' + data.revenue.toLocaleString();
+      document.getElementById('m-cost').textContent   = '$' + data.total_cost.toLocaleString();
+      document.getElementById('m-iter').textContent   = data.iterations;
+      ['water','fert','labor'].forEach(r => {
+        document.getElementById('a-' + r).textContent         = data[r+'_pct'] + '%';
+        document.getElementById('bar-' + r).style.width       = data[r+'_pct'] + '%';
+      });
+      document.getElementById('c-water').textContent = '$' + data.water_cost.toLocaleString();
+      document.getElementById('c-fert').textContent  = '$' + data.fert_cost.toLocaleString();
+      document.getElementById('c-labor').textContent = '$' + data.labor_cost.toLocaleString();
+      drawChart(data.history);
+      setStatus(`✓ Done! Best profit: $${data.best_profit.toLocaleString()}/ha`, 'done');
+    } catch(err) {
+      setStatus('✗ Error: ' + err.message, 'error');
+    } finally {
+      btn.disabled   = false;
+      btn.textContent = '▶ Run Optimization';
+    }
+  }
+
+  async function runComparison() {
+    const cropName   = document.getElementById('crop-select').value;
+    const iterations = parseInt(document.getElementById('sl-iter').value);
+    setStatus(`Comparing PSO vs GA for ${iterations} iterations…`, 'running');
+    try {
+      const res  = await fetch('/compare', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ crop: cropName, iterations }) });
+      if (!res.ok) throw new Error('Server error: ' + res.status);
+      const data = await res.json();
+      document.getElementById('winner-badge').textContent      = data.winner === 'PSO' ? '🏆 PSO Wins!' : '🏆 Genetic Algorithm Wins!';
+      document.getElementById('comparison-crop').textContent   = cropName;
+      document.getElementById('winner-section').style.display  = 'block';
+      const pso = data.results.PSO, ga = data.results.GA;
+      ['profit','revenue','cost','iter','water','fert','labor'].forEach(k => {
+        const psoKey = k === 'cost' ? 'total_cost' : k === 'iter' ? 'iterations' : k === 'profit' ? 'best_profit' : k+'_pct';
+        const gaKey  = psoKey;
+        document.getElementById('comp-pso-'+k).textContent = (k === 'iter' ? '' : '$') + (pso[psoKey]||'').toLocaleString() + (k.endsWith('water')||k.endsWith('fert')||k.endsWith('labor') ? '%' : '');
+        document.getElementById('comp-ga-'+k).textContent  = (k === 'iter' ? '' : '$') + (ga[gaKey]||'').toLocaleString() + (k.endsWith('water')||k.endsWith('fert')||k.endsWith('labor') ? '%' : '');
+      });
+      // Fix the display properly
+      document.getElementById('comp-pso-profit').textContent  = '$' + pso.best_profit.toLocaleString();
+      document.getElementById('comp-pso-revenue').textContent = '$' + pso.revenue.toLocaleString();
+      document.getElementById('comp-pso-cost').textContent    = '$' + pso.total_cost.toLocaleString();
+      document.getElementById('comp-pso-iter').textContent    = pso.iterations;
+      document.getElementById('comp-pso-water').textContent   = pso.water_pct + '%';
+      document.getElementById('comp-pso-fert').textContent    = pso.fert_pct + '%';
+      document.getElementById('comp-pso-labor').textContent   = pso.labor_pct + '%';
+      document.getElementById('comp-ga-profit').textContent   = '$' + ga.best_profit.toLocaleString();
+      document.getElementById('comp-ga-revenue').textContent  = '$' + ga.revenue.toLocaleString();
+      document.getElementById('comp-ga-cost').textContent     = '$' + ga.total_cost.toLocaleString();
+      document.getElementById('comp-ga-iter').textContent     = ga.iterations;
+      document.getElementById('comp-ga-water').textContent    = ga.water_pct + '%';
+      document.getElementById('comp-ga-fert').textContent     = ga.fert_pct + '%';
+      document.getElementById('comp-ga-labor').textContent    = ga.labor_pct + '%';
+      drawComparisonChart(pso.history, ga.history);
+      document.getElementById('comparison-card').classList.remove('hidden');
+      setStatus(`✓ Comparison done! Winner: ${data.winner}`, 'done');
+    } catch(err) {
+      setStatus('✗ Error: ' + err.message, 'error');
+    }
+  }
+
+  function drawChart(history) {
+    if (convChart) convChart.destroy();
+    convChart = new Chart(document.getElementById('conv-chart'), {
+      type: 'line',
+      data: { labels: history.map((_,i)=>i+1), datasets:[{ label:'Best profit ($/ha)', data:history, borderColor:'#2E7D32', backgroundColor:'rgba(46,125,50,0.08)', borderWidth:3, fill:true, tension:0.35, pointRadius:0, pointHoverRadius:5 }] },
+      options: { responsive:true, maintainAspectRatio:false, plugins:{ legend:{ display:false } }, scales:{ x:{ title:{display:true,text:'Iteration',font:{size:12,weight:600}}, ticks:{autoSkip:true,maxTicksLimit:12} }, y:{ title:{display:true,text:'Profit ($/ha)',font:{size:12,weight:600}}, ticks:{callback:v=>'$'+v.toLocaleString()} } } }
+    });
+  }
+
+  function drawComparisonChart(psoHistory, gaHistory) {
+    if (convChart) convChart.destroy();
+    const maxLen = Math.max(psoHistory.length, gaHistory.length);
+    convChart = new Chart(document.getElementById('conv-chart'), {
+      type:'line',
+      data:{ labels:Array.from({length:maxLen},(_,i)=>i+1), datasets:[
+        { label:'PSO', data:psoHistory, borderColor:'#2E7D32', backgroundColor:'rgba(46,125,50,0.08)', fill:false, tension:0.35, borderWidth:2.5, pointRadius:0, pointHoverRadius:5 },
+        { label:'Genetic Algorithm', data:gaHistory, borderColor:'#F57F17', backgroundColor:'rgba(245,127,23,0.08)', fill:false, tension:0.35, borderWidth:2.5, pointRadius:0, pointHoverRadius:5 }
+      ]},
+      options:{ responsive:true, maintainAspectRatio:false, plugins:{ legend:{ position:'top', labels:{ boxWidth:14, padding:15, font:{size:12,weight:600} } } }, scales:{ x:{ title:{display:true,text:'Iteration',font:{size:12,weight:600}}, ticks:{autoSkip:true,maxTicksLimit:12} }, y:{ title:{display:true,text:'Profit ($/ha)',font:{size:12,weight:600}}, ticks:{callback:v=>'$'+v.toLocaleString()} } } }
+    });
+  }
+
+  // ── NEW: Hybrid PSO→GA ─────────────────────────────────────────────────────
+  async function runHybrid() {
+    const cropName   = document.getElementById('crop-select').value;
+    const iterations = parseInt(document.getElementById('sl-iter').value);
+    const btn        = document.getElementById('hybrid-btn');
+    btn.disabled     = true;
+    btn.textContent  = '⏳ Running Hybrid…';
+    setStatus(`Running Hybrid PSO→GA on "${cropName}" — Phase 1: PSO, Phase 2: GA…`, 'running');
+
+    try {
+      const res  = await fetch('/hybrid', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ crop: cropName, iterations }) });
+      if (!res.ok) throw new Error('Server error: ' + res.status);
+      const d    = await res.json();
+
+      // Pipeline boxes
+      document.getElementById('pipe-pso-profit').textContent  = '$' + d.pso_profit.toLocaleString();
+      document.getElementById('pipe-seed-info').textContent   = `${d.pso_iters} iters → seeds ${d.ga_gens} GA gens`;
+      document.getElementById('pipe-ga-gens').textContent     = `${d.ga_gens} gens`;
+      document.getElementById('pipe-final-profit').textContent = '$' + d.best_profit.toLocaleString();
+
+      // Improvement strip
+      const sign = d.improvement >= 0 ? '+' : '';
+      document.getElementById('hy-pso-profit').textContent    = '$' + d.pso_profit.toLocaleString();
+      document.getElementById('hy-improvement').textContent   = sign + '$' + d.improvement.toLocaleString() + ` (${sign}${d.improvement_pct}%)`;
+      document.getElementById('hy-final-profit').textContent  = '$' + d.best_profit.toLocaleString();
+
+      // Allocation bars
+      ['water','fert','labor'].forEach(r => {
+        document.getElementById('hy-'+r).textContent              = d[r+'_pct'] + '%';
+        document.getElementById('hy-bar-'+r).style.width          = d[r+'_pct'] + '%';
+      });
+
+      // Costs
+      document.getElementById('hy-c-water').textContent  = '$' + d.water_cost.toLocaleString();
+      document.getElementById('hy-c-fert').textContent   = '$' + d.fert_cost.toLocaleString();
+      document.getElementById('hy-c-labor').textContent  = '$' + d.labor_cost.toLocaleString();
+      document.getElementById('hy-c-total').textContent  = '$' + d.total_cost.toLocaleString();
+
+      // Two-phase chart
+      drawHybridChart(d.pso_history, d.ga_history);
+
+      document.getElementById('hybrid-card').classList.remove('hidden');
+      document.getElementById('hybrid-card').scrollIntoView({ behavior: 'smooth', block: 'start' });
+      setStatus(`✓ Hybrid done! PSO: $${d.pso_profit.toLocaleString()} → GA refined: $${d.best_profit.toLocaleString()} (${sign}${d.improvement_pct}%)`, 'done');
+
+    } catch(err) {
+      setStatus('✗ Error: ' + err.message, 'error');
+    } finally {
+      btn.disabled    = false;
+      btn.textContent = '🔗 Run Hybrid PSO→GA';
+    }
+  }
+
+  function drawHybridChart(psoHistory, gaHistory) {
+    if (hybChart) hybChart.destroy();
+
+    // Combine histories with an offset for GA (it continues from where PSO left off)
+    const psoLen  = psoHistory.length;
+    const gaLen   = gaHistory.length;
+    const labels  = Array.from({ length: psoLen + gaLen }, (_, i) => i + 1);
+
+    // PSO data: full history, then null
+    const psoData = [...psoHistory, ...Array(gaLen).fill(null)];
+    // GA data: null for PSO phase, then ga history
+    const gaData  = [...Array(psoLen).fill(null), ...gaHistory];
+    // Bridge point (connect the two lines)
+    const bridgeData = Array(psoLen + gaLen).fill(null);
+    bridgeData[psoLen - 1] = psoHistory[psoLen - 1];
+    bridgeData[psoLen]     = gaHistory[0];
+
+    hybChart = new Chart(document.getElementById('hybrid-chart'), {
+      type: 'line',
+      data: {
+        labels,
+        datasets: [
+          {
+            label: 'PSO Phase',
+            data: psoData,
+            borderColor: '#2E7D32',
+            backgroundColor: 'rgba(46,125,50,0.10)',
+            fill: true,
+            tension: 0.35,
+            borderWidth: 2.5,
+            pointRadius: 0,
+            pointHoverRadius: 5,
+            spanGaps: false,
+          },
+          {
+            label: 'GA Refinement',
+            data: gaData,
+            borderColor: '#6A1B9A',
+            backgroundColor: 'rgba(106,27,154,0.08)',
+            fill: true,
+            tension: 0.35,
+            borderWidth: 2.5,
+            pointRadius: 0,
+            pointHoverRadius: 5,
+            spanGaps: false,
+          },
+          {
+            label: '_bridge',
+            data: bridgeData,
+            borderColor: '#bdbdbd',
+            borderWidth: 1.5,
+            borderDash: [4, 4],
+            pointRadius: 0,
+            fill: false,
+            tension: 0,
+          }
+        ]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: {
+            position: 'top',
+            labels: {
+              filter: item => item.text !== '_bridge',
+              boxWidth: 14,
+              padding: 15,
+              font: { size: 12, weight: 600 }
+            }
+          },
+          annotation: {
+            annotations: {
+              phaseLine: {
+                type: 'line',
+                xMin: psoLen - 0.5,
+                xMax: psoLen - 0.5,
+                borderColor: 'rgba(0,0,0,0.2)',
+                borderWidth: 2,
+                borderDash: [6, 4],
+                label: {
+                  display: true,
+                  content: '⬅ PSO | GA ➡',
+                  position: 'start',
+                  font: { size: 10, weight: 700 },
+                  color: '#757575',
+                  backgroundColor: 'rgba(255,255,255,0.85)',
+                  padding: 4,
+                }
+              }
+            }
+          }
+        },
+        scales: {
+          x: { title: { display: true, text: 'Iteration', font: { size: 12, weight: 600 } }, ticks: { autoSkip: true, maxTicksLimit: 14 } },
+          y: { title: { display: true, text: 'Profit ($/ha)', font: { size: 12, weight: 600 } }, ticks: { callback: v => '$' + v.toLocaleString() } }
+        }
+      }
+    });
+  }
+
+  // ── NEW: Sensitivity Analysis ──────────────────────────────────────────────
+  function onSensSlider(resource, value) {
+    const v = parseFloat(value).toFixed(2);
+    document.getElementById('sv-' + resource).textContent     = v;
+    document.getElementById('sv-' + resource + '-sub').textContent = Math.round(value * 100) + '%';
+    clearTimeout(sensTimer);
+    sensTimer = setTimeout(fetchSensitivity, 280);  // debounce 280ms
+  }
+
+  async function fetchSensitivity() {
+    const crop  = document.getElementById('crop-select').value;
+    const water = parseFloat(document.getElementById('sens-water').value);
+    const fert  = parseFloat(document.getElementById('sens-fert').value);
+    const labor = parseFloat(document.getElementById('sens-labor').value);
+
+    try {
+      const res  = await fetch('/sensitivity', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ crop, water_ratio: water, fert_ratio: fert, labor_ratio: labor })
+      });
+      if (!res.ok) return;
+      const d = await res.json();
+
+      // Live profit + costs
+      document.getElementById('live-profit').textContent      = '$' + d.current_profit.toLocaleString();
+      document.getElementById('live-water-cost').textContent  = '$' + d.costs.water_cost.toLocaleString();
+      document.getElementById('live-fert-cost').textContent   = '$' + d.costs.fert_cost.toLocaleString();
+      document.getElementById('live-labor-cost').textContent  = '$' + d.costs.labor_cost.toLocaleString();
+      document.getElementById('live-total-cost').textContent  = '$' + d.costs.total_cost.toLocaleString();
+
+      // Most sensitive badge
+      const labels   = { water: '💧 Water', fert: '🌱 Fertilizer', labor: '👨‍🌾 Labor' };
+      const badgeEl  = document.getElementById('sens-badge');
+      badgeEl.textContent  = labels[d.most_sensitive] + ' is most sensitive';
+      badgeEl.className    = 'sensitivity-badge ' + d.most_sensitive;
+      document.getElementById('sens-insight').classList.remove('hidden');
+      const scores = d.sensitivity_scores;
+      document.getElementById('sens-explanation').textContent =
+        `Profit range: Water ±$${scores.water} | Fert ±$${scores.fert} | Labor ±$${scores.labor}`;
+
+      // Sensitivity chart
+      drawSensitivityChart(d, water, fert, labor);
+
+    } catch(err) {
+      console.warn('Sensitivity error:', err);
+    }
+  }
+
+  function drawSensitivityChart(d, currentWater, currentFert, currentLabor) {
+    if (sensChart) sensChart.destroy();
+
+    const ratioRange = d.ratio_range;
+
+    // Find nearest index to current values for vertical markers
+    const findIdx = (val) => {
+      let best = 0, bestDiff = Infinity;
+      ratioRange.forEach((r, i) => { const diff = Math.abs(r - val); if (diff < bestDiff) { bestDiff = diff; best = i; } });
+      return best;
+    };
+    const wIdx = findIdx(currentWater);
+    const fIdx = findIdx(currentFert);
+    const lIdx = findIdx(currentLabor);
+
+    sensChart = new Chart(document.getElementById('sens-chart'), {
+      type: 'line',
+      data: {
+        labels: ratioRange,
+        datasets: [
+          {
+            label: '💧 Water Sensitivity',
+            data: d.water_curve,
+            borderColor: '#1976D2',
+            backgroundColor: 'rgba(25,118,210,0.06)',
+            fill: false,
+            tension: 0.3,
+            borderWidth: 2.5,
+            pointRadius: 0,
+            pointHoverRadius: 5,
+          },
+          {
+            label: '🌱 Fertilizer Sensitivity',
+            data: d.fert_curve,
+            borderColor: '#2E7D32',
+            backgroundColor: 'rgba(46,125,50,0.06)',
+            fill: false,
+            tension: 0.3,
+            borderWidth: 2.5,
+            pointRadius: 0,
+            pointHoverRadius: 5,
+          },
+          {
+            label: '👨‍🌾 Labor Sensitivity',
+            data: d.labor_curve,
+            borderColor: '#F57F17',
+            backgroundColor: 'rgba(245,127,23,0.06)',
+            fill: false,
+            tension: 0.3,
+            borderWidth: 2.5,
+            pointRadius: 0,
+            pointHoverRadius: 5,
+          }
+        ]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        interaction: { mode: 'index', intersect: false },
+        plugins: {
+          legend: {
+            position: 'top',
+            labels: { boxWidth: 14, padding: 16, font: { size: 12, weight: 600 } }
+          },
+          tooltip: {
+            callbacks: {
+              title: items => `Ratio: ${items[0].label}`,
+              label:  item  => ` ${item.dataset.label.split(' ').slice(1).join(' ')}: $${parseFloat(item.raw).toLocaleString()}`
+            }
+          },
+          annotation: {
+            annotations: {
+              waterLine: {
+                type: 'line',
+                xMin: ratioRange[wIdx],
+                xMax: ratioRange[wIdx],
+                borderColor: 'rgba(25,118,210,0.5)',
+                borderWidth: 2,
+                borderDash: [5, 4],
+              },
+              fertLine: {
+                type: 'line',
+                xMin: ratioRange[fIdx],
+                xMax: ratioRange[fIdx],
+                borderColor: 'rgba(46,125,50,0.5)',
+                borderWidth: 2,
+                borderDash: [5, 4],
+              },
+              laborLine: {
+                type: 'line',
+                xMin: ratioRange[lIdx],
+                xMax: ratioRange[lIdx],
+                borderColor: 'rgba(245,127,23,0.5)',
+                borderWidth: 2,
+                borderDash: [5, 4],
+              }
+            }
+          }
+        },
+        scales: {
+          x: {
+            type: 'linear',
+            title: { display: true, text: 'Resource Ratio (0 = none → 1 = full need)', font: { size: 12, weight: 600 } },
+            ticks: { callback: v => v.toFixed(1), stepSize: 0.1 },
+            min: 0, max: 1
+          },
+          y: {
+            title: { display: true, text: 'Profit ($/ha)', font: { size: 12, weight: 600 } },
+            ticks: { callback: v => '$' + v.toLocaleString() }
+          }
+        }
+      }
+    });
+  }
+
+  // ── Init: load sensitivity on page load ───────────────────────────────────
+  window.addEventListener('load', () => {
+    setTimeout(fetchSensitivity, 500);
+  });
+</script>
+
+</body>
+</html>
