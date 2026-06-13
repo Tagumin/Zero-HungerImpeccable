@@ -4,8 +4,8 @@ export default function Features() {
   const features = [
     {
       img: "images/optimization.jpg",
-      alt: "Smart Decision Support",
-      title: "Smart Decision Support System",
+      alt: "Cost Optimization",
+      title: "Cost Optimization",
       text: "Real-time data helps you plan planting, irrigation, and harvest timing. Make moves with confidence, not guesswork.",
       to: "/cost-optimizer",
       isInternal: true,

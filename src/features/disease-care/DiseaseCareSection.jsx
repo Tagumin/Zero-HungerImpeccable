@@ -94,7 +94,7 @@ export default function DiseaseCareSection() {
       }
 
       const matchedDisease = diseaseDB.find(
-         (d) => d.label === diseaseLabel,
+        (d) => d.label === diseaseLabel,
       ) || {
         label: diseaseLabel,
         name: diseaseLabel.replace(/_/g, " "),
@@ -141,7 +141,7 @@ export default function DiseaseCareSection() {
           }}
         />
         <div className="hero-banner-text">
-          <h1>Disease Care</h1>
+          <h1>Microscopic Threat Detection</h1>
           <p>
             Our AI model analyzes crop images to identify diseases and recommend
             treatments instantly.
@@ -208,14 +208,14 @@ export default function DiseaseCareSection() {
           <div className="feature-card">
             <div className="icon-container">
               <svg
-                  width="22"
-                  height="22"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="var(--deep-green)"
-                  strokeWidth="2.5"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
+                width="22"
+                height="22"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="var(--deep-green)"
+                strokeWidth="2.5"
+                strokeLinecap="round"
+                strokeLinejoin="round"
               >
                 <circle cx="12" cy="12" r="10" />
                 <line x1="22" y1="12" x2="18" y2="12" />
@@ -258,7 +258,21 @@ export default function DiseaseCareSection() {
         {/* Upload Card */}
         <div className="card">
           <div className="card-header">
-            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><polyline points="16 16 12 12 8 16"/><line x1="12" y1="12" x2="12" y2="21"/><path d="M20.39 18.39A5 5 0 0 0 18 9h-1.26A8 8 0 1 0 3 16.3"/></svg>
+            <svg
+              width="15"
+              height="15"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2.5"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              aria-hidden="true"
+            >
+              <polyline points="16 16 12 12 8 16" />
+              <line x1="12" y1="12" x2="12" y2="21" />
+              <path d="M20.39 18.39A5 5 0 0 0 18 9h-1.26A8 8 0 1 0 3 16.3" />
+            </svg>
             <span className="card-header-label">Upload &amp; Analyse</span>
           </div>
 
@@ -270,11 +284,28 @@ export default function DiseaseCareSection() {
           <div className="upload-layout">
             {networkError && (
               <div className="network-error">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
-                <span>Failed to connect to the AI server. Please ensure the backend is running on port 5000.</span>
+                <svg
+                  width="18"
+                  height="18"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2.5"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  aria-hidden="true"
+                >
+                  <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z" />
+                  <line x1="12" y1="9" x2="12" y2="13" />
+                  <line x1="12" y1="17" x2="12.01" y2="17" />
+                </svg>
+                <span>
+                  Failed to connect to the AI server. Please ensure the backend
+                  is running on port 5000.
+                </span>
               </div>
             )}
-            
+
             <label>Crop Image</label>
 
             <div className="field">
@@ -325,10 +356,34 @@ export default function DiseaseCareSection() {
                         xmlns="http://www.w3.org/2000/svg"
                         aria-hidden="true"
                       >
-                        <path d="M4 12V4h8" stroke="var(--amber)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                        <path d="M40 12V4h-8" stroke="var(--amber)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                        <path d="M4 32v8h8" stroke="var(--amber)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                        <path d="M40 32v8h-8" stroke="var(--amber)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                        <path
+                          d="M4 12V4h8"
+                          stroke="var(--amber)"
+                          strokeWidth="2"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                        />
+                        <path
+                          d="M40 12V4h-8"
+                          stroke="var(--amber)"
+                          strokeWidth="2"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                        />
+                        <path
+                          d="M4 32v8h8"
+                          stroke="var(--amber)"
+                          strokeWidth="2"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                        />
+                        <path
+                          d="M40 32v8h-8"
+                          stroke="var(--amber)"
+                          strokeWidth="2"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                        />
                         <path
                           d="M22 32c-5 0-10-4-10-10 0-7 10-14 10-14s10 7 10 14c0 6-5 10-10 10z"
                           stroke="var(--deep-green)"
@@ -337,7 +392,13 @@ export default function DiseaseCareSection() {
                           strokeLinejoin="round"
                           fill="oklch(90% 0.04 155 / 0.4)"
                         />
-                        <path d="M22 32V18" stroke="var(--deep-green)" strokeWidth="1.25" strokeLinecap="round" opacity="0.5"/>
+                        <path
+                          d="M22 32V18"
+                          stroke="var(--deep-green)"
+                          strokeWidth="1.25"
+                          strokeLinecap="round"
+                          opacity="0.5"
+                        />
                       </svg>
                     </div>
                     <p>Drop your crop photo to scan</p>
@@ -354,8 +415,25 @@ export default function DiseaseCareSection() {
             </div>
 
             <div className="upload-tip">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
-              <span>For best results, take a close-up photo of the affected leaf or stem in natural daylight.</span>
+              <svg
+                width="14"
+                height="14"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2.5"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                aria-hidden="true"
+              >
+                <circle cx="12" cy="12" r="10" />
+                <line x1="12" y1="8" x2="12" y2="12" />
+                <line x1="12" y1="16" x2="12.01" y2="16" />
+              </svg>
+              <span>
+                For best results, take a close-up photo of the affected leaf or
+                stem in natural daylight.
+              </span>
             </div>
           </div>
 
@@ -367,7 +445,20 @@ export default function DiseaseCareSection() {
           >
             <div className="spinner" />
             <span className="btn-label">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+              <svg
+                width="16"
+                height="16"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2.5"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                aria-hidden="true"
+              >
+                <circle cx="11" cy="11" r="8" />
+                <line x1="21" y1="21" x2="16.65" y2="16.65" />
+              </svg>
               Analyse Disease
             </span>
           </button>
