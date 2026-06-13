@@ -7,8 +7,8 @@ export default function Features() {
       alt: "Smart Decision Support",
       title: "Smart Decision Support System",
       text: "Real-time data helps you plan planting, irrigation, and harvest timing. Make moves with confidence, not guesswork.",
-      to: "#",
-      isInternal: false,
+      to: "/cost-optimizer",
+      isInternal: true,
       align: "left",
     },
     {
