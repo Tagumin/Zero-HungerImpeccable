@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+﻿import React, { useState, useEffect, useRef } from "react";
 import Chart from "chart.js/auto";
 import Navbar from "@/components/layout/Navbar";
 import "./CostOptimizer.css";
@@ -114,6 +114,31 @@ export default function CostOptimizer() {
       }, 0);
     }
   }, [hybridResult, isHybridCollapsed]);
+
+    useEffect(() => {
+    if (!useCustomParams && selectedCrop) {
+      // Fetch and reset to defaults when checkbox is unchecked
+      fetch(`http://127.0.0.1:5001/crop_defaults/${selectedCrop}`)
+        .then(res => res.json())
+        .then(data => {
+          setCustomParams({
+            price_per_kg: data.price_per_kg || 0,
+            yield_kg_ha: data.yield_kg_ha || 0,
+            water_m3_ha: data.water_m3_ha || 0,
+            fert_kg_ha: data.fert_kg_ha || 0,
+            labor_hours_ha: data.labor_hours_ha || 0,
+            water_per_m3: data.water_per_m3 || 0,
+            fert_per_kg: data.fert_per_kg || 0,
+            labor_per_hour: data.labor_per_hour || 0,
+          });
+        })
+        .catch(err => console.error("Failed to fetch crop defaults:", err));
+    }
+  }, [useCustomParams, selectedCrop]);
+
+    useEffect(() => {
+    clearAll();
+  }, [selectedCrop, useCustomParams, customParams]);
 
   const setStatus = (msg, type) => {
     setStatusMsg(msg);
@@ -298,7 +323,7 @@ export default function CostOptimizer() {
       setCompResult(data);
       setIsCompCollapsed(false);
       setIsChartCollapsed(false);
-      setStatus(`Comparison done. Winner: ${data.winner}`, "done");
+      setStatus(data.results[data.winner].best_profit < 0 ? `Comparison done. Result: Loss (RM${Math.abs(data.results[data.winner].best_profit).toLocaleString()}).` : `Comparison done. Winner: ${data.winner}`, data.results[data.winner].best_profit < 0 ? "error" : "done");
     } catch(err) {
       setStatus("Error: " + err.message, "error");
     }
@@ -646,7 +671,7 @@ export default function CostOptimizer() {
         <div className="co-dashboard-grid">
 
           {/* Convergence Chart — full width */}
-          {(optMode === "standard" || optMode === "compare") && (
+          {(optMode === "standard" || optMode === "compare") && !(result && result.best_profit < 0) && !(optMode === "compare" && compResult && compResult.results[compResult.winner].best_profit < 0) && (
             <div className={`card ${isChartCollapsed ? "collapsed" : ""}`} style={{ gridColumn: "1 / -1" }}>
             <div className="card-title" style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: isChartCollapsed ? 0 : undefined }}>
               <span>Convergence Curve</span>
@@ -677,7 +702,7 @@ export default function CostOptimizer() {
 
               {!isCompCollapsed && (
                 <>
-                  <div className="winner-badge">Winner: {compResult.winner === "PSO" ? "PSO" : "Genetic Algorithm"}</div>
+                  {compResult.results[compResult.winner].best_profit >= 0 && <div className="winner-badge">Winner: {compResult.winner === "PSO" ? "PSO" : "Genetic Algorithm"}</div>}
                   <p style={{ fontSize: "0.88rem", color: "var(--co-text-muted)", marginBottom: "1.25rem" }}>
                     Comparison for <strong>{compResult.crop}</strong>
                   </p>
@@ -975,3 +1000,10 @@ export default function CostOptimizer() {
     </div>
   );
 }
+
+
+
+
+
+
+
