@@ -169,7 +169,7 @@ export default function CostOptimizer() {
       data: {
         labels: history.map((_, i) => i + 1),
         datasets: [{
-          label: "Best profit ($/ha)",
+          label: "Best profit (RM/ha)",
           data: history,
           borderColor: "#2E7D32",
           backgroundColor: "rgba(46,125,50,0.08)",
@@ -186,7 +186,7 @@ export default function CostOptimizer() {
         plugins: { legend: { display: false } },
         scales: {
           x: { title: { display: true, text: "Iteration", font: { size: 12, weight: 600 } }, ticks: { autoSkip: true, maxTicksLimit: 12 } },
-          y: { title: { display: true, text: "Profit ($/ha)", font: { size: 12, weight: 600 } }, ticks: { callback: v => "$" + v.toLocaleString() } }
+          y: { title: { display: true, text: "Profit (RM/ha)", font: { size: 12, weight: 600 } }, ticks: { callback: v => "RM" + v.toLocaleString() } }
         }
       }
     });
@@ -211,7 +211,7 @@ export default function CostOptimizer() {
         plugins: { legend: { position: "top", labels: { boxWidth: 14, padding: 15, font: { size: 12, weight: 600 } } } },
         scales: {
           x: { title: { display: true, text: "Iteration", font: { size: 12, weight: 600 } }, ticks: { autoSkip: true, maxTicksLimit: 12 } },
-          y: { title: { display: true, text: "Profit ($/ha)", font: { size: 12, weight: 600 } }, ticks: { callback: v => "$" + v.toLocaleString() } }
+          y: { title: { display: true, text: "Profit (RM/ha)", font: { size: 12, weight: 600 } }, ticks: { callback: v => "RM" + v.toLocaleString() } }
         }
       }
     });
@@ -244,7 +244,7 @@ export default function CostOptimizer() {
         plugins: { legend: { display: false } },
         scales: {
           x: { title: { display: true, text: "Generation / Iteration", font: { size: 11, weight: 600 } }, ticks: { autoSkip: true, maxTicksLimit: 12 } },
-          y: { title: { display: true, text: "Profit ($/ha)", font: { size: 11, weight: 600 } }, ticks: { callback: v => "$" + v.toLocaleString() } }
+          y: { title: { display: true, text: "Profit (RM/ha)", font: { size: 11, weight: 600 } }, ticks: { callback: v => "RM" + v.toLocaleString() } }
         }
       }
     });
@@ -278,7 +278,7 @@ export default function CostOptimizer() {
         },
         scales: {
           x: { title: { display: true, text: "Allocation Ratio (0.0 → 1.0)", font: { size: 11, weight: 600 } }, ticks: { maxTicksLimit: 10 } },
-          y: { title: { display: true, text: "Est. Profit ($/ha)", font: { size: 11, weight: 600 } }, ticks: { callback: v => "$" + v.toLocaleString() } }
+          y: { title: { display: true, text: "Est. Profit (RM/ha)", font: { size: 11, weight: 600 } }, ticks: { callback: v => "RM" + v.toLocaleString() } }
         }
       }
     });
@@ -300,9 +300,9 @@ export default function CostOptimizer() {
       setIsChartCollapsed(false);
       
       if (data.best_profit < 0) {
-        setStatus(`Optimization complete. Estimated loss: $${Math.abs(data.best_profit).toLocaleString()}/ha`, "error");
+        setStatus(`Optimization complete. Estimated loss: RM${Math.abs(data.best_profit).toLocaleString()}/ha`, "error");
       } else {
-        setStatus(`Done! Best profit: $${data.best_profit.toLocaleString()}/ha`, "done");
+        setStatus(`Done! Best profit: RM${data.best_profit.toLocaleString()}/ha`, "done");
       }
     } catch(err) {
       setStatus("Error: " + err.message, "error");
@@ -345,9 +345,9 @@ export default function CostOptimizer() {
       
       const sign = data.improvement >= 0 ? "+" : "";
       if (data.best_profit < 0) {
-        setStatus(`Hybrid done! PSO loss: $${Math.abs(data.pso_profit).toLocaleString()} → GA refined loss: $${Math.abs(data.best_profit).toLocaleString()}`, "error");
+        setStatus(`Hybrid done! PSO loss: RM${Math.abs(data.pso_profit).toLocaleString()} → GA refined loss: RM${Math.abs(data.best_profit).toLocaleString()}`, "error");
       } else {
-        setStatus(`Hybrid done! PSO: $${data.pso_profit.toLocaleString()} → GA refined: $${data.best_profit.toLocaleString()} (${sign}${data.improvement_pct}%)`, "done");
+        setStatus(`Hybrid done! PSO: RM${data.pso_profit.toLocaleString()} → GA refined: RM${data.best_profit.toLocaleString()} (${sign}${data.improvement_pct}%)`, "done");
       }
     } catch(err) {
       setStatus("Error: " + err.message, "error");
@@ -394,7 +394,7 @@ export default function CostOptimizer() {
       </header>
 
       <div className="co-container">
-        <div className="formula">
+        <div className="foRM${ula">
           Maximize Profit = Revenue − (Water Cost + Fertilizer Cost + Labor Cost)
         </div>
 
@@ -546,18 +546,18 @@ export default function CostOptimizer() {
               <>
                 <div className="metrics-grid">
                   <div className="metric">
-                    <div className="metric-label">Best Profit ($/ha)</div>
+                    <div className="metric-label">Best Profit (RM/ha)</div>
                     <div className={`metric-value ${result && result.best_profit < 0 ? "red" : "green"}`}>
-                      {result ? (result.best_profit < 0 ? `-$${Math.abs(result.best_profit).toLocaleString()}` : `$${result.best_profit.toLocaleString()}`) : "—"}
+                      {result ? (result.best_profit < 0 ? `-RM${Math.abs(result.best_profit).toLocaleString()}` : `RM${result.best_profit.toLocaleString()}`) : "—"}
                     </div>
                   </div>
                   <div className="metric amber-left">
-                    <div className="metric-label">Revenue ($/ha)</div>
-                    <div className="metric-value">{result ? `$${result.revenue.toLocaleString()}` : "—"}</div>
+                    <div className="metric-label">Revenue (RM/ha)</div>
+                    <div className="metric-value">{result ? `RM${result.revenue.toLocaleString()}` : "—"}</div>
                   </div>
                   <div className="metric blue-left">
-                    <div className="metric-label">Total Cost ($/ha)</div>
-                    <div className="metric-value amber">{result ? `$${result.total_cost.toLocaleString()}` : "—"}</div>
+                    <div className="metric-label">Total Cost (RM/ha)</div>
+                    <div className="metric-value amber">{result ? `RM${result.total_cost.toLocaleString()}` : "—"}</div>
                   </div>
                 </div>
 
@@ -570,7 +570,7 @@ export default function CostOptimizer() {
 
                 {result && result.best_profit < 0 ? (
                   <div style={{ marginTop: "1.5rem", padding: "16px", background: "#FFF8F7", border: "1px solid #FF8A80", borderRadius: "8px", color: "#C62828", fontSize: "0.95rem", lineHeight: "1.5", textAlign: "center", fontWeight: 500 }}>
-                    ⚠️ The optimization resulted in a loss (${Math.abs(result.best_profit).toLocaleString()}). 
+                    ⚠️ The optimization resulted in a loss (RM${Math.abs(result.best_profit).toLocaleString()}). 
                     <br/>
                     Please adjust your parameters, increase your budget, or select a different crop to achieve profitability.
                   </div>
@@ -596,13 +596,13 @@ export default function CostOptimizer() {
                       return (
                         <>
                           <div style={{ padding: "12px", background: "var(--co-green-pale)", border: "1px solid var(--co-green-light)", borderRadius: "8px", marginBottom: "1.25rem", color: "var(--co-green-dark)", fontSize: "0.88rem", lineHeight: "1.4" }}>
-                            <strong>Insight:</strong> For <strong>{selectedCrop}</strong> cultivation, the maximum profit of <strong>RM{result.best_profit.toLocaleString()}</strong> per hectare can be achieved by utilizing <strong>{wR != null ? (wR * 100).toFixed(1) : result.water_pct}%</strong> of the available water resources, <strong>{fR != null ? (fR * 100).toFixed(1) : result.fert_pct}%</strong> of the fertilizer resources, and <strong>{lR != null ? (lR * 100).toFixed(1) : result.labor_pct}%</strong> of the labor resources.
+                            <strong>Insight:</strong> For <strong>{selectedCrop}</strong> cultivation, the maximum profit of <strong>RM${result.best_profit.toLocaleString()}</strong> per hectare can be achieved by utilizing <strong>{wR != null ? (wR * 100).toFixed(1) : result.water_pct}%</strong> of the available water resources, <strong>{fR != null ? (fR * 100).toFixed(1) : result.fert_pct}%</strong> of the fertilizer resources, and <strong>{lR != null ? (lR * 100).toFixed(1) : result.labor_pct}%</strong> of the labor resources.
                           </div>
 
                           <div className="alloc-row" style={{ marginBottom: "1.2rem" }}>
                             <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "0.25rem", fontSize: "0.9rem" }}>
                               <strong>Water Usage</strong>
-                              <strong style={{ color: "var(--co-text-muted)" }}>RM{result.water_cost.toLocaleString()}</strong>
+                              <strong style={{ color: "var(--co-text-muted)" }}>RM${result.water_cost.toLocaleString()}</strong>
                             </div>
                             <div style={{ display: "flex", justifyContent: "space-between", fontSize: "0.85rem", color: "var(--co-text-muted)", marginBottom: "0.4rem" }}>
                               {wR != null
@@ -616,7 +616,7 @@ export default function CostOptimizer() {
                           <div className="alloc-row" style={{ marginBottom: "1.2rem" }}>
                             <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "0.25rem", fontSize: "0.9rem" }}>
                               <strong>Fertilizer Usage</strong>
-                              <strong style={{ color: "var(--co-text-muted)" }}>RM{result.fert_cost.toLocaleString()}</strong>
+                              <strong style={{ color: "var(--co-text-muted)" }}>RM${result.fert_cost.toLocaleString()}</strong>
                             </div>
                             <div style={{ display: "flex", justifyContent: "space-between", fontSize: "0.85rem", color: "var(--co-text-muted)", marginBottom: "0.4rem" }}>
                               {fR != null
@@ -630,7 +630,7 @@ export default function CostOptimizer() {
                           <div className="alloc-row" style={{ marginBottom: "1.2rem" }}>
                             <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "0.25rem", fontSize: "0.9rem" }}>
                               <strong>Labor Usage</strong>
-                              <strong style={{ color: "var(--co-text-muted)" }}>RM{result.labor_cost.toLocaleString()}</strong>
+                              <strong style={{ color: "var(--co-text-muted)" }}>RM${result.labor_cost.toLocaleString()}</strong>
                             </div>
                             <div style={{ display: "flex", justifyContent: "space-between", fontSize: "0.85rem", color: "var(--co-text-muted)", marginBottom: "0.4rem" }}>
                               {lR != null
@@ -648,14 +648,14 @@ export default function CostOptimizer() {
                       <div style={{ marginTop: "1.5rem", background: "#f8f9fa", padding: "12px", borderRadius: "8px", border: "1px solid #e9ecef" }}>
                         <p className="section-eyebrow" style={{ marginBottom: "0.5rem" }}>Parameters Used for Optimization</p>
                         <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "8px", fontSize: "0.75rem" }}>
-                          <div style={{ display: "flex", justifyContent: "space-between" }}><span style={{ color: "var(--co-text-muted)" }}>Price:</span> <span>RM{result.custom_params.price_per_kg}/kg</span></div>
+                          <div style={{ display: "flex", justifyContent: "space-between" }}><span style={{ color: "var(--co-text-muted)" }}>Price:</span> <span>RM${result.custom_params.price_per_kg}/kg</span></div>
                           <div style={{ display: "flex", justifyContent: "space-between" }}><span style={{ color: "var(--co-text-muted)" }}>Yield:</span> <span>{result.custom_params.yield_kg_ha} kg/ha</span></div>
                           <div style={{ display: "flex", justifyContent: "space-between" }}><span style={{ color: "var(--co-text-muted)" }}>Water Req:</span> <span>{result.custom_params.water_m3_ha} m³/ha</span></div>
                           <div style={{ display: "flex", justifyContent: "space-between" }}><span style={{ color: "var(--co-text-muted)" }}>Fert Req:</span> <span>{result.custom_params.fert_kg_ha} kg/ha</span></div>
                           <div style={{ display: "flex", justifyContent: "space-between" }}><span style={{ color: "var(--co-text-muted)" }}>Labor Req:</span> <span>{result.custom_params.labor_hours_ha} hrs/ha</span></div>
-                          <div style={{ display: "flex", justifyContent: "space-between" }}><span style={{ color: "var(--co-text-muted)" }}>Water Cost:</span> <span>RM{result.custom_params.water_per_m3}/m³</span></div>
-                          <div style={{ display: "flex", justifyContent: "space-between" }}><span style={{ color: "var(--co-text-muted)" }}>Fert Cost:</span> <span>RM{result.custom_params.fert_per_kg}/kg</span></div>
-                          <div style={{ display: "flex", justifyContent: "space-between" }}><span style={{ color: "var(--co-text-muted)" }}>Labor Cost:</span> <span>RM{result.custom_params.labor_per_hour}/hr</span></div>
+                          <div style={{ display: "flex", justifyContent: "space-between" }}><span style={{ color: "var(--co-text-muted)" }}>Water Cost:</span> <span>RM${result.custom_params.water_per_m3}/m³</span></div>
+                          <div style={{ display: "flex", justifyContent: "space-between" }}><span style={{ color: "var(--co-text-muted)" }}>Fert Cost:</span> <span>RM${result.custom_params.fert_per_kg}/kg</span></div>
+                          <div style={{ display: "flex", justifyContent: "space-between" }}><span style={{ color: "var(--co-text-muted)" }}>Labor Cost:</span> <span>RM${result.custom_params.labor_per_hour}/hr</span></div>
                         </div>
                       </div>
                     )}
@@ -708,7 +708,7 @@ export default function CostOptimizer() {
                   </p>
                   {compResult.results[compResult.winner].best_profit < 0 ? (
                     <div style={{ padding: "16px", background: "#FFF8F7", border: "1px solid #FF8A80", borderRadius: "8px", color: "#C62828", fontSize: "0.95rem", lineHeight: "1.5", textAlign: "center", fontWeight: 500 }}>
-                      ⚠️ The optimization resulted in a loss (RM{Math.abs(compResult.results[compResult.winner].best_profit).toLocaleString()}). 
+                      ⚠️ The optimization resulted in a loss (RM${Math.abs(compResult.results[compResult.winner].best_profit).toLocaleString()}). 
                       <br/>
                       Please adjust your parameters, increase your budget, or select a different crop to achieve profitability.
                     </div>
@@ -723,14 +723,14 @@ export default function CostOptimizer() {
                         return (
                           <div className="algo-result">
                             <div className="algo-result-title">PSO</div>
-                            <div className="result-item"><span>Best Profit</span><span>RM{p.best_profit.toLocaleString()}</span></div>
-                            <div className="result-item"><span>Revenue</span><span>RM{p.revenue.toLocaleString()}</span></div>
-                            <div className="result-item"><span>Total Cost</span><span>RM{p.total_cost.toLocaleString()}</span></div>
+                            <div className="result-item"><span>Best Profit</span><span>RM${p.best_profit.toLocaleString()}</span></div>
+                            <div className="result-item"><span>Revenue</span><span>RM${p.revenue.toLocaleString()}</span></div>
+                            <div className="result-item"><span>Total Cost</span><span>RM${p.total_cost.toLocaleString()}</span></div>
                             <div className="result-item"><span>Iterations</span><span>{p.iterations}</span></div>
                             <hr style={{ margin: "0.8rem 0", border: "none", borderTop: "1px solid var(--co-gray-line)" }} />
-                            <div className="result-item"><span>Water</span><span>{wR != null ? `${(wR * customParams.water_m3_ha).toFixed(1)} / ${customParams.water_m3_ha} m³/ha (${(wR*100).toFixed(1)}%)` : `${p.water_pct}%`}</span></div>
-                            <div className="result-item"><span>Fertilizer</span><span>{fR != null ? `${(fR * customParams.fert_kg_ha).toFixed(1)} / ${customParams.fert_kg_ha} kg/ha (${(fR*100).toFixed(1)}%)` : `${p.fert_pct}%`}</span></div>
-                            <div className="result-item"><span>Labor</span><span>{lR != null ? `${(lR * customParams.labor_hours_ha).toFixed(1)} / ${customParams.labor_hours_ha} hrs/ha (${(lR*100).toFixed(1)}%)` : `${p.labor_pct}%`}</span></div>
+                            <div className="result-item"><span>Water</span><span>{wR != null ? `${(wR * customParams.water_m3_ha).toFixed(1)} / ${customParams.water_m3_ha} m³/ha (${(wR*100).toFixed(1)}%)` : `RM${p.water_pct}%`}</span></div>
+                            <div className="result-item"><span>Fertilizer</span><span>{fR != null ? `${(fR * customParams.fert_kg_ha).toFixed(1)} / ${customParams.fert_kg_ha} kg/ha (${(fR*100).toFixed(1)}%)` : `RM${p.fert_pct}%`}</span></div>
+                            <div className="result-item"><span>Labor</span><span>{lR != null ? `${(lR * customParams.labor_hours_ha).toFixed(1)} / ${customParams.labor_hours_ha} hrs/ha (${(lR*100).toFixed(1)}%)` : `RM${p.labor_pct}%`}</span></div>
                           </div>
                         );
                       })()}
@@ -743,14 +743,14 @@ export default function CostOptimizer() {
                         return (
                           <div className="algo-result ga">
                             <div className="algo-result-title">Genetic Algorithm</div>
-                            <div className="result-item"><span>Best Profit</span><span>RM{g.best_profit.toLocaleString()}</span></div>
-                            <div className="result-item"><span>Revenue</span><span>RM{g.revenue.toLocaleString()}</span></div>
-                            <div className="result-item"><span>Total Cost</span><span>RM{g.total_cost.toLocaleString()}</span></div>
+                            <div className="result-item"><span>Best Profit</span><span>RM${g.best_profit.toLocaleString()}</span></div>
+                            <div className="result-item"><span>Revenue</span><span>RM${g.revenue.toLocaleString()}</span></div>
+                            <div className="result-item"><span>Total Cost</span><span>RM${g.total_cost.toLocaleString()}</span></div>
                             <div className="result-item"><span>Iterations</span><span>{g.iterations}</span></div>
                             <hr style={{ margin: "0.8rem 0", border: "none", borderTop: "1px solid var(--co-gray-line)" }} />
-                            <div className="result-item"><span>Water</span><span>{wR != null ? `${(wR * customParams.water_m3_ha).toFixed(1)} / ${customParams.water_m3_ha} m³/ha (${(wR*100).toFixed(1)}%)` : `${g.water_pct}%`}</span></div>
-                            <div className="result-item"><span>Fertilizer</span><span>{fR != null ? `${(fR * customParams.fert_kg_ha).toFixed(1)} / ${customParams.fert_kg_ha} kg/ha (${(fR*100).toFixed(1)}%)` : `${g.fert_pct}%`}</span></div>
-                            <div className="result-item"><span>Labor</span><span>{lR != null ? `${(lR * customParams.labor_hours_ha).toFixed(1)} / ${customParams.labor_hours_ha} hrs/ha (${(lR*100).toFixed(1)}%)` : `${g.labor_pct}%`}</span></div>
+                            <div className="result-item"><span>Water</span><span>{wR != null ? `${(wR * customParams.water_m3_ha).toFixed(1)} / ${customParams.water_m3_ha} m³/ha (${(wR*100).toFixed(1)}%)` : `RM${g.water_pct}%`}</span></div>
+                            <div className="result-item"><span>Fertilizer</span><span>{fR != null ? `${(fR * customParams.fert_kg_ha).toFixed(1)} / ${customParams.fert_kg_ha} kg/ha (${(fR*100).toFixed(1)}%)` : `RM${g.fert_pct}%`}</span></div>
+                            <div className="result-item"><span>Labor</span><span>{lR != null ? `${(lR * customParams.labor_hours_ha).toFixed(1)} / ${customParams.labor_hours_ha} hrs/ha (${(lR*100).toFixed(1)}%)` : `RM${g.labor_pct}%`}</span></div>
                           </div>
                         );
                       })()}
@@ -775,7 +775,7 @@ export default function CostOptimizer() {
                 <>
                   {hybridResult.best_profit < 0 ? (
                     <div style={{ marginTop: "1.5rem", padding: "16px", background: "#FFF8F7", border: "1px solid #FF8A80", borderRadius: "8px", color: "#C62828", fontSize: "0.95rem", lineHeight: "1.5", textAlign: "center", fontWeight: 500 }}>
-                      ⚠️ The optimization resulted in a loss (RM{Math.abs(hybridResult.best_profit).toLocaleString()}). 
+                      ⚠️ The optimization resulted in a loss (RM${Math.abs(hybridResult.best_profit).toLocaleString()}). 
                       <br/>
                       Please adjust your parameters, increase your budget, or select a different crop to achieve profitability.
                     </div>
@@ -787,7 +787,7 @@ export default function CostOptimizer() {
                           <div className="pipeline-icon">1</div>
                           <div className="pipeline-label pso">Phase 1 — PSO</div>
                           <div className="pipeline-sub">Exploration</div>
-                          <div className="pipeline-value green">RM{hybridResult.pso_profit.toLocaleString()}</div>
+                          <div className="pipeline-value green">RM${hybridResult.pso_profit.toLocaleString()}</div>
                         </div>
                         <div className="pipeline-arrow">→</div>
                         <div className="pipeline-box seed">
@@ -810,7 +810,7 @@ export default function CostOptimizer() {
                           <div className="pipeline-icon">4</div>
                           <div className="pipeline-label final">Final Result</div>
                           <div className="pipeline-sub">Best profit</div>
-                          <div className="pipeline-value amber">RM{hybridResult.best_profit.toLocaleString()}</div>
+                          <div className="pipeline-value amber">RM${hybridResult.best_profit.toLocaleString()}</div>
                         </div>
                       </div>
 
@@ -818,19 +818,19 @@ export default function CostOptimizer() {
                       <div className="improvement-strip">
                         <div className="improv-item">
                           <div className="improv-label">PSO alone</div>
-                          <div className="improv-val green">RM{hybridResult.pso_profit.toLocaleString()}</div>
+                          <div className="improv-val green">RM${hybridResult.pso_profit.toLocaleString()}</div>
                         </div>
                         <div className="improv-divider">→</div>
                         <div className="improv-item">
                           <div className="improv-label">Improvement</div>
                           <div className="improv-val purple">
-                            {hybridResult.improvement >= 0 ? "+" : ""}RM{hybridResult.improvement.toLocaleString()} ({hybridResult.improvement >= 0 ? "+" : ""}{hybridResult.improvement_pct}%)
+                            {hybridResult.improvement >= 0 ? "+" : ""}RM${hybridResult.improvement.toLocaleString()} ({hybridResult.improvement >= 0 ? "+" : ""}{hybridResult.improvement_pct}%)
                           </div>
                         </div>
                         <div className="improv-divider">→</div>
                         <div className="improv-item">
                           <div className="improv-label">Hybrid Final</div>
-                          <div className="improv-val amber">RM{hybridResult.best_profit.toLocaleString()}</div>
+                          <div className="improv-val amber">RM${hybridResult.best_profit.toLocaleString()}</div>
                         </div>
                       </div>
 
@@ -846,17 +846,17 @@ export default function CostOptimizer() {
                             return (
                               <>
                                 <div style={{ padding: "12px", background: "var(--co-purple-light)", border: "1px solid #D1C4E9", borderRadius: "8px", marginBottom: "1.25rem", color: "var(--co-purple)", fontSize: "0.88rem", lineHeight: "1.4" }}>
-                                  <strong>Insight:</strong> For <strong>{selectedCrop}</strong> cultivation, the maximum profit of <strong>RM{hybridResult.best_profit.toLocaleString()}</strong> per hectare can be achieved by utilizing <strong>{wR != null ? (wR * 100).toFixed(1) : hybridResult.water_pct}%</strong> of the available water resources, <strong>{fR != null ? (fR * 100).toFixed(1) : hybridResult.fert_pct}%</strong> of the fertilizer resources, and <strong>{lR != null ? (lR * 100).toFixed(1) : hybridResult.labor_pct}%</strong> of the labor resources.
+                                  <strong>Insight:</strong> For <strong>{selectedCrop}</strong> cultivation, the maximum profit of <strong>RM${hybridResult.best_profit.toLocaleString()}</strong> per hectare can be achieved by utilizing <strong>{wR != null ? (wR * 100).toFixed(1) : hybridResult.water_pct}%</strong> of the available water resources, <strong>{fR != null ? (fR * 100).toFixed(1) : hybridResult.fert_pct}%</strong> of the fertilizer resources, and <strong>{lR != null ? (lR * 100).toFixed(1) : hybridResult.labor_pct}%</strong> of the labor resources.
                                 </div>
 
                                 <div className="alloc-row" style={{ marginBottom: "1.2rem" }}>
                                   <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "0.25rem", fontSize: "0.9rem" }}>
                                     <strong>Water Usage</strong>
-                                    <strong style={{ color: "var(--co-text-muted)" }}>RM{hybridResult.water_cost.toLocaleString()}</strong>
+                                    <strong style={{ color: "var(--co-text-muted)" }}>RM${hybridResult.water_cost.toLocaleString()}</strong>
                                   </div>
                                   <div style={{ display: "flex", justifyContent: "space-between", fontSize: "0.85rem", color: "var(--co-text-muted)", marginBottom: "0.4rem" }}>
                                     {wR != null ? <span>{(wR * customParams.water_m3_ha).toFixed(1)} / {customParams.water_m3_ha} m³/ha</span> : <span>—</span>}
-                                    <span>{wR != null ? `${(wR * 100).toFixed(1)}%` : `${hybridResult.water_pct}%`}</span>
+                                    <span>{wR != null ? `${(wR * 100).toFixed(1)}%` : `RM${hybridResult.water_pct}%`}</span>
                                   </div>
                                   <div className="bar-bg"><div className="bar-fill" style={{ background: "#1976D2", width: `${Math.min((wR ?? hybridResult.water_pct / 100) * 100, 100)}%` }}></div></div>
                                 </div>
@@ -864,11 +864,11 @@ export default function CostOptimizer() {
                                 <div className="alloc-row" style={{ marginBottom: "1.2rem" }}>
                                   <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "0.25rem", fontSize: "0.9rem" }}>
                                     <strong>Fertilizer Usage</strong>
-                                    <strong style={{ color: "var(--co-text-muted)" }}>RM{hybridResult.fert_cost.toLocaleString()}</strong>
+                                    <strong style={{ color: "var(--co-text-muted)" }}>RM${hybridResult.fert_cost.toLocaleString()}</strong>
                                   </div>
                                   <div style={{ display: "flex", justifyContent: "space-between", fontSize: "0.85rem", color: "var(--co-text-muted)", marginBottom: "0.4rem" }}>
                                     {fR != null ? <span>{(fR * customParams.fert_kg_ha).toFixed(1)} / {customParams.fert_kg_ha} kg/ha</span> : <span>—</span>}
-                                    <span>{fR != null ? `${(fR * 100).toFixed(1)}%` : `${hybridResult.fert_pct}%`}</span>
+                                    <span>{fR != null ? `${(fR * 100).toFixed(1)}%` : `RM${hybridResult.fert_pct}%`}</span>
                                   </div>
                                   <div className="bar-bg"><div className="bar-fill" style={{ background: "#2E7D32", width: `${Math.min((fR ?? hybridResult.fert_pct / 100) * 100, 100)}%` }}></div></div>
                                 </div>
@@ -876,11 +876,11 @@ export default function CostOptimizer() {
                                 <div className="alloc-row" style={{ marginBottom: "1.2rem" }}>
                                   <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "0.25rem", fontSize: "0.9rem" }}>
                                     <strong>Labor Usage</strong>
-                                    <strong style={{ color: "var(--co-text-muted)" }}>RM{hybridResult.labor_cost.toLocaleString()}</strong>
+                                    <strong style={{ color: "var(--co-text-muted)" }}>RM${hybridResult.labor_cost.toLocaleString()}</strong>
                                   </div>
                                   <div style={{ display: "flex", justifyContent: "space-between", fontSize: "0.85rem", color: "var(--co-text-muted)", marginBottom: "0.4rem" }}>
                                     {lR != null ? <span>{(lR * customParams.labor_hours_ha).toFixed(1)} / {customParams.labor_hours_ha} hrs/ha</span> : <span>—</span>}
-                                    <span>{lR != null ? `${(lR * 100).toFixed(1)}%` : `${hybridResult.labor_pct}%`}</span>
+                                    <span>{lR != null ? `${(lR * 100).toFixed(1)}%` : `RM${hybridResult.labor_pct}%`}</span>
                                   </div>
                                   <div className="bar-bg"><div className="bar-fill" style={{ background: "#6A1B9A", width: `${Math.min((lR ?? hybridResult.labor_pct / 100) * 100, 100)}%` }}></div></div>
                                 </div>
@@ -954,24 +954,24 @@ export default function CostOptimizer() {
                 <div className="live-profit-box">
                   <div>
                     <div className="live-profit-label">Current Profit at these ratios</div>
-                    <div className="live-profit-value">{sensResult ? `$${sensResult.current_profit.toLocaleString()}` : "$—"}</div>
+                    <div className="live-profit-value">{sensResult ? `RM${sensResult.current_profit.toLocaleString()}` : "$—"}</div>
                   </div>
                   <div className="live-cost-grid">
                     <div className="live-cost-item">
                       <div className="live-cost-label">Water Cost</div>
-                      <div className="live-cost-val">{sensResult ? `$${sensResult.costs.water_cost.toLocaleString()}` : "—"}</div>
+                      <div className="live-cost-val">{sensResult ? `RM${sensResult.costs.water_cost.toLocaleString()}` : "—"}</div>
                     </div>
                     <div className="live-cost-item">
                       <div className="live-cost-label">Fertilizer Cost</div>
-                      <div className="live-cost-val">{sensResult ? `$${sensResult.costs.fert_cost.toLocaleString()}` : "—"}</div>
+                      <div className="live-cost-val">{sensResult ? `RM${sensResult.costs.fert_cost.toLocaleString()}` : "—"}</div>
                     </div>
                     <div className="live-cost-item">
                       <div className="live-cost-label">Labor Cost</div>
-                      <div className="live-cost-val">{sensResult ? `$${sensResult.costs.labor_cost.toLocaleString()}` : "—"}</div>
+                      <div className="live-cost-val">{sensResult ? `RM${sensResult.costs.labor_cost.toLocaleString()}` : "—"}</div>
                     </div>
                     <div className="live-cost-item">
                       <div className="live-cost-label">Total Cost</div>
-                      <div className="live-cost-val">{sensResult ? `$${sensResult.costs.total_cost.toLocaleString()}` : "—"}</div>
+                      <div className="live-cost-val">{sensResult ? `RM${sensResult.costs.total_cost.toLocaleString()}` : "—"}</div>
                     </div>
                   </div>
                 </div>
@@ -1000,6 +1000,11 @@ export default function CostOptimizer() {
     </div>
   );
 }
+
+
+
+
+
 
 
 

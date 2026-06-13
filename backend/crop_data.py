@@ -1,14 +1,14 @@
-import numpy as np
+﻿import numpy as np
 UNIT_COSTS = {
-    "water_per_m3":  0.05,   # $/m³   
-    "fert_per_kg":   0.50,   # $/kg   
-    "labor_per_hour": 2.00,  # $/hour 
+    "water_per_m3":  0.23,   # RM/mÂ³   
+    "fert_per_kg":   2.25,   # RM/kg   
+    "labor_per_hour": 9.00,  # RM/hour 
 }
 
 CROP_DATA = {
     "rice": {
         "category":      "Grains",
-        "price_per_kg":  0.4,
+        "price_per_kg":  1.8,
         "yield_kg_ha":   4500,
         "water_m3_ha":   1200,
         "fert_kg_ha":    150,
@@ -17,7 +17,7 @@ CROP_DATA = {
     },
     "maize": {
         "category":      "Grains",
-        "price_per_kg":  0.22,
+        "price_per_kg":  0.99,
         "yield_kg_ha":   5500,
         "water_m3_ha":   500,
         "fert_kg_ha":    150,
@@ -26,7 +26,7 @@ CROP_DATA = {
     },
     "chickpea": {
         "category":      "Legumes",
-        "price_per_kg":  0.8,
+        "price_per_kg":  3.6,
         "yield_kg_ha":   1000,
         "water_m3_ha":   350,
         "fert_kg_ha":    60,
@@ -35,7 +35,7 @@ CROP_DATA = {
     },
     "kidneybeans": {
         "category":      "Legumes",
-        "price_per_kg":  1.2,
+        "price_per_kg":  5.4,
         "yield_kg_ha":   1500,
         "water_m3_ha":   400,
         "fert_kg_ha":    80,
@@ -44,7 +44,7 @@ CROP_DATA = {
     },
     "pigeonpeas": {
         "category":      "Legumes",
-        "price_per_kg":  0.7,
+        "price_per_kg":  3.15,
         "yield_kg_ha":   900,
         "water_m3_ha":   300,
         "fert_kg_ha":    50,
@@ -53,7 +53,7 @@ CROP_DATA = {
     },
     "mothbeans": {
         "category":      "Legumes",
-        "price_per_kg":  0.65,
+        "price_per_kg":  2.93,
         "yield_kg_ha":   700,
         "water_m3_ha":   250,
         "fert_kg_ha":    40,
@@ -62,7 +62,7 @@ CROP_DATA = {
     },
     "mungbean": {
         "category":      "Legumes",
-        "price_per_kg":  0.85,
+        "price_per_kg":  3.83,
         "yield_kg_ha":   1200,
         "water_m3_ha":   380,
         "fert_kg_ha":    60,
@@ -71,7 +71,7 @@ CROP_DATA = {
     },
     "blackgram": {
         "category":      "Legumes",
-        "price_per_kg":  0.9,
+        "price_per_kg":  4.05,
         "yield_kg_ha":   900,
         "water_m3_ha":   350,
         "fert_kg_ha":    55,
@@ -80,7 +80,7 @@ CROP_DATA = {
     },
     "lentil": {
         "category":      "Legumes",
-        "price_per_kg":  0.75,
+        "price_per_kg":  3.38,
         "yield_kg_ha":   1100,
         "water_m3_ha":   350,
         "fert_kg_ha":    60,
@@ -89,7 +89,7 @@ CROP_DATA = {
     },
     "pomegranate": {
         "category":      "Fruits",
-        "price_per_kg":  1.5,
+        "price_per_kg":  6.75,
         "yield_kg_ha":   12000,
         "water_m3_ha":   750,
         "fert_kg_ha":    120,
@@ -98,7 +98,7 @@ CROP_DATA = {
     },
     "banana": {
         "category":      "Fruits",
-        "price_per_kg":  0.3,
+        "price_per_kg":  1.35,
         "yield_kg_ha":   20000,
         "water_m3_ha":   1500,
         "fert_kg_ha":    300,
@@ -107,7 +107,7 @@ CROP_DATA = {
     },
     "mango": {
         "category":      "Fruits",
-        "price_per_kg":  0.8,
+        "price_per_kg":  3.6,
         "yield_kg_ha":   8000,
         "water_m3_ha":   600,
         "fert_kg_ha":    150,
@@ -116,7 +116,7 @@ CROP_DATA = {
     },
     "grapes": {
         "category":      "Fruits",
-        "price_per_kg":  1.2,
+        "price_per_kg":  5.4,
         "yield_kg_ha":   15000,
         "water_m3_ha":   700,
         "fert_kg_ha":    180,
@@ -125,7 +125,7 @@ CROP_DATA = {
     },
     "watermelon": {
         "category":      "Fruits",
-        "price_per_kg":  0.25,
+        "price_per_kg":  1.13,
         "yield_kg_ha":   25000,
         "water_m3_ha":   500,
         "fert_kg_ha":    120,
@@ -134,7 +134,7 @@ CROP_DATA = {
     },
     "muskmelon": {
         "category":      "Fruits",
-        "price_per_kg":  0.35,
+        "price_per_kg":  1.58,
         "yield_kg_ha":   18000,
         "water_m3_ha":   450,
         "fert_kg_ha":    110,
@@ -143,7 +143,7 @@ CROP_DATA = {
     },
     "apple": {
         "category":      "Fruits",
-        "price_per_kg":  1.0,
+        "price_per_kg":  4.5,
         "yield_kg_ha":   20000,
         "water_m3_ha":   800,
         "fert_kg_ha":    200,
@@ -152,7 +152,7 @@ CROP_DATA = {
     },
     "orange": {
         "category":      "Fruits",
-        "price_per_kg":  0.5,
+        "price_per_kg":  2.25,
         "yield_kg_ha":   18000,
         "water_m3_ha":   900,
         "fert_kg_ha":    180,
@@ -161,7 +161,7 @@ CROP_DATA = {
     },
     "papaya": {
         "category":      "Fruits",
-        "price_per_kg":  0.4,
+        "price_per_kg":  1.8,
         "yield_kg_ha":   35000,
         "water_m3_ha":   1000,
         "fert_kg_ha":    200,
@@ -170,7 +170,7 @@ CROP_DATA = {
     },
     "coconut": {
         "category":      "Fruits",
-        "price_per_kg":  0.25,
+        "price_per_kg":  1.13,
         "yield_kg_ha":   10000,
         "water_m3_ha":   1200,
         "fert_kg_ha":    150,
@@ -179,7 +179,7 @@ CROP_DATA = {
     },
     "cotton": {
         "category":      "Commercial",
-        "price_per_kg":  0.65,
+        "price_per_kg":  2.93,
         "yield_kg_ha":   2500,
         "water_m3_ha":   700,
         "fert_kg_ha":    160,
@@ -188,7 +188,7 @@ CROP_DATA = {
     },
     "jute": {
         "category":      "Commercial",
-        "price_per_kg":  0.35,
+        "price_per_kg":  1.58,
         "yield_kg_ha":   2500,
         "water_m3_ha":   500,
         "fert_kg_ha":    100,
@@ -197,7 +197,7 @@ CROP_DATA = {
     },
     "coffee": {
         "category":      "Commercial",
-        "price_per_kg":  2.5,
+        "price_per_kg":  11.25,
         "yield_kg_ha":   800,
         "water_m3_ha":   600,
         "fert_kg_ha":    150,
@@ -219,14 +219,14 @@ def get_crop(name: str, custom_params: dict = None) -> dict:
 
 
 def compute_max_revenue(crop_name: str, custom_params: dict = None) -> float:
-    """Maximum Revenue= price × yield (without any costs) so this is the perfect revenue without any water or labor cost taken """
+    """Maximum Revenue= price Ã— yield (without any costs) so this is the perfect revenue without any water or labor cost taken """
     c = get_crop(crop_name, custom_params)
     return c['price_per_kg'] * c['yield_kg_ha']
 
 
 def compute_costs(crop_name: str, water_ratio=1.0, fert_ratio=1.0, labor_ratio=1.0, custom_params: dict = None) -> dict:
     """
-    compute the costs depending on the Allocation ratio choice (0.0 → 1.0).
+    compute the costs depending on the Allocation ratio choice (0.0 â†’ 1.0).
     ratio=1.0 = complete use  of the crop ressources needed 
     """
     c = get_crop(crop_name, custom_params)
@@ -249,7 +249,7 @@ def compute_costs(crop_name: str, water_ratio=1.0, fert_ratio=1.0, labor_ratio=1
 
 
 def compute_profit(crop_name: str, water_ratio=1.0, fert_ratio=1.0, labor_ratio=1.0, custom_params: dict = None) -> float:
-    """Profit = Revenue × yield_factor − total_cost."""
+    """Profit = Revenue Ã— yield_factor âˆ’ total_cost."""
     c       = get_crop(crop_name, custom_params)
     costs   = compute_costs(crop_name, water_ratio, fert_ratio, labor_ratio, custom_params)
     if water_ratio <= 0 or fert_ratio <= 0 or labor_ratio <= 0:
