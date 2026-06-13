@@ -382,7 +382,7 @@ export default function CostOptimizer() {
 
             <div className="control-row" style={{ flexDirection: "column", alignItems: "flex-start", gap: "0.5rem" }}>
               <label>Crop</label>
-              <select value={selectedCrop} onChange={(e) => { setSelectedCrop(e.target.value); clearAll(); }}>
+              <select value={selectedCrop} onChange={(e) => { setSelectedCrop(e.target.value); clearAll(); }} disabled={statusType === "running"}>
                 {crops.map(c => <option key={c} value={c}>{c.charAt(0).toUpperCase() + c.slice(1)}</option>)}
               </select>
             </div>
@@ -394,6 +394,7 @@ export default function CostOptimizer() {
                     type="checkbox" 
                     checked={useCustomParams}
                     onChange={(e) => setUseCustomParams(e.target.checked)}
+                    disabled={statusType === "running"}
                     style={{ cursor: "pointer" }}
                   />
                   Use Custom Crop & Cost Settings
@@ -411,36 +412,36 @@ export default function CostOptimizer() {
                 <div style={{ marginTop: "1rem", display: "flex", flexDirection: "column", gap: "0.5rem", opacity: useCustomParams ? 1 : 0.5, pointerEvents: useCustomParams ? "auto" : "none" }}>
                   <div className="param-input-row" style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
                     <label style={{ fontSize: "0.75rem", color: "var(--co-text-muted)" }}>Price ($/kg)</label>
-                    <input type="number" step="0.01" value={customParams.price_per_kg} onChange={e => updateParam('price_per_kg', e.target.value)} style={{ width: "80px", padding: "4px", fontSize: "0.8rem", textAlign: "right" }} />
+                    <input type="number" step="0.01" value={customParams.price_per_kg} onChange={e => updateParam('price_per_kg', e.target.value)} disabled={statusType === "running"} style={{ width: "80px", padding: "4px", fontSize: "0.8rem", textAlign: "right" }} />
                   </div>
                   <div className="param-input-row" style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
                     <label style={{ fontSize: "0.75rem", color: "var(--co-text-muted)" }}>Yield (kg/ha)</label>
-                    <input type="number" step="100" value={customParams.yield_kg_ha} onChange={e => updateParam('yield_kg_ha', e.target.value)} style={{ width: "80px", padding: "4px", fontSize: "0.8rem", textAlign: "right" }} />
+                    <input type="number" step="100" value={customParams.yield_kg_ha} onChange={e => updateParam('yield_kg_ha', e.target.value)} disabled={statusType === "running"} style={{ width: "80px", padding: "4px", fontSize: "0.8rem", textAlign: "right" }} />
                   </div>
                   <div className="param-input-row" style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
                     <label style={{ fontSize: "0.75rem", color: "var(--co-text-muted)" }}>Water Req (m³/ha)</label>
-                    <input type="number" step="10" value={customParams.water_m3_ha} onChange={e => updateParam('water_m3_ha', e.target.value)} style={{ width: "80px", padding: "4px", fontSize: "0.8rem", textAlign: "right" }} />
+                    <input type="number" step="10" value={customParams.water_m3_ha} onChange={e => updateParam('water_m3_ha', e.target.value)} disabled={statusType === "running"} style={{ width: "80px", padding: "4px", fontSize: "0.8rem", textAlign: "right" }} />
                   </div>
                   <div className="param-input-row" style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
                     <label style={{ fontSize: "0.75rem", color: "var(--co-text-muted)" }}>Fertilizer Req (kg/ha)</label>
-                    <input type="number" step="10" value={customParams.fert_kg_ha} onChange={e => updateParam('fert_kg_ha', e.target.value)} style={{ width: "80px", padding: "4px", fontSize: "0.8rem", textAlign: "right" }} />
+                    <input type="number" step="10" value={customParams.fert_kg_ha} onChange={e => updateParam('fert_kg_ha', e.target.value)} disabled={statusType === "running"} style={{ width: "80px", padding: "4px", fontSize: "0.8rem", textAlign: "right" }} />
                   </div>
                   <div className="param-input-row" style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
                     <label style={{ fontSize: "0.75rem", color: "var(--co-text-muted)" }}>Labor Req (hours/ha)</label>
-                    <input type="number" step="5" value={customParams.labor_hours_ha} onChange={e => updateParam('labor_hours_ha', e.target.value)} style={{ width: "80px", padding: "4px", fontSize: "0.8rem", textAlign: "right" }} />
+                    <input type="number" step="5" value={customParams.labor_hours_ha} onChange={e => updateParam('labor_hours_ha', e.target.value)} disabled={statusType === "running"} style={{ width: "80px", padding: "4px", fontSize: "0.8rem", textAlign: "right" }} />
                   </div>
                   <hr style={{ margin: "0.5rem 0", borderColor: "var(--co-gray-line)" }} />
                   <div className="param-input-row" style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
                     <label style={{ fontSize: "0.75rem", color: "var(--co-text-muted)" }}>Water Cost ($/m³)</label>
-                    <input type="number" step="0.01" value={customParams.water_per_m3} onChange={e => updateParam('water_per_m3', e.target.value)} style={{ width: "80px", padding: "4px", fontSize: "0.8rem", textAlign: "right" }} />
+                    <input type="number" step="0.01" value={customParams.water_per_m3} onChange={e => updateParam('water_per_m3', e.target.value)} disabled={statusType === "running"} style={{ width: "80px", padding: "4px", fontSize: "0.8rem", textAlign: "right" }} />
                   </div>
                   <div className="param-input-row" style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
                     <label style={{ fontSize: "0.75rem", color: "var(--co-text-muted)" }}>Fertilizer Cost ($/kg)</label>
-                    <input type="number" step="0.01" value={customParams.fert_per_kg} onChange={e => updateParam('fert_per_kg', e.target.value)} style={{ width: "80px", padding: "4px", fontSize: "0.8rem", textAlign: "right" }} />
+                    <input type="number" step="0.01" value={customParams.fert_per_kg} onChange={e => updateParam('fert_per_kg', e.target.value)} disabled={statusType === "running"} style={{ width: "80px", padding: "4px", fontSize: "0.8rem", textAlign: "right" }} />
                   </div>
                   <div className="param-input-row" style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
                     <label style={{ fontSize: "0.75rem", color: "var(--co-text-muted)" }}>Labor Cost ($/hr)</label>
-                    <input type="number" step="0.5" value={customParams.labor_per_hour} onChange={e => updateParam('labor_per_hour', e.target.value)} style={{ width: "80px", padding: "4px", fontSize: "0.8rem", textAlign: "right" }} />
+                    <input type="number" step="0.5" value={customParams.labor_per_hour} onChange={e => updateParam('labor_per_hour', e.target.value)} disabled={statusType === "running"} style={{ width: "80px", padding: "4px", fontSize: "0.8rem", textAlign: "right" }} />
                   </div>
                 </div>
               )}
@@ -448,25 +449,31 @@ export default function CostOptimizer() {
 
             <p style={{ fontSize: "0.82rem", color: "var(--co-text-muted)", margin: "1.25rem 0 0.4rem", fontWeight: 600 }}>Optimization Mode</p>
             <div className="algo-group">
-              <button className={`algo-btn ${optMode === "standard" ? "active" : ""}`} onClick={() => { setOptMode("standard"); clearAll(); }}>Standard</button>
-              <button className={`algo-btn ${optMode === "compare" ? "active" : ""}`} onClick={() => { setOptMode("compare"); clearAll(); }}>Compare</button>
-              <button className={`algo-btn ${optMode === "hybrid" ? "active" : ""}`} onClick={() => { setOptMode("hybrid"); clearAll(); }}>Hybrid</button>
+              <button className={`algo-btn ${optMode === "standard" ? "active" : ""}`} onClick={() => { setOptMode("standard"); clearAll(); }} disabled={statusType === "running"}>Standard</button>
+              <button className={`algo-btn ${optMode === "compare" ? "active" : ""}`} onClick={() => { setOptMode("compare"); clearAll(); }} disabled={statusType === "running"}>Compare</button>
+              <button className={`algo-btn ${optMode === "hybrid" ? "active" : ""}`} onClick={() => { setOptMode("hybrid"); clearAll(); }} disabled={statusType === "running"}>Hybrid</button>
             </div>
 
             {optMode === "standard" && (
               <>
                 <p style={{ fontSize: "0.82rem", color: "var(--co-text-muted)", margin: "1.25rem 0 0.4rem", fontWeight: 600 }}>Algorithm Engine</p>
                 <div className="algo-group">
-                  <button className={`algo-btn ${algo === "PSO" ? "active" : ""}`} onClick={() => { setAlgo("PSO"); clearAll(); }}>PSO</button>
-                  <button className={`algo-btn ${algo === "GA" ? "active" : ""}`} onClick={() => { setAlgo("GA"); clearAll(); }}>Genetic Algorithm</button>
+                  <button className={`algo-btn ${algo === "PSO" ? "active" : ""}`} onClick={() => { setAlgo("PSO"); clearAll(); }} disabled={statusType === "running"}>PSO</button>
+                  <button className={`algo-btn ${algo === "GA" ? "active" : ""}`} onClick={() => { setAlgo("GA"); clearAll(); }} disabled={statusType === "running"}>Genetic Algorithm</button>
                 </div>
               </>
             )}
 
-            <div className="control-row" style={{ marginTop: "1.25rem" }}>
-              <label>Iterations</label>
-              <input type="range" min="20" max="150" step="10" value={iterations} onChange={(e) => setIterations(parseInt(e.target.value))} />
-              <span className="val-badge">{iterations}</span>
+            <div className="control-row" style={{ marginTop: "1.25rem", display: "flex", flexDirection: "column", gap: "0.25rem" }}>
+              <label style={{ fontSize: "0.82rem", color: "var(--co-text-muted)", fontWeight: 600 }}>Iterations</label>
+              <input 
+                type="number" 
+                min="1" 
+                value={iterations} 
+                onChange={(e) => setIterations(parseInt(e.target.value) || 1)} 
+                disabled={statusType === "running"}
+                style={{ padding: "8px 12px", border: "1px solid var(--co-border)", borderRadius: "6px", width: "100%", fontSize: "0.95rem" }}
+              />
             </div>
 
             <div style={{ display: "flex", gap: "10px", marginTop: "1.25rem" }}>
@@ -536,88 +543,98 @@ export default function CostOptimizer() {
                   </div>
                 </div>
 
-                <p className="section-eyebrow">Optimal Resource Allocation</p>
-
-                {result && (() => {
-                  // Derive actual usage ratios from cost breakdown (works with old & new backend)
-                  const wR = result.water_r != null ? result.water_r
-                    : (customParams.water_m3_ha > 0 && customParams.water_per_m3 > 0
-                        ? result.water_cost / (customParams.water_m3_ha * customParams.water_per_m3)
-                        : null);
-                  const fR = result.fert_r != null ? result.fert_r
-                    : (customParams.fert_kg_ha > 0 && customParams.fert_per_kg > 0
-                        ? result.fert_cost / (customParams.fert_kg_ha * customParams.fert_per_kg)
-                        : null);
-                  const lR = result.labor_r != null ? result.labor_r
-                    : (customParams.labor_hours_ha > 0 && customParams.labor_per_hour > 0
-                        ? result.labor_cost / (customParams.labor_hours_ha * customParams.labor_per_hour)
-                        : null);
-
-                  return (
-                    <>
-                      <div style={{ padding: "12px", background: "var(--co-green-pale)", border: "1px solid var(--co-green-light)", borderRadius: "8px", marginBottom: "1.25rem", color: "var(--co-green-dark)", fontSize: "0.88rem", lineHeight: "1.4" }}>
-                        <strong>Insight:</strong> For <strong>{selectedCrop}</strong> cultivation, the maximum profit of <strong>${result.best_profit.toLocaleString()}</strong> per hectare can be achieved by utilizing <strong>{wR != null ? (wR * 100).toFixed(1) : result.water_pct}%</strong> of the available water resources, <strong>{fR != null ? (fR * 100).toFixed(1) : result.fert_pct}%</strong> of the fertilizer resources, and <strong>{lR != null ? (lR * 100).toFixed(1) : result.labor_pct}%</strong> of the labor resources.
-                      </div>
-
-                      <div className="alloc-row" style={{ marginBottom: "1.2rem" }}>
-                        <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "0.25rem", fontSize: "0.9rem" }}>
-                          <strong>Water Usage</strong>
-                          <strong style={{ color: "var(--co-text-muted)" }}>${result.water_cost.toLocaleString()}</strong>
-                        </div>
-                        <div style={{ display: "flex", justifyContent: "space-between", fontSize: "0.85rem", color: "var(--co-text-muted)", marginBottom: "0.4rem" }}>
-                          {wR != null
-                            ? <span>{(wR * customParams.water_m3_ha).toFixed(1)} / {customParams.water_m3_ha} m³/ha</span>
-                            : <span>—</span>}
-                          <span>{wR != null ? `${(wR * 100).toFixed(1)}%` : `${result.water_pct}%`}</span>
-                        </div>
-                        <div className="bar-bg"><div className="bar-fill" style={{ background: "#1976D2", width: wR != null ? `${Math.min(wR * 100, 100)}%` : `${result.water_pct ?? 0}%` }}></div></div>
-                      </div>
-
-                      <div className="alloc-row" style={{ marginBottom: "1.2rem" }}>
-                        <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "0.25rem", fontSize: "0.9rem" }}>
-                          <strong>Fertilizer Usage</strong>
-                          <strong style={{ color: "var(--co-text-muted)" }}>${result.fert_cost.toLocaleString()}</strong>
-                        </div>
-                        <div style={{ display: "flex", justifyContent: "space-between", fontSize: "0.85rem", color: "var(--co-text-muted)", marginBottom: "0.4rem" }}>
-                          {fR != null
-                            ? <span>{(fR * customParams.fert_kg_ha).toFixed(1)} / {customParams.fert_kg_ha} kg/ha</span>
-                            : <span>—</span>}
-                          <span>{fR != null ? `${(fR * 100).toFixed(1)}%` : `${result.fert_pct}%`}</span>
-                        </div>
-                        <div className="bar-bg"><div className="bar-fill" style={{ background: "#2E7D32", width: fR != null ? `${Math.min(fR * 100, 100)}%` : `${result.fert_pct ?? 0}%` }}></div></div>
-                      </div>
-
-                      <div className="alloc-row" style={{ marginBottom: "1.2rem" }}>
-                        <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "0.25rem", fontSize: "0.9rem" }}>
-                          <strong>Labor Usage</strong>
-                          <strong style={{ color: "var(--co-text-muted)" }}>${result.labor_cost.toLocaleString()}</strong>
-                        </div>
-                        <div style={{ display: "flex", justifyContent: "space-between", fontSize: "0.85rem", color: "var(--co-text-muted)", marginBottom: "0.4rem" }}>
-                          {lR != null
-                            ? <span>{(lR * customParams.labor_hours_ha).toFixed(1)} / {customParams.labor_hours_ha} hrs/ha</span>
-                            : <span>—</span>}
-                          <span>{lR != null ? `${(lR * 100).toFixed(1)}%` : `${result.labor_pct}%`}</span>
-                        </div>
-                        <div className="bar-bg"><div className="bar-fill" style={{ background: "#F57F17", width: lR != null ? `${Math.min(lR * 100, 100)}%` : `${result.labor_pct ?? 0}%` }}></div></div>
-                      </div>
-                    </>
-                  );
-                })()}
-                
-                {result && result.custom_params && (
-                  <div style={{ marginTop: "1.5rem", background: "#f8f9fa", padding: "12px", borderRadius: "8px", border: "1px solid #e9ecef" }}>
-                    <p className="section-eyebrow" style={{ marginBottom: "0.5rem" }}>Parameters Used for Optimization</p>
-                    <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "8px", fontSize: "0.75rem" }}>
-                      <div style={{ display: "flex", justifyContent: "space-between" }}><span style={{ color: "var(--co-text-muted)" }}>Price:</span> <span>${result.custom_params.price_per_kg}/kg</span></div>
-                      <div style={{ display: "flex", justifyContent: "space-between" }}><span style={{ color: "var(--co-text-muted)" }}>Yield:</span> <span>{result.custom_params.yield_kg_ha} kg/ha</span></div>
-                      <div style={{ display: "flex", justifyContent: "space-between" }}><span style={{ color: "var(--co-text-muted)" }}>Water Req:</span> <span>{result.custom_params.water_m3_ha} m³/ha</span></div>
-                      <div style={{ display: "flex", justifyContent: "space-between" }}><span style={{ color: "var(--co-text-muted)" }}>Fert Req:</span> <span>{result.custom_params.fert_kg_ha} kg/ha</span></div>
-                      <div style={{ display: "flex", justifyContent: "space-between" }}><span style={{ color: "var(--co-text-muted)" }}>Labor Req:</span> <span>{result.custom_params.labor_hours_ha} hrs/ha</span></div>
-                      <div style={{ display: "flex", justifyContent: "space-between" }}><span style={{ color: "var(--co-text-muted)" }}>Water Cost:</span> <span>${result.custom_params.water_per_m3}/m³</span></div>
-                      <div style={{ display: "flex", justifyContent: "space-between" }}><span style={{ color: "var(--co-text-muted)" }}>Fert Cost:</span> <span>${result.custom_params.fert_per_kg}/kg</span></div>
-                      <div style={{ display: "flex", justifyContent: "space-between" }}><span style={{ color: "var(--co-text-muted)" }}>Labor Cost:</span> <span>${result.custom_params.labor_per_hour}/hr</span></div>
-                    </div>
+                {result && result.best_profit < 0 ? (
+                  <div style={{ marginTop: "1.5rem", padding: "16px", background: "#FFF8F7", border: "1px solid #FF8A80", borderRadius: "8px", color: "#C62828", fontSize: "0.95rem", lineHeight: "1.5", textAlign: "center", fontWeight: 500 }}>
+                    ⚠️ The optimization resulted in a loss (${Math.abs(result.best_profit).toLocaleString()}). 
+                    <br/>
+                    Please adjust your parameters, increase your budget, or select a different crop to achieve profitability.
                   </div>
+                ) : (
+                  <>
+                    <p className="section-eyebrow">Optimal Resource Allocation</p>
+
+                    {result && (() => {
+                      // Derive actual usage ratios from cost breakdown (works with old & new backend)
+                      const wR = result.water_r != null ? result.water_r
+                        : (customParams.water_m3_ha > 0 && customParams.water_per_m3 > 0
+                            ? result.water_cost / (customParams.water_m3_ha * customParams.water_per_m3)
+                            : null);
+                      const fR = result.fert_r != null ? result.fert_r
+                        : (customParams.fert_kg_ha > 0 && customParams.fert_per_kg > 0
+                            ? result.fert_cost / (customParams.fert_kg_ha * customParams.fert_per_kg)
+                            : null);
+                      const lR = result.labor_r != null ? result.labor_r
+                        : (customParams.labor_hours_ha > 0 && customParams.labor_per_hour > 0
+                            ? result.labor_cost / (customParams.labor_hours_ha * customParams.labor_per_hour)
+                            : null);
+
+                      return (
+                        <>
+                          <div style={{ padding: "12px", background: "var(--co-green-pale)", border: "1px solid var(--co-green-light)", borderRadius: "8px", marginBottom: "1.25rem", color: "var(--co-green-dark)", fontSize: "0.88rem", lineHeight: "1.4" }}>
+                            <strong>Insight:</strong> For <strong>{selectedCrop}</strong> cultivation, the maximum profit of <strong>RM{result.best_profit.toLocaleString()}</strong> per hectare can be achieved by utilizing <strong>{wR != null ? (wR * 100).toFixed(1) : result.water_pct}%</strong> of the available water resources, <strong>{fR != null ? (fR * 100).toFixed(1) : result.fert_pct}%</strong> of the fertilizer resources, and <strong>{lR != null ? (lR * 100).toFixed(1) : result.labor_pct}%</strong> of the labor resources.
+                          </div>
+
+                          <div className="alloc-row" style={{ marginBottom: "1.2rem" }}>
+                            <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "0.25rem", fontSize: "0.9rem" }}>
+                              <strong>Water Usage</strong>
+                              <strong style={{ color: "var(--co-text-muted)" }}>RM{result.water_cost.toLocaleString()}</strong>
+                            </div>
+                            <div style={{ display: "flex", justifyContent: "space-between", fontSize: "0.85rem", color: "var(--co-text-muted)", marginBottom: "0.4rem" }}>
+                              {wR != null
+                                ? <span>{(wR * customParams.water_m3_ha).toFixed(1)} / {customParams.water_m3_ha} m³/ha</span>
+                                : <span>—</span>}
+                              <span>{wR != null ? `${(wR * 100).toFixed(1)}%` : `${result.water_pct}%`}</span>
+                            </div>
+                            <div className="bar-bg"><div className="bar-fill" style={{ background: "#1976D2", width: wR != null ? `${Math.min(wR * 100, 100)}%` : `${result.water_pct ?? 0}%` }}></div></div>
+                          </div>
+
+                          <div className="alloc-row" style={{ marginBottom: "1.2rem" }}>
+                            <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "0.25rem", fontSize: "0.9rem" }}>
+                              <strong>Fertilizer Usage</strong>
+                              <strong style={{ color: "var(--co-text-muted)" }}>RM{result.fert_cost.toLocaleString()}</strong>
+                            </div>
+                            <div style={{ display: "flex", justifyContent: "space-between", fontSize: "0.85rem", color: "var(--co-text-muted)", marginBottom: "0.4rem" }}>
+                              {fR != null
+                                ? <span>{(fR * customParams.fert_kg_ha).toFixed(1)} / {customParams.fert_kg_ha} kg/ha</span>
+                                : <span>—</span>}
+                              <span>{fR != null ? `${(fR * 100).toFixed(1)}%` : `${result.fert_pct}%`}</span>
+                            </div>
+                            <div className="bar-bg"><div className="bar-fill" style={{ background: "#2E7D32", width: fR != null ? `${Math.min(fR * 100, 100)}%` : `${result.fert_pct ?? 0}%` }}></div></div>
+                          </div>
+
+                          <div className="alloc-row" style={{ marginBottom: "1.2rem" }}>
+                            <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "0.25rem", fontSize: "0.9rem" }}>
+                              <strong>Labor Usage</strong>
+                              <strong style={{ color: "var(--co-text-muted)" }}>RM{result.labor_cost.toLocaleString()}</strong>
+                            </div>
+                            <div style={{ display: "flex", justifyContent: "space-between", fontSize: "0.85rem", color: "var(--co-text-muted)", marginBottom: "0.4rem" }}>
+                              {lR != null
+                                ? <span>{(lR * customParams.labor_hours_ha).toFixed(1)} / {customParams.labor_hours_ha} hrs/ha</span>
+                                : <span>—</span>}
+                              <span>{lR != null ? `${(lR * 100).toFixed(1)}%` : `${result.labor_pct}%`}</span>
+                            </div>
+                            <div className="bar-bg"><div className="bar-fill" style={{ background: "#F57F17", width: lR != null ? `${Math.min(lR * 100, 100)}%` : `${result.labor_pct ?? 0}%` }}></div></div>
+                          </div>
+                        </>
+                      );
+                    })()}
+                    
+                    {result && result.custom_params && (
+                      <div style={{ marginTop: "1.5rem", background: "#f8f9fa", padding: "12px", borderRadius: "8px", border: "1px solid #e9ecef" }}>
+                        <p className="section-eyebrow" style={{ marginBottom: "0.5rem" }}>Parameters Used for Optimization</p>
+                        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "8px", fontSize: "0.75rem" }}>
+                          <div style={{ display: "flex", justifyContent: "space-between" }}><span style={{ color: "var(--co-text-muted)" }}>Price:</span> <span>RM{result.custom_params.price_per_kg}/kg</span></div>
+                          <div style={{ display: "flex", justifyContent: "space-between" }}><span style={{ color: "var(--co-text-muted)" }}>Yield:</span> <span>{result.custom_params.yield_kg_ha} kg/ha</span></div>
+                          <div style={{ display: "flex", justifyContent: "space-between" }}><span style={{ color: "var(--co-text-muted)" }}>Water Req:</span> <span>{result.custom_params.water_m3_ha} m³/ha</span></div>
+                          <div style={{ display: "flex", justifyContent: "space-between" }}><span style={{ color: "var(--co-text-muted)" }}>Fert Req:</span> <span>{result.custom_params.fert_kg_ha} kg/ha</span></div>
+                          <div style={{ display: "flex", justifyContent: "space-between" }}><span style={{ color: "var(--co-text-muted)" }}>Labor Req:</span> <span>{result.custom_params.labor_hours_ha} hrs/ha</span></div>
+                          <div style={{ display: "flex", justifyContent: "space-between" }}><span style={{ color: "var(--co-text-muted)" }}>Water Cost:</span> <span>RM{result.custom_params.water_per_m3}/m³</span></div>
+                          <div style={{ display: "flex", justifyContent: "space-between" }}><span style={{ color: "var(--co-text-muted)" }}>Fert Cost:</span> <span>RM{result.custom_params.fert_per_kg}/kg</span></div>
+                          <div style={{ display: "flex", justifyContent: "space-between" }}><span style={{ color: "var(--co-text-muted)" }}>Labor Cost:</span> <span>RM{result.custom_params.labor_per_hour}/hr</span></div>
+                        </div>
+                      </div>
+                    )}
+                  </>
                 )}
               </>
             )}
@@ -664,48 +681,56 @@ export default function CostOptimizer() {
                   <p style={{ fontSize: "0.88rem", color: "var(--co-text-muted)", marginBottom: "1.25rem" }}>
                     Comparison for <strong>{compResult.crop}</strong>
                   </p>
-                  <div className="comparison-grid">
-                    {/* PSO column */}
-                    {(() => {
-                      const p = compResult.results.PSO;
-                      const wR = p.water_r != null ? p.water_r : (customParams.water_m3_ha > 0 && customParams.water_per_m3 > 0 ? p.water_cost / (customParams.water_m3_ha * customParams.water_per_m3) : null);
-                      const fR = p.fert_r  != null ? p.fert_r  : (customParams.fert_kg_ha  > 0 && customParams.fert_per_kg   > 0 ? p.fert_cost  / (customParams.fert_kg_ha  * customParams.fert_per_kg)   : null);
-                      const lR = p.labor_r != null ? p.labor_r : (customParams.labor_hours_ha > 0 && customParams.labor_per_hour > 0 ? p.labor_cost / (customParams.labor_hours_ha * customParams.labor_per_hour) : null);
-                      return (
-                        <div className="algo-result">
-                          <div className="algo-result-title">PSO</div>
-                          <div className="result-item"><span>Best Profit</span><span>${p.best_profit.toLocaleString()}</span></div>
-                          <div className="result-item"><span>Revenue</span><span>${p.revenue.toLocaleString()}</span></div>
-                          <div className="result-item"><span>Total Cost</span><span>${p.total_cost.toLocaleString()}</span></div>
-                          <div className="result-item"><span>Iterations</span><span>{p.iterations}</span></div>
-                          <hr style={{ margin: "0.8rem 0", border: "none", borderTop: "1px solid var(--co-gray-line)" }} />
-                          <div className="result-item"><span>Water</span><span>{wR != null ? `${(wR * customParams.water_m3_ha).toFixed(1)} / ${customParams.water_m3_ha} m³/ha (${(wR*100).toFixed(1)}%)` : `${p.water_pct}%`}</span></div>
-                          <div className="result-item"><span>Fertilizer</span><span>{fR != null ? `${(fR * customParams.fert_kg_ha).toFixed(1)} / ${customParams.fert_kg_ha} kg/ha (${(fR*100).toFixed(1)}%)` : `${p.fert_pct}%`}</span></div>
-                          <div className="result-item"><span>Labor</span><span>{lR != null ? `${(lR * customParams.labor_hours_ha).toFixed(1)} / ${customParams.labor_hours_ha} hrs/ha (${(lR*100).toFixed(1)}%)` : `${p.labor_pct}%`}</span></div>
-                        </div>
-                      );
-                    })()}
-                    {/* GA column */}
-                    {(() => {
-                      const g = compResult.results.GA;
-                      const wR = g.water_r != null ? g.water_r : (customParams.water_m3_ha > 0 && customParams.water_per_m3 > 0 ? g.water_cost / (customParams.water_m3_ha * customParams.water_per_m3) : null);
-                      const fR = g.fert_r  != null ? g.fert_r  : (customParams.fert_kg_ha  > 0 && customParams.fert_per_kg   > 0 ? g.fert_cost  / (customParams.fert_kg_ha  * customParams.fert_per_kg)   : null);
-                      const lR = g.labor_r != null ? g.labor_r : (customParams.labor_hours_ha > 0 && customParams.labor_per_hour > 0 ? g.labor_cost / (customParams.labor_hours_ha * customParams.labor_per_hour) : null);
-                      return (
-                        <div className="algo-result ga">
-                          <div className="algo-result-title">Genetic Algorithm</div>
-                          <div className="result-item"><span>Best Profit</span><span>${g.best_profit.toLocaleString()}</span></div>
-                          <div className="result-item"><span>Revenue</span><span>${g.revenue.toLocaleString()}</span></div>
-                          <div className="result-item"><span>Total Cost</span><span>${g.total_cost.toLocaleString()}</span></div>
-                          <div className="result-item"><span>Iterations</span><span>{g.iterations}</span></div>
-                          <hr style={{ margin: "0.8rem 0", border: "none", borderTop: "1px solid var(--co-gray-line)" }} />
-                          <div className="result-item"><span>Water</span><span>{wR != null ? `${(wR * customParams.water_m3_ha).toFixed(1)} / ${customParams.water_m3_ha} m³/ha (${(wR*100).toFixed(1)}%)` : `${g.water_pct}%`}</span></div>
-                          <div className="result-item"><span>Fertilizer</span><span>{fR != null ? `${(fR * customParams.fert_kg_ha).toFixed(1)} / ${customParams.fert_kg_ha} kg/ha (${(fR*100).toFixed(1)}%)` : `${g.fert_pct}%`}</span></div>
-                          <div className="result-item"><span>Labor</span><span>{lR != null ? `${(lR * customParams.labor_hours_ha).toFixed(1)} / ${customParams.labor_hours_ha} hrs/ha (${(lR*100).toFixed(1)}%)` : `${g.labor_pct}%`}</span></div>
-                        </div>
-                      );
-                    })()}
-                  </div>
+                  {compResult.results[compResult.winner].best_profit < 0 ? (
+                    <div style={{ padding: "16px", background: "#FFF8F7", border: "1px solid #FF8A80", borderRadius: "8px", color: "#C62828", fontSize: "0.95rem", lineHeight: "1.5", textAlign: "center", fontWeight: 500 }}>
+                      ⚠️ The optimization resulted in a loss (RM{Math.abs(compResult.results[compResult.winner].best_profit).toLocaleString()}). 
+                      <br/>
+                      Please adjust your parameters, increase your budget, or select a different crop to achieve profitability.
+                    </div>
+                  ) : (
+                    <div className="comparison-grid">
+                      {/* PSO column */}
+                      {(() => {
+                        const p = compResult.results.PSO;
+                        const wR = p.water_r != null ? p.water_r : (customParams.water_m3_ha > 0 && customParams.water_per_m3 > 0 ? p.water_cost / (customParams.water_m3_ha * customParams.water_per_m3) : null);
+                        const fR = p.fert_r  != null ? p.fert_r  : (customParams.fert_kg_ha  > 0 && customParams.fert_per_kg   > 0 ? p.fert_cost  / (customParams.fert_kg_ha  * customParams.fert_per_kg)   : null);
+                        const lR = p.labor_r != null ? p.labor_r : (customParams.labor_hours_ha > 0 && customParams.labor_per_hour > 0 ? p.labor_cost / (customParams.labor_hours_ha * customParams.labor_per_hour) : null);
+                        return (
+                          <div className="algo-result">
+                            <div className="algo-result-title">PSO</div>
+                            <div className="result-item"><span>Best Profit</span><span>RM{p.best_profit.toLocaleString()}</span></div>
+                            <div className="result-item"><span>Revenue</span><span>RM{p.revenue.toLocaleString()}</span></div>
+                            <div className="result-item"><span>Total Cost</span><span>RM{p.total_cost.toLocaleString()}</span></div>
+                            <div className="result-item"><span>Iterations</span><span>{p.iterations}</span></div>
+                            <hr style={{ margin: "0.8rem 0", border: "none", borderTop: "1px solid var(--co-gray-line)" }} />
+                            <div className="result-item"><span>Water</span><span>{wR != null ? `${(wR * customParams.water_m3_ha).toFixed(1)} / ${customParams.water_m3_ha} m³/ha (${(wR*100).toFixed(1)}%)` : `${p.water_pct}%`}</span></div>
+                            <div className="result-item"><span>Fertilizer</span><span>{fR != null ? `${(fR * customParams.fert_kg_ha).toFixed(1)} / ${customParams.fert_kg_ha} kg/ha (${(fR*100).toFixed(1)}%)` : `${p.fert_pct}%`}</span></div>
+                            <div className="result-item"><span>Labor</span><span>{lR != null ? `${(lR * customParams.labor_hours_ha).toFixed(1)} / ${customParams.labor_hours_ha} hrs/ha (${(lR*100).toFixed(1)}%)` : `${p.labor_pct}%`}</span></div>
+                          </div>
+                        );
+                      })()}
+                      {/* GA column */}
+                      {(() => {
+                        const g = compResult.results.GA;
+                        const wR = g.water_r != null ? g.water_r : (customParams.water_m3_ha > 0 && customParams.water_per_m3 > 0 ? g.water_cost / (customParams.water_m3_ha * customParams.water_per_m3) : null);
+                        const fR = g.fert_r  != null ? g.fert_r  : (customParams.fert_kg_ha  > 0 && customParams.fert_per_kg   > 0 ? g.fert_cost  / (customParams.fert_kg_ha  * customParams.fert_per_kg)   : null);
+                        const lR = g.labor_r != null ? g.labor_r : (customParams.labor_hours_ha > 0 && customParams.labor_per_hour > 0 ? g.labor_cost / (customParams.labor_hours_ha * customParams.labor_per_hour) : null);
+                        return (
+                          <div className="algo-result ga">
+                            <div className="algo-result-title">Genetic Algorithm</div>
+                            <div className="result-item"><span>Best Profit</span><span>RM{g.best_profit.toLocaleString()}</span></div>
+                            <div className="result-item"><span>Revenue</span><span>RM{g.revenue.toLocaleString()}</span></div>
+                            <div className="result-item"><span>Total Cost</span><span>RM{g.total_cost.toLocaleString()}</span></div>
+                            <div className="result-item"><span>Iterations</span><span>{g.iterations}</span></div>
+                            <hr style={{ margin: "0.8rem 0", border: "none", borderTop: "1px solid var(--co-gray-line)" }} />
+                            <div className="result-item"><span>Water</span><span>{wR != null ? `${(wR * customParams.water_m3_ha).toFixed(1)} / ${customParams.water_m3_ha} m³/ha (${(wR*100).toFixed(1)}%)` : `${g.water_pct}%`}</span></div>
+                            <div className="result-item"><span>Fertilizer</span><span>{fR != null ? `${(fR * customParams.fert_kg_ha).toFixed(1)} / ${customParams.fert_kg_ha} kg/ha (${(fR*100).toFixed(1)}%)` : `${g.fert_pct}%`}</span></div>
+                            <div className="result-item"><span>Labor</span><span>{lR != null ? `${(lR * customParams.labor_hours_ha).toFixed(1)} / ${customParams.labor_hours_ha} hrs/ha (${(lR*100).toFixed(1)}%)` : `${g.labor_pct}%`}</span></div>
+                          </div>
+                        );
+                      })()}
+                    </div>
+                  )}
                 </>
               )}
             </div>
@@ -723,124 +748,134 @@ export default function CostOptimizer() {
 
               {!isHybridCollapsed && (
                 <>
-                  {/* Pipeline */}
-                  <div className="pipeline">
-                    <div className="pipeline-box pso">
-                      <div className="pipeline-icon">1</div>
-                      <div className="pipeline-label pso">Phase 1 — PSO</div>
-                      <div className="pipeline-sub">Exploration</div>
-                      <div className="pipeline-value green">${hybridResult.pso_profit.toLocaleString()}</div>
+                  {hybridResult.best_profit < 0 ? (
+                    <div style={{ marginTop: "1.5rem", padding: "16px", background: "#FFF8F7", border: "1px solid #FF8A80", borderRadius: "8px", color: "#C62828", fontSize: "0.95rem", lineHeight: "1.5", textAlign: "center", fontWeight: 500 }}>
+                      ⚠️ The optimization resulted in a loss (RM{Math.abs(hybridResult.best_profit).toLocaleString()}). 
+                      <br/>
+                      Please adjust your parameters, increase your budget, or select a different crop to achieve profitability.
                     </div>
-                    <div className="pipeline-arrow">→</div>
-                    <div className="pipeline-box seed">
-                      <div className="pipeline-icon">2</div>
-                      <div className="pipeline-label seed">Seeds GA</div>
-                      <div className="pipeline-sub">PSO best → initial pop</div>
-                      <div className="pipeline-value" style={{ color: "var(--co-blue)", fontSize: "0.75rem", marginTop: 6 }}>
-                        {hybridResult.pso_iters} iters → seeds {hybridResult.ga_gens} GA gens
+                  ) : (
+                    <>
+                      {/* Pipeline */}
+                      <div className="pipeline">
+                        <div className="pipeline-box pso">
+                          <div className="pipeline-icon">1</div>
+                          <div className="pipeline-label pso">Phase 1 — PSO</div>
+                          <div className="pipeline-sub">Exploration</div>
+                          <div className="pipeline-value green">RM{hybridResult.pso_profit.toLocaleString()}</div>
+                        </div>
+                        <div className="pipeline-arrow">→</div>
+                        <div className="pipeline-box seed">
+                          <div className="pipeline-icon">2</div>
+                          <div className="pipeline-label seed">Seeds GA</div>
+                          <div className="pipeline-sub">PSO best → initial pop</div>
+                          <div className="pipeline-value" style={{ color: "var(--co-blue)", fontSize: "0.75rem", marginTop: 6 }}>
+                            {hybridResult.pso_iters} iters → seeds {hybridResult.ga_gens} GA gens
+                          </div>
+                        </div>
+                        <div className="pipeline-arrow">→</div>
+                        <div className="pipeline-box ga">
+                          <div className="pipeline-icon">3</div>
+                          <div className="pipeline-label ga">Phase 2 — GA</div>
+                          <div className="pipeline-sub">Refinement</div>
+                          <div className="pipeline-value purple">{hybridResult.ga_gens} gens</div>
+                        </div>
+                        <div className="pipeline-arrow">→</div>
+                        <div className="pipeline-box final">
+                          <div className="pipeline-icon">4</div>
+                          <div className="pipeline-label final">Final Result</div>
+                          <div className="pipeline-sub">Best profit</div>
+                          <div className="pipeline-value amber">RM{hybridResult.best_profit.toLocaleString()}</div>
+                        </div>
                       </div>
-                    </div>
-                    <div className="pipeline-arrow">→</div>
-                    <div className="pipeline-box ga">
-                      <div className="pipeline-icon">3</div>
-                      <div className="pipeline-label ga">Phase 2 — GA</div>
-                      <div className="pipeline-sub">Refinement</div>
-                      <div className="pipeline-value purple">{hybridResult.ga_gens} gens</div>
-                    </div>
-                    <div className="pipeline-arrow">→</div>
-                    <div className="pipeline-box final">
-                      <div className="pipeline-icon">4</div>
-                      <div className="pipeline-label final">Final Result</div>
-                      <div className="pipeline-sub">Best profit</div>
-                      <div className="pipeline-value amber">${hybridResult.best_profit.toLocaleString()}</div>
-                    </div>
-                  </div>
 
-                  {/* Improvement strip */}
-                  <div className="improvement-strip">
-                    <div className="improv-item">
-                      <div className="improv-label">PSO alone</div>
-                      <div className="improv-val green">${hybridResult.pso_profit.toLocaleString()}</div>
-                    </div>
-                    <div className="improv-divider">→</div>
-                    <div className="improv-item">
-                      <div className="improv-label">Improvement</div>
-                      <div className="improv-val purple">
-                        {hybridResult.improvement >= 0 ? "+" : ""}${hybridResult.improvement.toLocaleString()} ({hybridResult.improvement >= 0 ? "+" : ""}{hybridResult.improvement_pct}%)
+                      {/* Improvement strip */}
+                      <div className="improvement-strip">
+                        <div className="improv-item">
+                          <div className="improv-label">PSO alone</div>
+                          <div className="improv-val green">RM{hybridResult.pso_profit.toLocaleString()}</div>
+                        </div>
+                        <div className="improv-divider">→</div>
+                        <div className="improv-item">
+                          <div className="improv-label">Improvement</div>
+                          <div className="improv-val purple">
+                            {hybridResult.improvement >= 0 ? "+" : ""}RM{hybridResult.improvement.toLocaleString()} ({hybridResult.improvement >= 0 ? "+" : ""}{hybridResult.improvement_pct}%)
+                          </div>
+                        </div>
+                        <div className="improv-divider">→</div>
+                        <div className="improv-item">
+                          <div className="improv-label">Hybrid Final</div>
+                          <div className="improv-val amber">RM{hybridResult.best_profit.toLocaleString()}</div>
+                        </div>
                       </div>
-                    </div>
-                    <div className="improv-divider">→</div>
-                    <div className="improv-item">
-                      <div className="improv-label">Hybrid Final</div>
-                      <div className="improv-val amber">${hybridResult.best_profit.toLocaleString()}</div>
-                    </div>
-                  </div>
 
-                  {/* Allocation + chart */}
-                  <div className="grid-2">
-                    <div>
-                      <p className="section-eyebrow">Optimal Allocation (Hybrid)</p>
+                      {/* Allocation + chart */}
+                      <div className="grid-2">
+                        <div>
+                          <p className="section-eyebrow">Optimal Allocation (Hybrid)</p>
 
-                      {(() => {
-                        const wR = hybridResult.water_r != null ? hybridResult.water_r : (customParams.water_m3_ha > 0 && customParams.water_per_m3 > 0 ? hybridResult.water_cost / (customParams.water_m3_ha * customParams.water_per_m3) : null);
-                        const fR = hybridResult.fert_r  != null ? hybridResult.fert_r  : (customParams.fert_kg_ha  > 0 && customParams.fert_per_kg   > 0 ? hybridResult.fert_cost  / (customParams.fert_kg_ha  * customParams.fert_per_kg)   : null);
-                        const lR = hybridResult.labor_r != null ? hybridResult.labor_r : (customParams.labor_hours_ha > 0 && customParams.labor_per_hour > 0 ? hybridResult.labor_cost / (customParams.labor_hours_ha * customParams.labor_per_hour) : null);
-                        return (
-                          <>
-                            <div style={{ padding: "12px", background: "var(--co-purple-light)", border: "1px solid #D1C4E9", borderRadius: "8px", marginBottom: "1.25rem", color: "var(--co-purple)", fontSize: "0.88rem", lineHeight: "1.4" }}>
-                              <strong>Insight:</strong> For <strong>{selectedCrop}</strong> cultivation, the maximum profit of <strong>${hybridResult.best_profit.toLocaleString()}</strong> per hectare can be achieved by utilizing <strong>{wR != null ? (wR * 100).toFixed(1) : hybridResult.water_pct}%</strong> of the available water resources, <strong>{fR != null ? (fR * 100).toFixed(1) : hybridResult.fert_pct}%</strong> of the fertilizer resources, and <strong>{lR != null ? (lR * 100).toFixed(1) : hybridResult.labor_pct}%</strong> of the labor resources.
-                            </div>
+                          {(() => {
+                            const wR = hybridResult.water_r != null ? hybridResult.water_r : (customParams.water_m3_ha > 0 && customParams.water_per_m3 > 0 ? hybridResult.water_cost / (customParams.water_m3_ha * customParams.water_per_m3) : null);
+                            const fR = hybridResult.fert_r  != null ? hybridResult.fert_r  : (customParams.fert_kg_ha  > 0 && customParams.fert_per_kg   > 0 ? hybridResult.fert_cost  / (customParams.fert_kg_ha  * customParams.fert_per_kg)   : null);
+                            const lR = hybridResult.labor_r != null ? hybridResult.labor_r : (customParams.labor_hours_ha > 0 && customParams.labor_per_hour > 0 ? hybridResult.labor_cost / (customParams.labor_hours_ha * customParams.labor_per_hour) : null);
+                            return (
+                              <>
+                                <div style={{ padding: "12px", background: "var(--co-purple-light)", border: "1px solid #D1C4E9", borderRadius: "8px", marginBottom: "1.25rem", color: "var(--co-purple)", fontSize: "0.88rem", lineHeight: "1.4" }}>
+                                  <strong>Insight:</strong> For <strong>{selectedCrop}</strong> cultivation, the maximum profit of <strong>RM{hybridResult.best_profit.toLocaleString()}</strong> per hectare can be achieved by utilizing <strong>{wR != null ? (wR * 100).toFixed(1) : hybridResult.water_pct}%</strong> of the available water resources, <strong>{fR != null ? (fR * 100).toFixed(1) : hybridResult.fert_pct}%</strong> of the fertilizer resources, and <strong>{lR != null ? (lR * 100).toFixed(1) : hybridResult.labor_pct}%</strong> of the labor resources.
+                                </div>
 
-                            <div className="alloc-row" style={{ marginBottom: "1.2rem" }}>
-                              <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "0.25rem", fontSize: "0.9rem" }}>
-                                <strong>Water Usage</strong>
-                                <strong style={{ color: "var(--co-text-muted)" }}>${hybridResult.water_cost.toLocaleString()}</strong>
-                              </div>
-                              <div style={{ display: "flex", justifyContent: "space-between", fontSize: "0.85rem", color: "var(--co-text-muted)", marginBottom: "0.4rem" }}>
-                                {wR != null ? <span>{(wR * customParams.water_m3_ha).toFixed(1)} / {customParams.water_m3_ha} m³/ha</span> : <span>—</span>}
-                                <span>{wR != null ? `${(wR * 100).toFixed(1)}%` : `${hybridResult.water_pct}%`}</span>
-                              </div>
-                              <div className="bar-bg"><div className="bar-fill" style={{ background: "#1976D2", width: `${Math.min((wR ?? hybridResult.water_pct / 100) * 100, 100)}%` }}></div></div>
-                            </div>
+                                <div className="alloc-row" style={{ marginBottom: "1.2rem" }}>
+                                  <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "0.25rem", fontSize: "0.9rem" }}>
+                                    <strong>Water Usage</strong>
+                                    <strong style={{ color: "var(--co-text-muted)" }}>RM{hybridResult.water_cost.toLocaleString()}</strong>
+                                  </div>
+                                  <div style={{ display: "flex", justifyContent: "space-between", fontSize: "0.85rem", color: "var(--co-text-muted)", marginBottom: "0.4rem" }}>
+                                    {wR != null ? <span>{(wR * customParams.water_m3_ha).toFixed(1)} / {customParams.water_m3_ha} m³/ha</span> : <span>—</span>}
+                                    <span>{wR != null ? `${(wR * 100).toFixed(1)}%` : `${hybridResult.water_pct}%`}</span>
+                                  </div>
+                                  <div className="bar-bg"><div className="bar-fill" style={{ background: "#1976D2", width: `${Math.min((wR ?? hybridResult.water_pct / 100) * 100, 100)}%` }}></div></div>
+                                </div>
 
-                            <div className="alloc-row" style={{ marginBottom: "1.2rem" }}>
-                              <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "0.25rem", fontSize: "0.9rem" }}>
-                                <strong>Fertilizer Usage</strong>
-                                <strong style={{ color: "var(--co-text-muted)" }}>${hybridResult.fert_cost.toLocaleString()}</strong>
-                              </div>
-                              <div style={{ display: "flex", justifyContent: "space-between", fontSize: "0.85rem", color: "var(--co-text-muted)", marginBottom: "0.4rem" }}>
-                                {fR != null ? <span>{(fR * customParams.fert_kg_ha).toFixed(1)} / {customParams.fert_kg_ha} kg/ha</span> : <span>—</span>}
-                                <span>{fR != null ? `${(fR * 100).toFixed(1)}%` : `${hybridResult.fert_pct}%`}</span>
-                              </div>
-                              <div className="bar-bg"><div className="bar-fill" style={{ background: "#2E7D32", width: `${Math.min((fR ?? hybridResult.fert_pct / 100) * 100, 100)}%` }}></div></div>
-                            </div>
+                                <div className="alloc-row" style={{ marginBottom: "1.2rem" }}>
+                                  <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "0.25rem", fontSize: "0.9rem" }}>
+                                    <strong>Fertilizer Usage</strong>
+                                    <strong style={{ color: "var(--co-text-muted)" }}>RM{hybridResult.fert_cost.toLocaleString()}</strong>
+                                  </div>
+                                  <div style={{ display: "flex", justifyContent: "space-between", fontSize: "0.85rem", color: "var(--co-text-muted)", marginBottom: "0.4rem" }}>
+                                    {fR != null ? <span>{(fR * customParams.fert_kg_ha).toFixed(1)} / {customParams.fert_kg_ha} kg/ha</span> : <span>—</span>}
+                                    <span>{fR != null ? `${(fR * 100).toFixed(1)}%` : `${hybridResult.fert_pct}%`}</span>
+                                  </div>
+                                  <div className="bar-bg"><div className="bar-fill" style={{ background: "#2E7D32", width: `${Math.min((fR ?? hybridResult.fert_pct / 100) * 100, 100)}%` }}></div></div>
+                                </div>
 
-                            <div className="alloc-row" style={{ marginBottom: "1.2rem" }}>
-                              <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "0.25rem", fontSize: "0.9rem" }}>
-                                <strong>Labor Usage</strong>
-                                <strong style={{ color: "var(--co-text-muted)" }}>${hybridResult.labor_cost.toLocaleString()}</strong>
-                              </div>
-                              <div style={{ display: "flex", justifyContent: "space-between", fontSize: "0.85rem", color: "var(--co-text-muted)", marginBottom: "0.4rem" }}>
-                                {lR != null ? <span>{(lR * customParams.labor_hours_ha).toFixed(1)} / {customParams.labor_hours_ha} hrs/ha</span> : <span>—</span>}
-                                <span>{lR != null ? `${(lR * 100).toFixed(1)}%` : `${hybridResult.labor_pct}%`}</span>
-                              </div>
-                              <div className="bar-bg"><div className="bar-fill" style={{ background: "#6A1B9A", width: `${Math.min((lR ?? hybridResult.labor_pct / 100) * 100, 100)}%` }}></div></div>
-                            </div>
-                          </>
-                        );
-                      })()}
-                    </div>
-                    <div>
-                      <p className="section-eyebrow">Two-Phase Convergence</p>
-                      <div className="phase-legend">
-                        <span className="phase-dot"><span className="dot" style={{ background: "#2E7D32" }}></span>PSO Exploration</span>
-                        <span className="phase-dot"><span className="dot" style={{ background: "#6A1B9A" }}></span>GA Refinement</span>
+                                <div className="alloc-row" style={{ marginBottom: "1.2rem" }}>
+                                  <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "0.25rem", fontSize: "0.9rem" }}>
+                                    <strong>Labor Usage</strong>
+                                    <strong style={{ color: "var(--co-text-muted)" }}>RM{hybridResult.labor_cost.toLocaleString()}</strong>
+                                  </div>
+                                  <div style={{ display: "flex", justifyContent: "space-between", fontSize: "0.85rem", color: "var(--co-text-muted)", marginBottom: "0.4rem" }}>
+                                    {lR != null ? <span>{(lR * customParams.labor_hours_ha).toFixed(1)} / {customParams.labor_hours_ha} hrs/ha</span> : <span>—</span>}
+                                    <span>{lR != null ? `${(lR * 100).toFixed(1)}%` : `${hybridResult.labor_pct}%`}</span>
+                                  </div>
+                                  <div className="bar-bg"><div className="bar-fill" style={{ background: "#6A1B9A", width: `${Math.min((lR ?? hybridResult.labor_pct / 100) * 100, 100)}%` }}></div></div>
+                                </div>
+                              </>
+                            );
+                          })()}
+                        </div>
+                        <div>
+                          <p className="section-eyebrow">Two-Phase Convergence</p>
+                          <div className="phase-legend">
+                            <span className="phase-dot"><span className="dot" style={{ background: "#2E7D32" }}></span>PSO Exploration</span>
+                            <span className="phase-dot"><span className="dot" style={{ background: "#6A1B9A" }}></span>GA Refinement</span>
+                          </div>
+                          <div className="hybrid-chart-container">
+                            <canvas ref={hybChartRef}></canvas>
+                          </div>
+                        </div>
                       </div>
-                      <div className="hybrid-chart-container">
-                        <canvas ref={hybChartRef}></canvas>
-                      </div>
-                    </div>
-                  </div>
+                    </>
+                  )}
                 </>
               )}
             </div>
