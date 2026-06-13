@@ -12,19 +12,19 @@ from crop_data import get_crop, compute_profit, compute_costs
 #   x[2] = labor_ratio  (entre 0.01 et 1.0)
 # ratio = 1.0 signifie qu'on utilise 100% de la ressource disponible
 
-def profit_function(water_r, fert_r, labor_r, crop_name):
+def profit_function(water_r, fert_r, labor_r, crop_name, custom_params=None):
     """
     Retourne le profit estimé en $/ha pour un jeu de ratios donné.
     Utilise compute_profit() de crop_data.py.
     """
-    return compute_profit(crop_name, water_r, fert_r, labor_r)
+    return compute_profit(crop_name, water_r, fert_r, labor_r, custom_params)
 
 
 # ─────────────────────────────────────────────────────────────────────────────
 # PSO — Particle Swarm Optimization (PySwarms)
 # ─────────────────────────────────────────────────────────────────────────────
 
-def run_pso(crop_name, n_particles=20, n_iterations=50):
+def run_pso(crop_name, n_particles=20, n_iterations=50, custom_params=None):
     """
     Lance l'optimisation PSO sur la culture donnée.
     Retourne un dict avec la meilleure allocation et l'historique.
@@ -35,7 +35,7 @@ def run_pso(crop_name, n_particles=20, n_iterations=50):
         # params : array (n_particles, 3)
         profits = []
         for p in params:
-            p_val = profit_function(p[0], p[1], p[2], crop_name)
+            p_val = profit_function(p[0], p[1], p[2], crop_name, custom_params)
             profits.append(-p_val)          # négatif car PySwarms minimise
         return np.array(profits)
 
@@ -66,8 +66,8 @@ def run_pso(crop_name, n_particles=20, n_iterations=50):
 
     best_water_r, best_fert_r, best_labor_r = best_pos
     best_profit  = -best_cost
-    costs        = compute_costs(crop_name, best_water_r, best_fert_r, best_labor_r)
-    crop         = get_crop(crop_name)
+    costs        = compute_costs(crop_name, best_water_r, best_fert_r, best_labor_r, custom_params)
+    crop         = get_crop(crop_name, custom_params)
     
     import math
     yield_factor = (best_water_r**0.4) * (best_fert_r**0.35) * (best_labor_r**0.25)
@@ -88,6 +88,7 @@ def run_pso(crop_name, n_particles=20, n_iterations=50):
         "labor_pct":    round(best_labor_r / total * 100),
         "iterations":   len(history),
         "history":      [round(h, 2) for h in history],
+        "custom_params": custom_params,
     }
 
 
@@ -95,7 +96,7 @@ def run_pso(crop_name, n_particles=20, n_iterations=50):
 # GA — Genetic Algorithm (PyGAD)
 # ─────────────────────────────────────────────────────────────────────────────
 
-def run_ga(crop_name, n_generations=50, population_size=20):
+def run_ga(crop_name, n_generations=50, population_size=20, custom_params=None):
     """
     Lance l'optimisation GA sur la culture donnée.
     Retourne un dict avec la meilleure allocation et l'historique.
@@ -106,7 +107,7 @@ def run_ga(crop_name, n_generations=50, population_size=20):
     # PyGAD MAXIMISE → on retourne directement le profit (pas de négatif)
     def ga_fitness(ga_instance, solution, solution_idx):
         water_r, fert_r, labor_r = solution
-        return profit_function(water_r, fert_r, labor_r, crop_name)
+        return profit_function(water_r, fert_r, labor_r, crop_name, custom_params)
 
     # Callback appelé à chaque génération → on enregistre le meilleur profit
     def on_generation(ga_instance):
@@ -138,8 +139,8 @@ def run_ga(crop_name, n_generations=50, population_size=20):
     solution, best_fitness, _ = ga.best_solution()
 
     best_water_r, best_fert_r, best_labor_r = solution
-    costs   = compute_costs(crop_name, best_water_r, best_fert_r, best_labor_r)
-    crop    = get_crop(crop_name)
+    costs   = compute_costs(crop_name, best_water_r, best_fert_r, best_labor_r, custom_params)
+    crop    = get_crop(crop_name, custom_params)
 
     yield_factor = (best_water_r**0.4) * (best_fert_r**0.35) * (best_labor_r**0.25)
     revenue      = crop['price_per_kg'] * crop['yield_kg_ha'] * min(yield_factor, 1.0)
@@ -159,17 +160,18 @@ def run_ga(crop_name, n_generations=50, population_size=20):
         "labor_pct":    round(best_labor_r / total * 100),
         "iterations":   len(history),
         "history":      history,
+        "custom_params": custom_params,
     }
 
 
-def run_comparison(crop_name, iterations=50):
+def run_comparison(crop_name, iterations=50, custom_params=None):
     """
     Lance PSO, GA et Memetic sur la même culture.
     Retourne les 3 résultats + un résumé comparatif.
     """
     results = {
-        "PSO":     run_pso(crop_name,     n_iterations=iterations),
-        "GA":      run_ga(crop_name,      n_generations=iterations),
+        "PSO":     run_pso(crop_name,     n_iterations=iterations, custom_params=custom_params),
+        "GA":      run_ga(crop_name,      n_generations=iterations, custom_params=custom_params),
     }
 
     # Trouver le gagnant
@@ -196,7 +198,7 @@ def run_comparison(crop_name, iterations=50):
 # Paste this at the BOTTOM of your optimizer.py
 # ─────────────────────────────────────────────────────────────────────────────
 
-def run_hybrid_pso_ga(crop_name, total_iterations=50, n_particles=20):
+def run_hybrid_pso_ga(crop_name, total_iterations=50, n_particles=20, custom_params=None):
     """
     Phase 1 (PSO)  : Explores the solution space broadly to find a good region.
     Phase 2 (GA)   : Starts from PSO's best position → refines for higher profit.
@@ -207,7 +209,7 @@ def run_hybrid_pso_ga(crop_name, total_iterations=50, n_particles=20):
 
     # ── Phase 1: PSO ────────────────────────────────────────────────────────
     def pso_objective(params):
-        return np.array([-profit_function(p[0], p[1], p[2], crop_name) for p in params])
+        return np.array([-profit_function(p[0], p[1], p[2], crop_name, custom_params) for p in params])
 
     bounds  = (np.array([0.01, 0.01, 0.01]), np.array([1.0, 1.0, 1.0]))
     options = {'c1': 1.5, 'c2': 1.5, 'w': 0.7}
@@ -233,7 +235,7 @@ def run_hybrid_pso_ga(crop_name, total_iterations=50, n_particles=20):
     initial_pop[0] = best_pos   # slot 0 = exact PSO winner
 
     def ga_fitness(ga_instance, solution, idx):
-        return profit_function(solution[0], solution[1], solution[2], crop_name)
+        return profit_function(solution[0], solution[1], solution[2], crop_name, custom_params)
 
     def on_gen(ga_instance):
         try:
@@ -269,8 +271,8 @@ def run_hybrid_pso_ga(crop_name, total_iterations=50, n_particles=20):
     
     final_profit = float(final_profit_raw)
     w, f, l      = solution
-    costs        = compute_costs(crop_name, w, f, l)
-    crop         = get_crop(crop_name)
+    costs        = compute_costs(crop_name, w, f, l, custom_params)
+    crop         = get_crop(crop_name, custom_params)
     yf           = (w**0.4) * (f**0.35) * (l**0.25)
     revenue      = crop['price_per_kg'] * crop['yield_kg_ha'] * min(yf, 1.0)
     total        = w + f + l
@@ -295,6 +297,7 @@ def run_hybrid_pso_ga(crop_name, total_iterations=50, n_particles=20):
         "ga_gens":         len(ga_history),
         "pso_history":     [round(h, 2) for h in pso_history],
         "ga_history":      ga_history,
+        "custom_params":   custom_params,
     }
 
 
@@ -304,7 +307,7 @@ def run_hybrid_pso_ga(crop_name, total_iterations=50, n_particles=20):
 # Paste this right below run_hybrid_pso_ga
 # ─────────────────────────────────────────────────────────────────────────────
 
-def run_sensitivity(crop_name, water_ratio, fert_ratio, labor_ratio, steps=30):
+def run_sensitivity(crop_name, water_ratio, fert_ratio, labor_ratio, steps=30, custom_params=None):
     """
     For given ratio values, computes how the profit changes
     as EACH ratio slides from 0 → 1 while the other two stay fixed.
@@ -313,20 +316,20 @@ def run_sensitivity(crop_name, water_ratio, fert_ratio, labor_ratio, steps=30):
     r_range = np.linspace(0.01, 1.0, steps).tolist()
 
     water_curve = [
-        round(profit_function(r, fert_ratio, labor_ratio, crop_name), 2)
+        round(profit_function(r, fert_ratio, labor_ratio, crop_name, custom_params), 2)
         for r in r_range
     ]
     fert_curve = [
-        round(profit_function(water_ratio, r, labor_ratio, crop_name), 2)
+        round(profit_function(water_ratio, r, labor_ratio, crop_name, custom_params), 2)
         for r in r_range
     ]
     labor_curve = [
-        round(profit_function(water_ratio, fert_ratio, r, crop_name), 2)
+        round(profit_function(water_ratio, fert_ratio, r, crop_name, custom_params), 2)
         for r in r_range
     ]
 
-    current_profit = profit_function(water_ratio, fert_ratio, labor_ratio, crop_name)
-    costs          = compute_costs(crop_name, water_ratio, fert_ratio, labor_ratio)
+    current_profit = profit_function(water_ratio, fert_ratio, labor_ratio, crop_name, custom_params)
+    costs          = compute_costs(crop_name, water_ratio, fert_ratio, labor_ratio, custom_params)
 
     # Find which resource has the steepest slope → most sensitive
     def slope(curve):

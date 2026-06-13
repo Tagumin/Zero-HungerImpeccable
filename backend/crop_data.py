@@ -207,25 +207,35 @@ CROP_DATA = {
 }
 
 
-def get_crop(name: str) -> dict:
+def get_crop(name: str, custom_params: dict = None) -> dict:
     """This Function returns all the informations about one crop type the one we chose"""
     key = name.lower().replace(' ', '').replace('-', '')
-    return CROP_DATA[key]
+    crop = dict(CROP_DATA[key])
+    if custom_params:
+        for k in ['price_per_kg', 'yield_kg_ha', 'water_m3_ha', 'fert_kg_ha', 'labor_hours_ha']:
+            if k in custom_params and custom_params[k] is not None:
+                crop[k] = float(custom_params[k])
+    return crop
 
 
-def compute_max_revenue(crop_name: str) -> float:
+def compute_max_revenue(crop_name: str, custom_params: dict = None) -> float:
     """Maximum Revenue= price × yield (without any costs) so this is the perfect revenue without any water or labor cost taken """
-    c = get_crop(crop_name)
+    c = get_crop(crop_name, custom_params)
     return c['price_per_kg'] * c['yield_kg_ha']
 
 
-def compute_costs(crop_name: str, water_ratio=1.0, fert_ratio=1.0, labor_ratio=1.0) -> dict:
+def compute_costs(crop_name: str, water_ratio=1.0, fert_ratio=1.0, labor_ratio=1.0, custom_params: dict = None) -> dict:
     """
     compute the costs depending on the Allocation ratio choice (0.0 → 1.0).
     ratio=1.0 = complete use  of the crop ressources needed 
     """
-    c = get_crop(crop_name)
-    u = UNIT_COSTS
+    c = get_crop(crop_name, custom_params)
+    u = dict(UNIT_COSTS)
+    if custom_params:
+        for k in ['water_per_m3', 'fert_per_kg', 'labor_per_hour']:
+            if k in custom_params and custom_params[k] is not None:
+                u[k] = float(custom_params[k])
+    
     water_cost = water_ratio * c['water_m3_ha']   * u['water_per_m3']
     fert_cost  = fert_ratio  * c['fert_kg_ha']    * u['fert_per_kg']
     labor_cost = labor_ratio * c['labor_hours_ha'] * u['labor_per_hour']
@@ -238,10 +248,10 @@ def compute_costs(crop_name: str, water_ratio=1.0, fert_ratio=1.0, labor_ratio=1
     }
 
 
-def compute_profit(crop_name: str, water_ratio=1.0, fert_ratio=1.0, labor_ratio=1.0) -> float:
+def compute_profit(crop_name: str, water_ratio=1.0, fert_ratio=1.0, labor_ratio=1.0, custom_params: dict = None) -> float:
     """Profit = Revenue × yield_factor − total_cost."""
-    c       = get_crop(crop_name)
-    costs   = compute_costs(crop_name, water_ratio, fert_ratio, labor_ratio)
+    c       = get_crop(crop_name, custom_params)
+    costs   = compute_costs(crop_name, water_ratio, fert_ratio, labor_ratio, custom_params)
     if water_ratio <= 0 or fert_ratio <= 0 or labor_ratio <= 0:
         return -1e12
     yield_f = (water_ratio**0.4) * (fert_ratio**0.35) * (labor_ratio**0.25)

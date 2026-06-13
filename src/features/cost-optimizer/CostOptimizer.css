@@ -39,11 +39,11 @@
   position: relative;
   background: url('/images/optimization.jpg') center/cover no-repeat;
   color: white;
-  padding: 3rem 2rem 2.5rem;
+  padding: 1.5rem 2rem;
   display: flex;
   align-items: flex-end;
   gap: 1rem;
-  min-height: 160px;
+  min-height: 100px;
   box-shadow: 0 2px 12px rgba(0,0,0,0.18);
   overflow: hidden;
 }
