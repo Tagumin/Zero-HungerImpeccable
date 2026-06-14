@@ -612,7 +612,7 @@ export default function CostOptimizer() {
 
       <div className="hero-banner">
         <img
-          src="../docs/images/cost_optimization.jpg"
+          src="../../../frontend/dist/images/cost_optimization.jpg"
           alt="Crop field"
           onError={(e) => {
             e.currentTarget.style.background =

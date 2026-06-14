@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 export default function Features() {
   const features = [
     {
-      img: "images/optimization.jpg",
+      img: "../../../frontend/dist/images/cost_optimization.jpg",
       alt: "Cost Optimization",
       title: "Cost Optimization",
       text: "Real-time data helps you plan planting, irrigation, and harvest timing. Make moves with confidence, not guesswork.",
@@ -12,7 +12,7 @@ export default function Features() {
       align: "left",
     },
     {
-      img: "images/optimization.jpg",
+      img: "../../../frontend/dist/images/optimization.jpg",
       alt: "Smart Decision Support",
       title: "Intelligent Route Optimizer",
       text: "Deploy state-of-the-art Ant Colony Optimization (ACO) to find the most efficient distribution paths across multiple destinations. Save fuel, minimize travel costs, and streamline food logistics.",
@@ -21,7 +21,7 @@ export default function Features() {
       align: "right",
     },
     {
-      img: "images/disease_identification.jpg",
+      img: "../../../frontend/dist/images/disease_identification.jpg",
       alt: "Disease Identification",
       title: "Microscopic Threat Detection",
       text: "Catch outbreaks before they decimate a field. Just snap a photo, and our computer vision models identify pathogens instantly.",

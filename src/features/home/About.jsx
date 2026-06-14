@@ -1,7 +1,7 @@
 ﻿export default function About() {
   const cards = [
     {
-      img: "images/food_security.jpg",
+      img: "../../../frontend/dist/images/food_security.jpg",
       alt: "Reduce Post-Harvest Loss",
       title: "Reduce Post-Harvest Loss",
       text: "Optimize distribution routes and detect disease early to minimize crop waste and ensure more food reaches those who need it.",
@@ -9,7 +9,7 @@
       delay: "0.1s",
     },
     {
-      img: "images/improved_nutrition.jpg",
+      img: "../../../frontend/dist/images/improved_nutrition.jpg",
       alt: "Lower Farming Costs",
       title: "Lower Farming Costs",
       text: "Use intelligent resource optimization to cut water, fertilizer, and labor expenses while maintaining healthy yields and profitability.",
@@ -17,7 +17,7 @@
       delay: "0.2s",
     },
     {
-      img: "images/sustainable_agriculture.jpg",
+      img: "../../../frontend/dist/images/sustainable_agriculture.jpg",
       alt: "Strengthen Food Systems",
       title: "Strengthen Food Systems",
       text: "Combine disease prevention, efficient distribution, and cost control to build resilient agricultural supply chains.",
