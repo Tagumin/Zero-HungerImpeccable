@@ -108,4 +108,4 @@ history = model.fit(
     verbose=2 # Keeps the terminal clean
 )
 
-print("Training finished, run evaluate.py to evaluate")
+print("Training finished.")

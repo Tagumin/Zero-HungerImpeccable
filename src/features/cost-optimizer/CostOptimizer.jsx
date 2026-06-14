@@ -57,7 +57,7 @@ export default function CostOptimizer() {
   const sensTimer = useRef(null);
 
   useEffect(() => {
-    fetch("http://127.0.0.1:5001/crops")
+    fetch("http://127.0.0.1:5000/crops")
       .then((res) => res.json())
       .then((data) => {
         setCrops(data);
@@ -68,7 +68,7 @@ export default function CostOptimizer() {
 
   useEffect(() => {
     if (selectedCrop) {
-      fetch(`http://127.0.0.1:5001/crop_defaults/${selectedCrop}`)
+      fetch(`http://127.0.0.1:5000/crop_defaults/${selectedCrop}`)
         .then((res) => {
           if (!res.ok) throw new Error("Network response was not ok");
           return res.json();
@@ -137,7 +137,7 @@ export default function CostOptimizer() {
   useEffect(() => {
     if (!useCustomParams && selectedCrop) {
       // Fetch and reset to defaults when checkbox is unchecked
-      fetch(`http://127.0.0.1:5001/crop_defaults/${selectedCrop}`)
+      fetch(`http://127.0.0.1:5000/crop_defaults/${selectedCrop}`)
         .then((res) => res.json())
         .then((data) => {
           setCustomParams({
@@ -474,7 +474,7 @@ export default function CostOptimizer() {
     );
     setIsComparing(false);
     try {
-      const res = await fetch("http://127.0.0.1:5001/optimize", {
+      const res = await fetch("http://127.0.0.1:5000/optimize", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -510,7 +510,7 @@ export default function CostOptimizer() {
     setStatus(`Comparing PSO vs GA for ${iterations} iterations…`, "running");
     setIsComparing(true);
     try {
-      const res = await fetch("http://127.0.0.1:5001/compare", {
+      const res = await fetch("http://127.0.0.1:5000/compare", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -542,7 +542,7 @@ export default function CostOptimizer() {
     );
     setIsHybrid(true);
     try {
-      const res = await fetch("http://127.0.0.1:5001/hybrid", {
+      const res = await fetch("http://127.0.0.1:5000/hybrid", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -575,7 +575,7 @@ export default function CostOptimizer() {
 
   const fetchSensitivity = async () => {
     try {
-      const res = await fetch("http://127.0.0.1:5001/sensitivity", {
+      const res = await fetch("http://127.0.0.1:5000/sensitivity", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({

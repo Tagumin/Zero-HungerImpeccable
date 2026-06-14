@@ -22,9 +22,11 @@ venv
 *.njsproj
 *.sln
 *.sw?
-
+_pycache_
 .agents
 .impeccable
 temp-critique.md 
 PRODUCT.md
 skills-lock.json
+report.log
+*.pyc

@@ -1,4 +1,4 @@
-﻿import challengesImg from "../../../docs/images/challenges.png";
+﻿import challengesImg from "../../../frontend/dist/images/challenges.png";
 
 export default function Challenges() {
   const items = [
@@ -25,19 +25,21 @@ export default function Challenges() {
   return (
     <section className="challenges" id="challenges">
       <div className="challenges-inner">
-        
         {/* Left Side: Just the Image */}
         <div className="challenges-media reveal">
           <img src={challengesImg} alt="Farming Challenges" />
         </div>
 
         {/* Right Side: Header + Overlapping Content Box */}
-        <div className="challenges-content-box reveal" style={{ transitionDelay: "0.1s" }}>
+        <div
+          className="challenges-content-box reveal"
+          style={{ transitionDelay: "0.1s" }}
+        >
           <div className="challenges-header">
             <h2>Challenges Facing Modern Farmers</h2>
             <p>
-              Small-scale farmers struggle with obstacles that limit their success
-              and threaten global food security.
+              Small-scale farmers struggle with obstacles that limit their
+              success and threaten global food security.
             </p>
           </div>
 
@@ -53,7 +55,6 @@ export default function Challenges() {
             ))}
           </div>
         </div>
-
       </div>
     </section>
   );
