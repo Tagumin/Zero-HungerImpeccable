@@ -1,23 +1,23 @@
-import challengesImg from "../../../docs/images/challenges.png";
+﻿import challengesImg from "../../../docs/images/challenges.png";
 
 export default function Challenges() {
   const items = [
     {
       number: "01",
-      title: "Low Productivity",
-      text: "Outdated farming techniques and lack of data lead to suboptimal yields, wasting land potential and water resources.",
+      title: "Disease Outbreaks",
+      text: "Late detection of crop diseases leads to widespread damage and crop loss. Farmers lack accessible tools to quickly identify and treat plant health issues before it's too late.",
       delay: "0.1s",
     },
     {
       number: "02",
-      title: "Inefficient Resource Management",
-      text: "High input costs and blind application of fertilizers drain profitability and harm the surrounding ecosystem.",
+      title: "High Distribution Costs",
+      text: "Inefficient delivery routes waste fuel and time, cutting into already thin profit margins and delaying fresh produce from reaching markets.",
       delay: "0.2s",
     },
     {
       number: "03",
-      title: "Late Disease Detection",
-      text: "Relying on manual inspection means outbreaks are caught after the damage is irreversible, devastating entire harvests.",
+      title: "Resource Inefficiency",
+      text: "Blind application of water, fertilizer, and labor drives up production costs while offering little insight into optimal resource allocation for maximum profitability.",
       delay: "0.3s",
     },
   ];

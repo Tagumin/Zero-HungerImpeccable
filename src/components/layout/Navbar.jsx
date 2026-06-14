@@ -59,7 +59,7 @@ export default function Navbar() {
 
         <ul className={`nav-links ${menuOpen ? "open" : ""}`}>
           <li>
-            <Link to="/" onClick={closeMenu}>
+            <Link to={{ pathname: "/", hash: "#hero" }} onClick={closeMenu}>
               Home
             </Link>
           </li>

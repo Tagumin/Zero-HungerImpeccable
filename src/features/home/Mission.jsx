@@ -1,20 +1,20 @@
-export default function Mission() {
+﻿export default function Mission() {
   const items = [
     {
-      title: "Maximize Harvest Yields",
-      text: "Unlock the full potential of every acre. Our AI models predict optimal planting windows and resource allocation to push yields beyond historical limits.",
+      title: "Detect Disease Early",
+      text: "Identify crop diseases before they spread. Our visual disease detection system helps farmers diagnose problems instantly and take action to protect their harvest.",
     },
     {
-      title: "Outsmart the Elements",
-      text: "Stay three steps ahead of pests, disease, and extreme weather with predictive alerts that protect your bottom line.",
+      title: "Optimize Distribution Routes",
+      text: "Cut fuel costs and delivery time with intelligent route planning. Our ACO algorithm finds the most efficient paths to deliver produce from farm to market.",
     },
     {
-      title: "Democratize Agronomy",
-      text: "Put a world-class agronomist in the pocket of every farmer, translating complex soil data into simple, actionable daily steps.",
+      title: "Minimize Production Costs",
+      text: "Maximize profit margins with data-driven resource allocation. Our optimization engine balances water, fertilizer, and labor to reduce costs while maintaining yield.",
     },
     {
-      title: "Regenerate the Earth",
-      text: "Leave the land better than you found it. We make regenerative, eco-friendly farming both highly scalable and deeply profitable.",
+      title: "Empower Every Farmer",
+      text: "Make precision agriculture accessible to all. We deliver professional-grade farming intelligence through simple, actionable tools that work for farms of any size.",
     },
   ];
 

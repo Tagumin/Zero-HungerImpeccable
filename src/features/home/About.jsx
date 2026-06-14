@@ -1,26 +1,26 @@
-export default function About() {
+﻿export default function About() {
   const cards = [
     {
       img: "images/food_security.jpg",
-      alt: "Stabilize Food Supply",
-      title: "Stabilize Food Supply",
-      text: "Predict harvest yields and protect crops against climate volatility to ensure year-round stability.",
+      alt: "Reduce Post-Harvest Loss",
+      title: "Reduce Post-Harvest Loss",
+      text: "Optimize distribution routes and detect disease early to minimize crop waste and ensure more food reaches those who need it.",
       className: "bento-item bento-large reveal",
       delay: "0.1s",
     },
     {
       img: "images/improved_nutrition.jpg",
-      alt: "Enhance Crop Nutrition",
-      title: "Enhance Crop Nutrition",
-      text: "Leverage soil data to grow nutrient-dense crops that combat malnutrition in vulnerable regions.",
+      alt: "Lower Farming Costs",
+      title: "Lower Farming Costs",
+      text: "Use intelligent resource optimization to cut water, fertilizer, and labor expenses while maintaining healthy yields and profitability.",
       className: "bento-item bento-small reveal",
       delay: "0.2s",
     },
     {
       img: "images/sustainable_agriculture.jpg",
-      alt: "Scale Sustainable Farming",
-      title: "Scale Sustainable Farming",
-      text: "Adopt data-driven practices that maximize output while actively restoring long-term soil health.",
+      alt: "Strengthen Food Systems",
+      title: "Strengthen Food Systems",
+      text: "Combine disease prevention, efficient distribution, and cost control to build resilient agricultural supply chains.",
       className: "bento-item bento-small reveal",
       delay: "0.3s",
     },
@@ -33,8 +33,8 @@ export default function About() {
           <p className="label-badge">The Objective</p>
           <h2 className="sdg-title">Zero Hunger by 2030</h2>
           <p className="sdg-sub">
-            We are building the intelligence required to eliminate global hunger,
-            secure supply chains, and make sustainable farming the standard.
+            We are building intelligent tools to reduce crop loss, optimize farm
+            economics, and strengthen the path from field to market.
           </p>
         </div>
 
